@@ -4,6 +4,7 @@ import { ProfileSelect } from '../profiles/ProfileSelect'
 import { DashboardShell } from '../profiles/DashboardShell'
 import { PreconsultaFlow } from '../modules/pre/PreconsultaFlow'
 import { MiResultado } from '../modules/pre/MiResultado'
+import { CasoEjemplo } from '../modules/pre/CasoEjemplo'
 import { CuidadorGuia } from '../modules/post/CuidadorGuia'
 import { PacienteGuia } from '../modules/post/PacienteGuia'
 import { Comunidad } from '../modules/gov/Comunidad'
@@ -20,6 +21,7 @@ export const router = createHashRouter([
     element: <App />,
     children: [
       { index: true, element: <ProfileSelect /> },
+      { path: 'ejemplo', element: <CasoEjemplo /> },
       { path: 'p/:profileId', element: <DashboardShell /> },
       { path: 'p/:profileId/preconsulta', element: <PreconsultaFlow /> },
       { path: 'p/:profileId/mi-resultado', element: <MiResultado /> },

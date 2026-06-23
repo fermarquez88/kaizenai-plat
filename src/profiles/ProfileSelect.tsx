@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next'
-import { ShieldCheck } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { ShieldCheck, Sparkles } from 'lucide-react'
 import { PROFILES } from './profiles'
 import { ProfileCard } from '../components/ProfileCard'
 
@@ -16,6 +17,15 @@ export function ProfileSelect() {
         {PROFILES.map((p) => (
           <ProfileCard key={p.id} p={p} />
         ))}
+      </div>
+
+      <div className="mt-6 text-center">
+        <Link
+          to="/ejemplo"
+          className="inline-flex items-center gap-2 rounded-xl border border-secondary bg-surface px-5 py-2.5 font-medium text-secondary-text hover:bg-bg"
+        >
+          <Sparkles size={18} aria-hidden /> {t('home.example')}
+        </Link>
       </div>
 
       <p className="mt-8 flex items-center justify-center gap-2 text-sm text-secondary-text">

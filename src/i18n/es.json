@@ -18,7 +18,12 @@
   "home": {
     "title": "Elegí tu espacio",
     "subtitle": "Esta red acompaña la salud cerebral antes y después del diagnóstico. Entrá por el espacio que te representa.",
+    "example": "Ver un caso de ejemplo",
     "privacy": "Tus datos quedan en este dispositivo. Vos decidís qué compartir."
+  },
+  "ejemplo": {
+    "banner": "Caso de ejemplo · datos de demostración (no es una persona real).",
+    "real": "Hacer un cribado real"
   },
   "profiles": {
     "paciente": { "title": "Persona", "desc": "Autoevaluación y educación en lenguaje claro." },
