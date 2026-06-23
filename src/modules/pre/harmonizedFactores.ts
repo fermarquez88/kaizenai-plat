@@ -1,5 +1,10 @@
 // Set de preguntas ARMONIZADO: cada pregunta alimenta el máximo de scores posibles.
 // Contenido en español (validado); se traduce a EN aparte. Tipos en src/scoring/riskScores.ts.
+//
+// CASCADA: los gradientes (tabaquismo, actividad_fisica, red_social, alcohol_patron) TIENEN
+// PRIORIDAD sobre los sí/no del paso "Prevención" (Lancet); el booleano sólo es respaldo si
+// falta el gradiente (ver buildRiskInputs, operador ??). ictus/fibrilación/insomnio NO puntúan
+// en LIBRA/CAIDE/ANU-ADRI: se recogen para el INFORME CLÍNICO y la herramienta oficial CogDrisk.
 import type { Factores } from '../../scoring/riskScores'
 
 export interface FactorOption {
@@ -99,9 +104,9 @@ export const FACTOR_QUESTIONS: FactorQ[] = [
   },
   { id: 'cardiopatia', text: '¿Tenés o tuviste enfermedad del corazón (infarto, angina, cardiopatía)?', type: 'boolean', feeds: 'LIBRA' },
   { id: 'enf_renal', text: '¿Te dijeron que tenés problemas en los riñones (filtrado bajo)?', type: 'boolean', feeds: 'LIBRA' },
-  { id: 'ictus', text: '¿Tuviste alguna vez un ACV o derrame?', type: 'boolean', feeds: 'CogDrisk' },
-  { id: 'fibrilacion', text: '¿Tenés fibrilación auricular u otra arritmia diagnosticada?', type: 'boolean', feeds: 'CogDrisk' },
-  { id: 'insomnio', text: '¿Tenés insomnio o dificultad habitual para dormir?', type: 'boolean', feeds: 'CogDrisk' },
+  { id: 'ictus', text: '¿Tuviste alguna vez un ACV o derrame?', type: 'boolean', feeds: 'Antecedente clínico · CogDrisk (oficial)' },
+  { id: 'fibrilacion', text: '¿Tenés fibrilación auricular u otra arritmia diagnosticada?', type: 'boolean', feeds: 'Antecedente clínico · CogDrisk (oficial)' },
+  { id: 'insomnio', text: '¿Tenés insomnio o dificultad habitual para dormir?', type: 'boolean', feeds: 'Antecedente clínico · CogDrisk (oficial)' },
   { id: 'pas_mmhg', text: 'Si te tomaste la presión hace poco, ¿cuál fue la “de arriba” (sistólica)?', type: 'number', unit: 'mmHg', feeds: 'CAIDE (opcional)' },
   { id: 'colesterol_total', text: 'Colesterol total de un análisis reciente, si lo sabés', type: 'number', unit: 'mg/dL', feeds: 'CAIDE (opcional)' },
 ]

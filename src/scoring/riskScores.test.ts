@@ -25,6 +25,16 @@ describe('ANU-ADRI (autorreporte, Anstey 2014 Tabla 2)', () => {
     expect(r.value).toBe(20)
   })
 
+  it('educación es PROTECTORA: <8 años suma MÁS que >11 años (no invertir el signo)', () => {
+    const base = { edad: 72, sexo: 'Mujer' as const } // banda mujer 70–74 = 14
+    const low = anuAdri({ ...base, edu_anios: 5 }).value! // <8 → +6 ⇒ 20
+    const mid = anuAdri({ ...base, edu_anios: 10 }).value! // 8–11 → +3 ⇒ 17
+    const high = anuAdri({ ...base, edu_anios: 16 }).value! // >11 → 0 ⇒ 14
+    expect(low - high).toBe(6)
+    expect(mid - high).toBe(3)
+    expect(low).toBeGreaterThan(high) // menos educación = más riesgo
+  })
+
   it('no es computable sin edad/sexo/educación', () => {
     expect(anuAdri({ edad: 70, sexo: 'Mujer' }).computable).toBe(false)
   })
@@ -62,11 +72,11 @@ describe('CAIDE (Kivipelto 2006) — colesterol = 1 punto', () => {
       sexo: 'Hombre', // → 1
       sbp: 150, // >140 → 2
       bmi: 31, // ≥30 → 2
-      cholTotalMgdl: 260, // >251 → 1
+      cholTotalMgdl: 260, // >251 → 2
       actividadFisica: 'low', // inactivo → 1
     }
     const r = caide(i)
-    expect(r.value).toBe(12)
+    expect(r.value).toBe(13) // 3+2+1+2+2+2+1 (suma de máximos del score = 15)
     expect(r.detail).toContain('~16,4%')
     expect(r.detail).not.toContain('proxy')
   })

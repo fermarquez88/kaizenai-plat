@@ -85,7 +85,9 @@ export function anuAdri(i: RiskInputs): RiskScore {
   const ageBand =
     i.edad < 65 ? 0 : i.edad < 70 ? 1 : i.edad < 75 ? 2 : i.edad < 80 ? 3 : i.edad < 85 ? 4 : i.edad < 90 ? 5 : 6
   let v = (i.sexo === 'Hombre' ? ANU_AGE_M : ANU_AGE_W)[ageBand]
-  v += i.edu_anios < 8 ? 0 : i.edu_anios <= 11 ? 3 : 6
+  // Educación PROTECTORA: >11 años = 0 (ref), 8–11 = +3, <8 años = +6 (Anstey 2014,
+  // PLOS One Tabla 2). A menos educación, más puntos (más riesgo). NO invertir.
+  v += i.edu_anios < 8 ? 6 : i.edu_anios <= 11 ? 3 : 0
   if (i.diabetes) v += 3
   if (i.depresion) v += 2
   if (i.tec) v += 4
@@ -136,7 +138,8 @@ export function libra(i: RiskInputs): RiskScore {
   }
 }
 
-// CAIDE (Kivipelto 2006) — colesterol = 1 punto (corregido). Mediciones si están; si no, proxy.
+// CAIDE (Kivipelto 2006, Lancet Neurol) — score 0–15. Colesterol >6,5 mmol/L (~251 mg/dL) = 2 pts
+// (verificado contra fuente: la suma de máximos da 15 SÓLO con colesterol=2). Medidas si están; si no, proxy.
 export function caide(i: RiskInputs): RiskScore {
   if (i.edad == null || i.edu_anios == null) {
     return {
@@ -154,7 +157,7 @@ export function caide(i: RiskInputs): RiskScore {
   const sexP = i.sexo === 'Hombre' ? 1 : 0
   const htaP = (i.sbp != null ? i.sbp > 140 : !!i.hipertension) ? 2 : 0
   const obP = esObeso(i) ? 2 : 0
-  const colP = (i.cholTotalMgdl != null ? i.cholTotalMgdl > 251 : !!i.colesterolDx) ? 1 : 0
+  const colP = (i.cholTotalMgdl != null ? i.cholTotalMgdl > 251 : !!i.colesterolDx) ? 2 : 0
   const inP = esInactivo(i) ? 1 : 0
   const v = ageP + eduP + sexP + htaP + obP + colP + inP
   const r20 = v <= 5 ? '~1%' : v <= 7 ? '~1,9%' : v <= 9 ? '~4,2%' : v <= 11 ? '~7,4%' : '~16,4%'
@@ -212,9 +215,9 @@ export interface Factores {
 }
 
 export function bmiFrom(f: Factores): number | undefined {
-  if (f.peso_kg && f.talla_cm) {
+  if (typeof f.peso_kg === 'number' && f.peso_kg > 0 && typeof f.talla_cm === 'number' && f.talla_cm > 0) {
     const m = f.talla_cm / 100
-    if (m > 0) return f.peso_kg / (m * m)
+    return f.peso_kg / (m * m)
   }
   return undefined
 }

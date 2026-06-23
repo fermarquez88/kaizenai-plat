@@ -119,6 +119,10 @@ function buildRiskInputs(inp: PreconsultaInputs): RiskInputs {
     obesidadDx: yes('obesity'),
     depresion: yes('depression'),
     tec: yes('tbi'),
+    // Cascada (??): el gradiente armonizado tiene prioridad; el sí/no de Prevención es respaldo.
+    // El binario isolation='si' (vive aislado) sólo se proyecta a la categoría más baja de red social.
+    // Alcohol "excess" NO puntúa en estos índices (ANU-ADRI: pesado=0; LIBRA: sólo protege bajo-moderado),
+    // por lo que el proxy desde el binario es inocuo y conservador.
     tabaquismo: f.tabaquismo ?? (yes('smoking') ? 'current' : undefined),
     actividadFisica: f.actividad_fisica,
     inactividad: yes('inactivity'),
