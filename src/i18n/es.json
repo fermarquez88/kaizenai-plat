@@ -66,6 +66,7 @@
   "preconsulta": {
     "stepLabel": "Paso {{current}} de {{total}} · {{name}}",
     "steps": {
+      "demografia": "Sobre vos",
       "prevencion": "Prevención",
       "mrca": "Memoria",
       "medicacion": "Medicación",
@@ -79,11 +80,23 @@
       "intro": "Respondé con sinceridad. Esto es una estimación, no un diagnóstico: te muestra qué factores podés trabajar para cuidar tu salud cerebral.",
       "answer": { "si": "Sí", "no": "No", "nose": "No sé" }
     },
+    "demografia": {
+      "title": "Sobre vos",
+      "intro": "Estos datos ayudan a interpretar el resultado: la norma se ajusta por educación (criterio Bruno).",
+      "edad": "Edad",
+      "sexoLabel": "Sexo",
+      "sexo_mujer": "Mujer",
+      "sexo_hombre": "Hombre",
+      "eduLabel": "Años de educación",
+      "eduHint": "Cuántos años fuiste a la escuela (primaria, secundaria, etc.)."
+    },
     "mrca": {
       "title": "Memoria y cambios cognitivos",
-      "intro": "Pensá en los últimos meses y respondé Sí o No.",
-      "note": "MRCA — 7 ítems autorreportados. Es una estimación para orientar el descarte y la derivación, no un diagnóstico.",
-      "band": { "bajo": "bajo", "intermedio": "intermedio", "alto": "alto" },
+      "intro": "Pensá en los últimos meses y respondé Sí o No. Estas respuestas alimentan el modelo.",
+      "note": "Estas respuestas alimentan el modelo Kaizen-MRCA (estimación de primer nivel, no diagnóstico).",
+      "modelNote": "Estimación del modelo Kaizen-MRCA (AUC ~0,80 en desarrollo / ~0,63 en validación). Cribado de primer nivel, no diagnóstico.",
+      "preliminary": "estimación preliminar",
+      "band": { "bajo": "bajo", "moderado": "moderado", "alto": "alto" },
       "items": {
         "recent": "¿Te olvidás de conversaciones o cosas recientes más que antes?",
         "repeat": "¿Repetís preguntas o comentarios sin darte cuenta?",
@@ -209,8 +222,9 @@
     "why": "Por qué este resultado",
     "reasons": {
       "redflags": "Hay señales de alarma presentes.",
-      "mrcaAlto": "El cuestionario de memoria (MRCA) dio alto.",
-      "mrcaInter": "El cuestionario de memoria (MRCA) dio intermedio.",
+      "mrcaAlto": "El modelo MRCA estimó riesgo alto.",
+      "mrcaModerado": "El modelo MRCA estimó riesgo moderado.",
+      "mrcaDerivar": "El modelo MRCA sugiere derivar (descarte no seguro).",
       "riskHigh": "Varios factores de riesgo modificables presentes.",
       "meds": "Hay medicación para revisar.",
       "low": "Sin señales de alarma ni puntajes altos."

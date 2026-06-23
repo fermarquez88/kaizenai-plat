@@ -98,7 +98,7 @@ export function RedView() {
               {(m === 'bandeja' || m === 'cola') && (
                 <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
                   <Mini label={t('red.labels.risk')} value={`~${p.riskPct}%`} />
-                  <Mini label={t('red.labels.mrca')} value={`${p.mrca}/7`} />
+                  <Mini label={t('red.labels.mrca')} value={t(`pre.mrca.band.${p.mrcaBand}`)} />
                   <Mini label={t('red.labels.meds')} value={String(p.meds)} />
                   <Mini label={t('red.labels.redflags')} value={String(p.redFlags)} />
                 </div>

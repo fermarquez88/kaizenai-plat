@@ -1,7 +1,7 @@
 // Personas de ejemplo para la demo (sin datos reales). Cubren los tres niveles de
 // triage y perfiles variados. Valores precomputados, ilustrativos.
 import type { TriageLevel } from '../scoring/triage'
-import type { MrcaBand } from '../scoring/mrca'
+import type { MrcaModelBand } from '../scoring/mrcaModel'
 
 export interface SeedPersona {
   id: string
@@ -11,7 +11,7 @@ export interface SeedPersona {
   level: TriageLevel
   riskPct: number
   mrca: number
-  mrcaBand: MrcaBand
+  mrcaBand: MrcaModelBand
   meds: number
   redFlags: number
   note: string
@@ -52,7 +52,7 @@ export const SEED_PERSONAS: SeedPersona[] = [
     level: 'amarillo',
     riskPct: 22,
     mrca: 3,
-    mrcaBand: 'intermedio',
+    mrcaBand: 'moderado',
     meds: 5,
     redFlags: 0,
     note: 'Varios factores modificables presentes.',
@@ -65,7 +65,7 @@ export const SEED_PERSONAS: SeedPersona[] = [
     level: 'amarillo',
     riskPct: 18,
     mrca: 2,
-    mrcaBand: 'intermedio',
+    mrcaBand: 'moderado',
     meds: 6,
     redFlags: 0,
     note: 'Polifarmacia con carga anticolinérgica.',

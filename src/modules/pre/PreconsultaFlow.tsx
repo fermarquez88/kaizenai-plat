@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { usePreconsulta } from './preconsultaStore'
 import { useSettings } from '../../lib/store'
 import { ConsentScreen } from '../gov/ConsentScreen'
+import { DemografiaStep } from './steps/DemografiaStep'
 import { PrevencionStep } from './steps/PrevencionStep'
 import { MrcaStep } from './steps/MrcaStep'
 import { MedicacionStep } from './steps/MedicacionStep'
@@ -11,6 +12,7 @@ import { BanderasRojasStep } from './steps/BanderasRojasStep'
 import { ResultadoStep } from './steps/ResultadoStep'
 
 const STEPS = [
+  { id: 'demografia', Component: DemografiaStep },
   { id: 'prevencion', Component: PrevencionStep },
   { id: 'mrca', Component: MrcaStep },
   { id: 'medicacion', Component: MedicacionStep },

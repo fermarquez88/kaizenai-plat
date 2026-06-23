@@ -17,7 +17,7 @@ export interface PreAssessmentSummary {
   personId: string
   createdAt: number
   modifiableRiskIndex?: number // 0..1 (Lancet PAF)
-  mrcaBand?: 'bajo' | 'intermedio' | 'alto'
+  mrcaBand?: 'bajo' | 'moderado' | 'alto'
   triage?: TriageLevel
 }
 

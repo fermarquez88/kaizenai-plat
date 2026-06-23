@@ -21,11 +21,11 @@ function LevelIcon({ level, size }: { level: TriageLevel; size: number }) {
 
 export function ResultadoStep() {
   const { t } = useTranslation()
-  const { lancet, mrca, meds, redFlags } = usePreconsulta()
+  const { demo, lancet, mrca, meds, redFlags } = usePreconsulta()
 
   const summary = useMemo<PreconsultaSummary>(
-    () => buildSummary({ lancet, mrca, meds, redFlags }, new Date().toISOString()),
-    [lancet, mrca, meds, redFlags],
+    () => buildSummary({ demo, lancet, mrca, meds, redFlags }, new Date().toISOString()),
+    [demo, lancet, mrca, meds, redFlags],
   )
 
   const saved = useRef(false)
@@ -77,7 +77,7 @@ export function ResultadoStep() {
         <Stat label={t('triage.stats.risk')} value={`~${summary.modifiableRiskPct}%`} />
         <Stat
           label={t('triage.stats.mrca')}
-          value={`${summary.mrcaScore}/7 · ${t(`pre.mrca.band.${summary.mrcaBand}`)}`}
+          value={`${t(`pre.mrca.band.${summary.mrcaBand}`)} · ${Math.round(summary.mrcaProb * 100)}%`}
         />
         <Stat label={t('triage.stats.meds')} value={String(summary.medFlags.count)} />
         <Stat label={t('triage.stats.redflags')} value={String(summary.redFlags.length)} />
@@ -109,7 +109,15 @@ export function ResultadoStep() {
         </div>
       </section>
 
-      <p className="mt-5 text-xs text-muted">{t('triage.disclaimer')}</p>
+      <p className="mt-5 text-xs text-muted">
+        {t('pre.mrca.modelNote')}
+        {summary.mrcaPreliminary && (
+          <span className="ml-1 rounded-full border border-line bg-bg px-2 py-0.5">
+            {t('pre.mrca.preliminary')}
+          </span>
+        )}
+      </p>
+      <p className="mt-2 text-xs text-muted">{t('triage.disclaimer')}</p>
     </div>
   )
 }
