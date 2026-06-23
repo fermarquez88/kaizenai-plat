@@ -31,6 +31,7 @@ export interface RiskScore {
   detail: string // banda / interpretación
   source: string
   caveat: string
+  url?: string // herramienta oficial, si aplica
 }
 
 // LIBRA (parcial; pesos publicados Schiepers 2018 para los factores capturados).
@@ -99,45 +100,31 @@ export function caide(i: RiskInputs): RiskScore {
   }
 }
 
-function nRiesgoCapturado(i: RiskInputs): number {
-  return [
-    i.diabetes,
-    i.depresion,
-    i.colesterol,
-    i.tbi,
-    i.tabaquismo,
-    i.obesidad,
-    i.inactividad,
-    i.hipertension,
-    i.alcoholExceso,
-    i.edu_anios != null && i.edu_anios < 8,
-  ].filter(Boolean).length
-}
-
-// ANU-ADRI y CogDrisk: comparadores validados. NO se inventan los pesos: se muestran
-// citados y con los factores de riesgo capturados, hasta integrar su planilla oficial.
-export function anuAdri(i: RiskInputs): RiskScore {
+// ANU-ADRI y CogDrisk: instrumentos COMPLETOS (ponderados por RR, con puntajes por edad).
+// Computarlos desde un subconjunto de factores NO sería válido → se citan con su rango/
+// estructura real y, para CogDrisk, se enlaza la calculadora oficial. No se fabrican puntajes.
+export function anuAdri(_i: RiskInputs): RiskScore {
   return {
     id: 'anu',
     name: 'ANU-ADRI',
     computable: false,
     value: null,
-    detail: `${nRiesgoCapturado(i)} factores de riesgo capturados presentes`,
-    source: 'Anstey 2014 (BMJ Open); comparado en Huque 2023 (JAMA Netw Open)',
-    caveat:
-      'Integración de su planilla oficial de puntajes en curso (15 factores, pesos por edad). No se fabrica el puntaje ponderado.',
+    detail: '~10-15 factores, ponderado por RR (rango aprox. −13 a 64)',
+    source: 'Anstey 2014 (PLOS One 9:e86141); comparado en Huque 2023 (JAMA Netw Open)',
+    caveat: 'Requiere su cuestionario completo para un puntaje válido; no se computa desde un subconjunto.',
   }
 }
 
-export function cogdrisk(i: RiskInputs): RiskScore {
+export function cogdrisk(_i: RiskInputs): RiskScore {
   return {
     id: 'cogdrisk',
     name: 'CogDrisk',
     computable: false,
     value: null,
-    detail: `${nRiesgoCapturado(i)} factores de riesgo capturados presentes`,
-    source: 'Anstey 2021; comparado en Huque 2023 (JAMA Netw Open)',
-    caveat: 'Integración de su planilla oficial (cogdrisk.com) en curso. No se fabrica el puntaje ponderado.',
+    detail: '17 factores / 91 ítems, ponderado por RR (rango ≈ 0–49 vida tardía)',
+    source: 'Anstey 2022 (Alzheimers Dement DADM); comparado en Huque 2023 (JAMA Netw Open)',
+    caveat: 'Computar en la herramienta oficial (cuestionario completo de 91 ítems).',
+    url: 'https://www.cogdrisk.com',
   }
 }
 

@@ -217,6 +217,16 @@ export function ResultadoStep() {
               <p className="mt-0.5 text-[11px] text-muted">
                 {sc.source} · {sc.caveat}
               </p>
+              {sc.url && (
+                <a
+                  href={sc.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-1 inline-block text-xs text-secondary-text underline underline-offset-2"
+                >
+                  {t('pro.openTool')}
+                </a>
+              )}
             </li>
           ))}
         </ul>

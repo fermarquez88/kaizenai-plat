@@ -300,6 +300,7 @@
     "contribs": "Qué pesó (contribuciones al ACE)",
     "contribsNote": "Contribución de cada factor al ACE-III estimado (SHAP exacto del modelo lineal). Valores negativos bajan el ACE estimado (peor desempeño).",
     "scoresTitle": "Comparadores de riesgo individual (validados)",
+    "openTool": "Abrir calculadora oficial",
     "disclaimer": "Comparadores de investigación, ponderados por riesgo relativo; requieren RECALIBRACIÓN LOCAL. No para decisión clínica de forma aislada."
   },
   "equity": {
