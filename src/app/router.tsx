@@ -10,6 +10,7 @@ import { PacienteGuia } from '../modules/post/PacienteGuia'
 import { Comunidad } from '../modules/gov/Comunidad'
 import { MisDatos } from '../modules/gov/MisDatos'
 import { RedView } from '../modules/red/RedView'
+import { Seguimiento } from '../modules/red/Seguimiento'
 import { AgendaVisitas } from '../modules/red/AgendaVisitas'
 import { CoberturaTiempos } from '../modules/red/CoberturaTiempos'
 import { EquipoUnidad } from '../modules/red/EquipoUnidad'
@@ -28,6 +29,7 @@ export const router = createHashRouter([
       { path: 'p/:profileId/post/cuidador', element: <CuidadorGuia /> },
       { path: 'p/:profileId/post/paciente', element: <PacienteGuia /> },
       { path: 'p/:profileId/red/:mode', element: <RedView /> },
+      { path: 'p/:profileId/seguimiento', element: <Seguimiento /> },
       { path: 'p/:profileId/agenda', element: <AgendaVisitas /> },
       { path: 'p/:profileId/metricas', element: <CoberturaTiempos /> },
       { path: 'p/:profileId/equipo', element: <EquipoUnidad /> },

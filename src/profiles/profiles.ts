@@ -48,7 +48,7 @@ export const MODULE_LINKS: Partial<Record<ProfileId, Record<number, string>>> = 
     2: 'https://fermarquez88.github.io/kaizenai-cuidadores/',
     3: 'post/cuidador',
   },
-  agente: { 0: 'red/gente', 1: 'preconsulta', 2: 'red/cola', 3: 'agenda' },
+  agente: { 0: 'seguimiento', 1: 'preconsulta', 2: 'red/cola', 3: 'agenda' },
   gestor: { 0: 'red/tablero', 1: 'red/cola', 2: 'metricas' },
   unidad: { 0: 'red/bandeja', 1: 'red/bandeja', 2: 'equipo' },
   comunidad: { 0: '/gobernanza', 1: '/gobernanza', 2: '/gobernanza', 3: '/datos' },

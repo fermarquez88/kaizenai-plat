@@ -432,6 +432,24 @@
       }
     }
   },
+  "seguimiento": {
+    "title": "Seguimiento (mi gente)",
+    "intro": "Quién está al día y quién no volvió. El re-contacto temprano evita el abandono.",
+    "kpi": {
+      "total": "Personas",
+      "seguimiento": "En seguimiento",
+      "novolvio": "No volvieron",
+      "diada": "Con cuidador"
+    },
+    "hace": "Último contacto: hace {{n}} días",
+    "cuidador": "informante: {{c}}",
+    "discrepancia": "Discrepancia persona↔informante (revisar)",
+    "estado": { "aldia": "Al día", "porvencer": "Por vencer", "novolvio": "No volvió" },
+    "recontact": "Re-contactar",
+    "contactCuidador": "Cuidador",
+    "msg": "Hola {{alias}}, soy del equipo de salud cerebral. ¿Cómo venís? Queremos acompañarte.",
+    "msgCuidador": "Hola, soy del equipo de salud cerebral. Queríamos saber cómo viene el acompañamiento."
+  },
   "red": {
     "titles": {
       "gente": "Mi gente",
