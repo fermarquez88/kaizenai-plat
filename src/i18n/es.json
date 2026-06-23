@@ -385,5 +385,54 @@
       "avgRisk": "Riesgo modificable promedio",
       "anon": "Datos agregados y anónimos — sin información personal."
     }
+  },
+  "mi": {
+    "title": "Mi resultado",
+    "empty": "Todavía no hiciste tu autoevaluación.",
+    "start": "Hacer mi autoevaluación",
+    "again": "Volver a evaluarme",
+    "savedAt": "Guardado el {{date}}."
+  },
+  "agenda": {
+    "title": "Agenda de visitas",
+    "kind": {
+      "control": "Control posderivación",
+      "primera": "Primera visita domiciliaria",
+      "seguimiento": "Seguimiento"
+    },
+    "day": { "hoy": "Hoy", "manana": "Mañana", "semana": "Esta semana" }
+  },
+  "metricas": {
+    "title": "Cobertura y tiempos",
+    "cobertura": "Cobertura territorial",
+    "cribadas": "Personas cribadas",
+    "derivaciones": "Derivaciones",
+    "tiempoTurno": "Tiempo medio al turno",
+    "seguimiento": "Con seguimiento",
+    "agentes": "Agentes activos",
+    "note": "Indicadores de ejemplo, agregados y anónimos."
+  },
+  "equipo": {
+    "title": "Equipo de la Unidad",
+    "intro": "Vistas internas para la preconsulta. En el MVP es un perfil unificado; se separan más adelante.",
+    "tabs": { "medicina": "Medicina", "enfermeria": "Enfermería", "neuropsico": "Neuropsicología" },
+    "medicina": {
+      "0": "Revisar la medicación marcada (anticolinérgicos, BZD, Beers).",
+      "1": "Confirmar banderas rojas y descartar causas reversibles (B12, TSH, depresión).",
+      "2": "Evaluar carga cardiometabólica y déficits sensoriales.",
+      "3": "Definir estudios y plan según la prioridad del triage."
+    },
+    "enfermeria": {
+      "0": "Tomar signos y completar datos faltantes.",
+      "1": "Revisar adherencia y polifarmacia con la persona.",
+      "2": "Educar en hábitos protectores y red de apoyo.",
+      "3": "Coordinar turnos y seguimiento con el agente sanitario."
+    },
+    "neuropsico": {
+      "0": "Aplicar la batería según prioridad (ACE-III u otra).",
+      "1": "Elegir la norma según escolaridad (criterio Bruno).",
+      "2": "Explorar queja subjetiva e informante.",
+      "3": "Integrar resultados al informe de la Unidad."
+    }
   }
 }
