@@ -1,0 +1,62 @@
+{
+  "app": { "name": "KaizenAI", "tagline": "Red centrada en la persona" },
+  "common": {
+    "disclaimer": "No diagnostica · No reemplaza al profesional.",
+    "back": "Volver",
+    "fontSmaller": "Achicar la letra",
+    "fontLarger": "Agrandar la letra",
+    "soon": "Próximamente"
+  },
+  "home": {
+    "title": "Elegí tu espacio",
+    "subtitle": "Esta red acompaña la salud cerebral antes y después del diagnóstico. Entrá por el espacio que te representa.",
+    "privacy": "Tus datos quedan en este dispositivo. Vos decidís qué compartir."
+  },
+  "profiles": {
+    "paciente": { "title": "Persona", "desc": "Autoevaluación y educación en lenguaje claro." },
+    "cuidador": { "title": "Cuidador/a", "desc": "Acompañamiento, manejo de síntomas y cuidarte vos." },
+    "agente": { "title": "Agente sanitario", "desc": "Cribado en el territorio, alertas y derivaciones." },
+    "gestor": { "title": "Gestor de salud", "desc": "Tablero poblacional, derivaciones y métricas." },
+    "unidad": { "title": "Profesional / Unidad", "desc": "Bandeja de preconsulta con resumen y prioridad." },
+    "comunidad": { "title": "Comunidad", "desc": "Gobernanza de la red: qué pedimos y qué cambiamos." }
+  },
+  "dashboard": {
+    "modules": "Módulos",
+    "phaseNote": "Espacio en construcción — co-diseñado con la comunidad."
+  },
+  "modules": {
+    "paciente": {
+      "0": { "t": "Mi autoevaluación", "d": "Cribado breve en lenguaje claro." },
+      "1": { "t": "Mi resultado", "d": "Qué significa y qué hacer ahora." },
+      "2": { "t": "Después del diagnóstico", "d": "Guía para vivir mejor, paso a paso." }
+    },
+    "cuidador": {
+      "0": { "t": "¿Cómo venís vos?", "d": "Índice de estrés del cuidador (Zarit, ánimo)." },
+      "1": { "t": "Qué hago en cada situación", "d": "Manejo no farmacológico — método DICE." },
+      "2": { "t": "Guía para cuidadores", "d": "Material práctico, también sin conexión." },
+      "3": { "t": "Necesito ayuda ahora", "d": "Recursos inmediatos y contacto." }
+    },
+    "agente": {
+      "0": { "t": "Mi gente", "d": "Personas en seguimiento en el territorio." },
+      "1": { "t": "Cribado asistido", "d": "Preconsulta en terreno, funciona offline." },
+      "2": { "t": "Alertas y derivaciones", "d": "Prioridades y banderas rojas." },
+      "3": { "t": "Agenda de visitas", "d": "Seguimiento domiciliario." }
+    },
+    "gestor": {
+      "0": { "t": "Tablero poblacional", "d": "Indicadores agregados y anónimos." },
+      "1": { "t": "Cola de derivaciones", "d": "Ordenada por prioridad clínica." },
+      "2": { "t": "Cobertura y tiempos", "d": "Métricas de la red." }
+    },
+    "unidad": {
+      "0": { "t": "Bandeja de preconsulta", "d": "Resumen + nivel de prioridad por persona." },
+      "1": { "t": "Resumen clínico", "d": "Riesgo modificable, MRCA y medicación marcada." },
+      "2": { "t": "Equipo", "d": "Medicina · Enfermería · Neuropsicología." }
+    },
+    "comunidad": {
+      "0": { "t": "Qué pide la comunidad", "d": "Sugerencias priorizadas por la red." },
+      "1": { "t": "Qué cambiamos", "d": "Registro de mejoras: pedido → hecho." },
+      "2": { "t": "Representantes", "d": "Personas, cuidadores y agentes que co-deciden." },
+      "3": { "t": "Soberanía de datos", "d": "Cómo se cuidan y de quién son los datos." }
+    }
+  }
+}

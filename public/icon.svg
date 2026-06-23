@@ -1,0 +1,22 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="KaizenAI">
+  <rect width="512" height="512" rx="112" fill="#F7F3EC"/>
+  <g transform="translate(256,256)">
+    <g stroke="#2E7D74" stroke-width="14" opacity="0.4">
+      <line x1="0" y1="0" x2="0" y2="-150"/>
+      <line x1="0" y1="0" x2="130" y2="-75"/>
+      <line x1="0" y1="0" x2="130" y2="75"/>
+      <line x1="0" y1="0" x2="0" y2="150"/>
+      <line x1="0" y1="0" x2="-130" y2="75"/>
+      <line x1="0" y1="0" x2="-130" y2="-75"/>
+    </g>
+    <g fill="#C98A2B">
+      <circle cx="0" cy="-150" r="26"/>
+      <circle cx="130" cy="-75" r="26"/>
+      <circle cx="130" cy="75" r="26"/>
+      <circle cx="0" cy="150" r="26"/>
+      <circle cx="-130" cy="75" r="26"/>
+      <circle cx="-130" cy="-75" r="26"/>
+    </g>
+    <circle cx="0" cy="0" r="72" fill="#B5552E"/>
+  </g>
+</svg>

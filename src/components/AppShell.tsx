@@ -1,0 +1,76 @@
+import type { ReactNode } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import { ArrowLeft, Minus, Plus } from 'lucide-react'
+import { useSettings } from '../lib/store'
+import { Logo } from './Logo'
+
+export function AppShell({ children }: { children: ReactNode }) {
+  const { t } = useTranslation()
+  const incFont = useSettings((s) => s.incFont)
+  const decFont = useSettings((s) => s.decFont)
+  const location = useLocation()
+  const navigate = useNavigate()
+  const atHome = location.pathname === '/' || location.pathname === ''
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      <header className="sticky top-0 z-10 border-b border-line bg-bg/85 backdrop-blur">
+        <div className="mx-auto flex h-16 max-w-5xl items-center justify-between gap-3 px-4">
+          <div className="flex items-center gap-2">
+            {!atHome && (
+              <button
+                onClick={() => navigate(-1)}
+                aria-label={t('common.back')}
+                className="rounded-lg p-2 text-muted hover:bg-surface"
+              >
+                <ArrowLeft size={20} />
+              </button>
+            )}
+            <Link to="/" className="flex items-center gap-2">
+              <Logo className="h-8 w-8 text-secondary" />
+              <span className="leading-none">
+                <span className="block font-serif text-lg text-ink">{t('app.name')}</span>
+                <span className="block font-sans text-[11px] text-muted">{t('app.tagline')}</span>
+              </span>
+            </Link>
+          </div>
+
+          <div className="flex items-center gap-1">
+            <button
+              onClick={decFont}
+              aria-label={t('common.fontSmaller')}
+              className="rounded-lg p-2 text-muted hover:bg-surface"
+            >
+              <Minus size={18} />
+            </button>
+            <span className="select-none text-xs text-muted" aria-hidden>
+              A
+            </span>
+            <button
+              onClick={incFont}
+              aria-label={t('common.fontLarger')}
+              className="rounded-lg p-2 text-muted hover:bg-surface"
+            >
+              <Plus size={18} />
+            </button>
+            <span
+              className="ml-2 rounded-full border border-line bg-surface px-2 py-1 text-xs font-semibold text-secondary-text"
+              title={t('common.soon')}
+            >
+              ES
+            </span>
+          </div>
+        </div>
+      </header>
+
+      <main className="flex-1">{children}</main>
+
+      <footer className="border-t border-line bg-surface">
+        <div className="mx-auto max-w-5xl px-4 py-4 text-center text-xs text-muted">
+          {t('common.disclaimer')}
+        </div>
+      </footer>
+    </div>
+  )
+}
