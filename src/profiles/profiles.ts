@@ -40,6 +40,6 @@ export const accentText: Record<Accent, string> = {
 // Módulos ya implementados: enlazan a una ruta relativa a /p/:profileId.
 // Se va completando a medida que avanzan las fases.
 export const MODULE_LINKS: Partial<Record<ProfileId, Record<number, string>>> = {
-  paciente: { 0: 'pre/prevencion' },
-  agente: { 1: 'pre/prevencion' },
+  paciente: { 0: 'preconsulta' },
+  agente: { 1: 'preconsulta' },
 }

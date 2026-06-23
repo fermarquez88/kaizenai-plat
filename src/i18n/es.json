@@ -3,6 +3,9 @@
   "common": {
     "disclaimer": "No diagnostica · No reemplaza al profesional.",
     "back": "Volver",
+    "prev": "Atrás",
+    "next": "Siguiente",
+    "remove": "Quitar",
     "fontSmaller": "Achicar la letra",
     "fontLarger": "Agrandar la letra",
     "soon": "Próximamente",
@@ -60,23 +63,62 @@
       "3": { "t": "Soberanía de datos", "d": "Cómo se cuidan y de quién son los datos." }
     }
   },
+  "preconsulta": {
+    "stepLabel": "Paso {{current}} de {{total}} · {{name}}",
+    "steps": {
+      "prevencion": "Prevención",
+      "mrca": "Memoria",
+      "medicacion": "Medicación",
+      "banderas": "Señales de alarma",
+      "resultado": "Resultado"
+    }
+  },
   "pre": {
     "prevencion": {
       "title": "Prevención — factores que podés cuidar",
       "intro": "Respondé con sinceridad. Esto es una estimación, no un diagnóstico: te muestra qué factores podés trabajar para cuidar tu salud cerebral.",
-      "progress": "Respondidas: {{current}} de {{total}}",
-      "see": "Ver mi resultado",
-      "answer": { "si": "Sí", "no": "No", "nose": "No sé" },
-      "result": {
-        "title": "Tu resultado",
-        "estimate": "Hasta ~{{pct}}% de tu riesgo podría ser modificable",
-        "estimateHint": "Es la suma de los factores presentes hoy. Trabajándolos, podés bajar tu riesgo.",
-        "none": "No marcaste factores de riesgo modificables. ¡Seguí cuidándote!",
-        "topTitle": "Lo que más pesa hoy",
-        "adviceTitle": "Qué podés hacer",
-        "rationale": "Esto aparece porque respondiste “Sí” en: {{list}}.",
-        "restart": "Volver a empezar",
-        "disclaimer": "Estimación basada en factores poblacionales (Comisión Lancet 2024). No diagnostica ni reemplaza una consulta. Hablá con tu equipo de salud."
+      "answer": { "si": "Sí", "no": "No", "nose": "No sé" }
+    },
+    "mrca": {
+      "title": "Memoria y cambios cognitivos",
+      "intro": "Pensá en los últimos meses y respondé Sí o No.",
+      "note": "MRCA — 7 ítems autorreportados. Es una estimación para orientar el descarte y la derivación, no un diagnóstico.",
+      "band": { "bajo": "bajo", "intermedio": "intermedio", "alto": "alto" },
+      "items": {
+        "recent": "¿Te olvidás de conversaciones o cosas recientes más que antes?",
+        "repeat": "¿Repetís preguntas o comentarios sin darte cuenta?",
+        "words": "¿Te cuesta encontrar palabras que conocés?",
+        "orientation": "¿Te desorientás o perdés en lugares conocidos?",
+        "help": "¿Necesitás más ayuda que antes para tareas como cuentas o medicación?",
+        "slow": "¿Sentís que pensás o reaccionás más lento?",
+        "informant": "¿Alguien cercano te comentó que tu memoria cambió?"
+      }
+    },
+    "medicacion": {
+      "title": "Medicación",
+      "intro": "Agregá los medicamentos que tomás. Te marco lo que conviene revisar (no se prescribe nada).",
+      "search": "Buscar un medicamento…",
+      "empty": "Todavía no agregaste medicamentos.",
+      "flags": {
+        "poly": "Polifarmacia: {{n}} medicamentos (5 o más). Conviene revisar si todos son necesarios.",
+        "acb": "Carga anticolinérgica alta (ACB {{n}}). Puede afectar la memoria; revisar con el médico.",
+        "bzd": "{{n}} benzodiacepina(s)/sedante(s). Riesgo de caídas y confusión; revisar.",
+        "beers": "{{n}} medicamento(s) potencialmente inapropiado(s) en adultos mayores (Beers).",
+        "none": "Sin alertas farmacológicas por ahora."
+      },
+      "disclaimer": "Señala para revisión profesional. No prescribe ni suspende tratamientos. Valores orientativos."
+    },
+    "banderas": {
+      "title": "Señales de alarma",
+      "intro": "Marcá si aparece alguna de estas situaciones.",
+      "warning": "Hay señales de alarma: conviene una consulta prioritaria.",
+      "items": {
+        "rapid": "Empeoramiento rápido (en semanas).",
+        "focal": "Debilidad, dificultad para hablar o ver de un lado.",
+        "delirium": "Confusión que apareció de golpe hace poco.",
+        "falls": "Caídas o inestabilidad nuevas.",
+        "earlyOnset": "Síntomas en una persona joven o de inicio inusual.",
+        "behavior": "Cambios fuertes de conducta o situaciones de riesgo."
       }
     }
   },
@@ -151,5 +193,40 @@
       "question": "¿Tenés problemas de visión sin corregir (no usás los anteojos que necesitás)?",
       "advice": "Revisá tu vista. Corregir la visión protege tu memoria y tu independencia."
     }
+  },
+  "triage": {
+    "levelLabel": "Prioridad sugerida",
+    "level": {
+      "verde": "Verde — seguimiento comunitario",
+      "amarillo": "Amarillo — evaluación programada",
+      "rojo": "Rojo — derivación prioritaria"
+    },
+    "action": {
+      "verde": "Riesgo bajo: prevención y seguimiento en la comunidad. Seguí cuidando los factores modificables.",
+      "amarillo": "Conviene una evaluación programada en la Unidad de Memoria. Mientras tanto, trabajá los factores modificables.",
+      "rojo": "Se sugiere derivación prioritaria a la Unidad de Memoria. Consultá pronto."
+    },
+    "why": "Por qué este resultado",
+    "reasons": {
+      "redflags": "Hay señales de alarma presentes.",
+      "mrcaAlto": "El cuestionario de memoria (MRCA) dio alto.",
+      "mrcaInter": "El cuestionario de memoria (MRCA) dio intermedio.",
+      "riskHigh": "Varios factores de riesgo modificables presentes.",
+      "meds": "Hay medicación para revisar.",
+      "low": "Sin señales de alarma ni puntajes altos."
+    },
+    "stats": {
+      "risk": "Riesgo modificable",
+      "mrca": "MRCA",
+      "meds": "Medicamentos",
+      "redflags": "Señales de alarma"
+    },
+    "export": {
+      "title": "Compartir con el equipo de salud",
+      "json": "Descargar (JSON)",
+      "fhir": "Exportar FHIR",
+      "print": "Imprimir / PDF"
+    },
+    "disclaimer": "Resultado orientativo (estimación con valores a validar). No diagnostica ni reemplaza al profesional. Tus datos quedan en este dispositivo."
   }
 }
