@@ -78,6 +78,7 @@
       "modo": "Quién responde",
       "demografia": "Sobre vos",
       "prevencion": "Prevención",
+      "factores": "Factores",
       "cqc": "Memoria",
       "gds": "Ánimo",
       "tadlq": "Funcionalidad",
@@ -102,6 +103,10 @@
       "title": "Prevención — factores que podés cuidar",
       "intro": "Respondé con sinceridad. Esto es una estimación, no un diagnóstico: te muestra qué factores podés trabajar para cuidar tu salud cerebral.",
       "answer": { "si": "Sí", "no": "No", "nose": "No sé" }
+    },
+    "factores": {
+      "title": "Tus factores (para los índices de riesgo)",
+      "intro": "Unas preguntas más, graduadas, que alimentan varios índices a la vez (LIBRA, CAIDE, ANU-ADRI). Lo que no sepas, dejalo en blanco."
     },
     "demografia": {
       "title": "Sobre vos",

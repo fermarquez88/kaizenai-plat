@@ -7,6 +7,7 @@ import { ConsentScreen } from '../gov/ConsentScreen'
 import { ModoStep } from './steps/ModoStep'
 import { DemografiaStep } from './steps/DemografiaStep'
 import { PrevencionStep } from './steps/PrevencionStep'
+import { FactoresStep } from './steps/FactoresStep'
 import { InstrumentStep } from './steps/InstrumentStep'
 import { MedicacionStep } from './steps/MedicacionStep'
 import { BanderasRojasStep } from './steps/BanderasRojasStep'
@@ -28,6 +29,7 @@ function buildSteps(modo?: string): Step[] {
     { id: 'modo', Component: ModoStep },
     { id: 'demografia', Component: DemografiaStep },
     { id: 'prevencion', Component: PrevencionStep },
+    { id: 'factores', Component: FactoresStep },
     ...inst.map((id) => ({ id, inst: id })),
     { id: 'medicacion', Component: MedicacionStep },
     { id: 'banderas', Component: BanderasRojasStep },

@@ -31,11 +31,11 @@ function LevelIcon({ level, size }: { level: TriageLevel; size: number }) {
 
 export function ResultadoStep() {
   const { t } = useTranslation()
-  const { demo, lancet, instruments, meds, redFlags } = usePreconsulta()
+  const { demo, lancet, instruments, factores, meds, redFlags } = usePreconsulta()
 
   const summary = useMemo<PreconsultaSummary>(
-    () => buildSummary({ demo, lancet, instruments, meds, redFlags }, new Date().toISOString()),
-    [demo, lancet, instruments, meds, redFlags],
+    () => buildSummary({ demo, lancet, instruments, factores, meds, redFlags }, new Date().toISOString()),
+    [demo, lancet, instruments, factores, meds, redFlags],
   )
 
   const saved = useRef(false)

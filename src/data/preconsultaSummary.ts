@@ -8,8 +8,10 @@ import { computeMedFlags, type DrugInfo, type MedFlags } from '../scoring/medica
 import { computeTriage, type TriageLevel } from '../scoring/triage'
 import { computeEquity, type Cerca, type Vive } from '../scoring/equity'
 import {
+  bmiFrom,
   computeRiskScores,
   MRCA_FEATURE_LABELS,
+  type Factores,
   type RiskInputs,
   type RiskScore,
 } from '../scoring/riskScores'
@@ -30,6 +32,7 @@ export interface PreconsultaInputs {
   demo: Demografia
   lancet: Record<string, FactorAnswer>
   instruments: Record<string, Record<number, number>>
+  factores: Factores
   meds: DrugInfo[]
   redFlags: string[]
 }
@@ -101,20 +104,34 @@ export interface PreconsultaSummary {
 
 function buildRiskInputs(inp: PreconsultaInputs): RiskInputs {
   const L = inp.lancet
+  const f = inp.factores
   const yes = (k: string) => L[k] === 'si'
   return {
     edad: inp.demo.edad,
     sexo: inp.demo.sexo,
     edu_anios: inp.demo.edu_anios,
+    bmi: bmiFrom(f),
+    sbp: f.pas_mmhg,
+    cholTotalMgdl: f.colesterol_total,
     hipertension: yes('hypertension'),
     diabetes: yes('diabetes'),
-    colesterol: yes('ldl'),
-    obesidad: yes('obesity'),
-    tabaquismo: yes('smoking'),
-    inactividad: yes('inactivity'),
+    colesterolDx: yes('ldl'),
+    obesidadDx: yes('obesity'),
     depresion: yes('depression'),
-    tbi: yes('tbi'),
-    alcoholExceso: yes('alcohol'),
+    tec: yes('tbi'),
+    tabaquismo: f.tabaquismo ?? (yes('smoking') ? 'current' : undefined),
+    actividadFisica: f.actividad_fisica,
+    inactividad: yes('inactivity'),
+    actividadCognitiva: f.actividad_cognitiva,
+    redSocial: f.red_social ?? (yes('isolation') ? 'low' : undefined),
+    pescado: f.pescado,
+    dieta: f.dieta,
+    alcohol: f.alcohol_patron ?? (yes('alcohol') ? 'excess' : undefined),
+    cardiopatia: f.cardiopatia,
+    renal: f.enf_renal,
+    ictus: f.ictus,
+    fibrilacion: f.fibrilacion,
+    insomnio: f.insomnio,
   }
 }
 
