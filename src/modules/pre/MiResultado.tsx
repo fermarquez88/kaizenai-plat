@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { AlertOctagon, AlertTriangle, CheckCircle2 } from 'lucide-react'
+import { AlertOctagon, AlertTriangle, CalendarCheck, CheckCircle2 } from 'lucide-react'
 import { dexieRepo } from '../../data/dexieRepo'
+import { cidiTurnoLink } from '../../data/sanjuan'
 import type { PreAssessmentSummary, TriageLevel } from '../../data/types'
 
 const STYLE: Record<TriageLevel, string> = {
@@ -21,9 +22,24 @@ export function MiResultado() {
   const { t } = useTranslation()
   const [a, setA] = useState<PreAssessmentSummary | null | undefined>(undefined)
 
-  useEffect(() => {
+  const load = () =>
     dexieRepo.listPreAssessments().then((list) => setA(list.length ? list[list.length - 1] : null))
+
+  useEffect(() => {
+    void load()
   }, [])
+
+  const verEjemplo = async () => {
+    await dexieRepo.savePreAssessment({
+      id: crypto.randomUUID(),
+      personId: 'demo',
+      createdAt: Date.now(),
+      modifiableRiskIndex: 0.4,
+      mrcaBand: 'moderado',
+      triage: 'amarillo',
+    })
+    await load()
+  }
 
   if (a === undefined) {
     return <div className="mx-auto max-w-2xl px-4 py-8 text-muted">…</div>
@@ -36,12 +52,20 @@ export function MiResultado() {
       {!a || !a.triage ? (
         <div className="mt-5 rounded-2xl border border-line bg-surface p-5">
           <p className="text-ink">{t('mi.empty')}</p>
-          <Link
-            to="/p/paciente/preconsulta"
-            className="mt-3 inline-block rounded-xl bg-primary px-4 py-2.5 font-medium text-white"
-          >
-            {t('mi.start')}
-          </Link>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <Link
+              to="/p/paciente/preconsulta"
+              className="inline-block rounded-xl bg-primary px-4 py-2.5 font-medium text-white"
+            >
+              {t('mi.start')}
+            </Link>
+            <button
+              onClick={verEjemplo}
+              className="inline-block rounded-xl border border-line bg-surface px-4 py-2.5 text-ink hover:bg-bg"
+            >
+              {t('mi.example')}
+            </button>
+          </div>
         </div>
       ) : (
         <>
@@ -55,6 +79,14 @@ export function MiResultado() {
           <p className="mt-3 rounded-xl border border-line bg-surface p-3 text-ink">
             {t(`triage.action.${a.triage}`)}
           </p>
+          <a
+            href={cidiTurnoLink(t(`triage.level.${a.triage}`))}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-3 inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 font-medium text-white"
+          >
+            <CalendarCheck size={18} /> {t('triage.turno')}
+          </a>
           <p className="mt-3 text-sm text-muted">
             {t('mi.savedAt', { date: new Date(a.createdAt).toLocaleDateString('es-AR') })}
           </p>

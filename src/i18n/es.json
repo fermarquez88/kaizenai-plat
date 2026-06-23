@@ -430,6 +430,7 @@
     "title": "Mi resultado",
     "empty": "Todavía no hiciste tu autoevaluación.",
     "start": "Hacer mi autoevaluación",
+    "example": "Ver un caso de ejemplo",
     "again": "Volver a evaluarme",
     "savedAt": "Guardado el {{date}}."
   },
