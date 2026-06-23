@@ -5,7 +5,8 @@
     "back": "Volver",
     "fontSmaller": "Achicar la letra",
     "fontLarger": "Agrandar la letra",
-    "soon": "Próximamente"
+    "soon": "Próximamente",
+    "start": "Empezar"
   },
   "home": {
     "title": "Elegí tu espacio",
@@ -57,6 +58,98 @@
       "1": { "t": "Qué cambiamos", "d": "Registro de mejoras: pedido → hecho." },
       "2": { "t": "Representantes", "d": "Personas, cuidadores y agentes que co-deciden." },
       "3": { "t": "Soberanía de datos", "d": "Cómo se cuidan y de quién son los datos." }
+    }
+  },
+  "pre": {
+    "prevencion": {
+      "title": "Prevención — factores que podés cuidar",
+      "intro": "Respondé con sinceridad. Esto es una estimación, no un diagnóstico: te muestra qué factores podés trabajar para cuidar tu salud cerebral.",
+      "progress": "Respondidas: {{current}} de {{total}}",
+      "see": "Ver mi resultado",
+      "answer": { "si": "Sí", "no": "No", "nose": "No sé" },
+      "result": {
+        "title": "Tu resultado",
+        "estimate": "Hasta ~{{pct}}% de tu riesgo podría ser modificable",
+        "estimateHint": "Es la suma de los factores presentes hoy. Trabajándolos, podés bajar tu riesgo.",
+        "none": "No marcaste factores de riesgo modificables. ¡Seguí cuidándote!",
+        "topTitle": "Lo que más pesa hoy",
+        "adviceTitle": "Qué podés hacer",
+        "rationale": "Esto aparece porque respondiste “Sí” en: {{list}}.",
+        "restart": "Volver a empezar",
+        "disclaimer": "Estimación basada en factores poblacionales (Comisión Lancet 2024). No diagnostica ni reemplaza una consulta. Hablá con tu equipo de salud."
+      }
+    }
+  },
+  "factors": {
+    "education": {
+      "label": "Educación",
+      "question": "¿Tuviste pocas oportunidades de educación en la infancia (no terminaste la primaria)?",
+      "advice": "Estimulá tu mente: leé, aprendé cosas nuevas, jugá juegos de memoria. Nunca es tarde."
+    },
+    "hearing": {
+      "label": "Audición",
+      "question": "¿Tenés dificultad para escuchar o deberías usar audífono?",
+      "advice": "Revisá tu audición. Usar audífono cuando hace falta protege tu memoria."
+    },
+    "ldl": {
+      "label": "Colesterol (LDL)",
+      "question": "¿Tenés el colesterol “malo” (LDL) alto?",
+      "advice": "Controlá el colesterol con tu equipo de salud: alimentación, actividad y, si hace falta, medicación."
+    },
+    "depression": {
+      "label": "Ánimo",
+      "question": "¿Te sentís triste, sin ánimo o sin interés gran parte del tiempo?",
+      "advice": "Pedir ayuda funciona: la depresión se trata. Hablá con tu equipo de salud."
+    },
+    "tbi": {
+      "label": "Golpes en la cabeza",
+      "question": "¿Tuviste golpes fuertes en la cabeza con pérdida de conocimiento?",
+      "advice": "Protegé tu cabeza: casco en moto o bici, y cuidá las caídas en casa."
+    },
+    "inactivity": {
+      "label": "Actividad física",
+      "question": "¿Hacés poca actividad física (casi no caminás ni te movés)?",
+      "advice": "Moverte ayuda al cerebro. Buscá unos 30 minutos de caminata casi todos los días."
+    },
+    "diabetes": {
+      "label": "Diabetes",
+      "question": "¿Tenés diabetes o el azúcar alta?",
+      "advice": "Controlá tu azúcar con tu equipo de salud: cuidás tu cerebro y tu corazón."
+    },
+    "smoking": {
+      "label": "Tabaco",
+      "question": "¿Fumás?",
+      "advice": "Dejar de fumar baja el riesgo a cualquier edad. Pedí ayuda para lograrlo."
+    },
+    "hypertension": {
+      "label": "Presión arterial",
+      "question": "¿Tenés la presión alta (hipertensión)?",
+      "advice": "Controlá tu presión. Mantenerla en valores sanos protege tu memoria."
+    },
+    "obesity": {
+      "label": "Peso",
+      "question": "¿Tenés sobrepeso u obesidad?",
+      "advice": "Pequeños cambios en comida y movimiento ayudan. Buscá apoyo, sin culpa."
+    },
+    "alcohol": {
+      "label": "Alcohol",
+      "question": "¿Tomás alcohol en exceso (más de unos pocos tragos por semana)?",
+      "advice": "Menos alcohol es mejor para tu cerebro. Si te cuesta, pedí ayuda."
+    },
+    "isolation": {
+      "label": "Vínculos sociales",
+      "question": "¿Pasás la mayor parte del tiempo solo/a o con poco contacto con otros?",
+      "advice": "Cultivá vínculos: estar en contacto con otras personas cuida tu mente."
+    },
+    "airPollution": {
+      "label": "Aire y humo",
+      "question": "¿Estás muy expuesto/a al humo o al aire contaminado (cocina a leña, humo de tabaco)?",
+      "advice": "Ventilá los ambientes, evitá el humo y mejorá la cocina si usás leña."
+    },
+    "vision": {
+      "label": "Visión",
+      "question": "¿Tenés problemas de visión sin corregir (no usás los anteojos que necesitás)?",
+      "advice": "Revisá tu vista. Corregir la visión protege tu memoria y tu independencia."
     }
   }
 }

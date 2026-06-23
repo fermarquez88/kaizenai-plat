@@ -1,6 +1,6 @@
-import { Navigate, useParams } from 'react-router-dom'
+import { Link, Navigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { getProfile } from './profiles'
+import { getProfile, MODULE_LINKS } from './profiles'
 
 export function DashboardShell() {
   const { profileId } = useParams()
@@ -10,6 +10,7 @@ export function DashboardShell() {
   if (!p) return <Navigate to="/" replace />
 
   const Icon = p.icon
+  const links = MODULE_LINKS[p.id] ?? {}
   const modules = Array.from({ length: p.moduleCount }, (_, i) => i)
 
   return (
@@ -26,19 +27,38 @@ export function DashboardShell() {
         {t('dashboard.modules')}
       </h2>
       <div className="grid gap-3 sm:grid-cols-2">
-        {modules.map((i) => (
-          <div key={i} className="rounded-xl border border-line bg-surface p-4">
+        {modules.map((i) => {
+          const rel = links[i]
+          const body = (
             <div className="flex items-start justify-between gap-3">
               <div>
                 <p className="font-medium text-ink">{t(`modules.${p.id}.${i}.t`)}</p>
                 <p className="mt-1 text-sm text-muted">{t(`modules.${p.id}.${i}.d`)}</p>
               </div>
-              <span className="shrink-0 rounded-full border border-line bg-bg px-2 py-1 text-xs text-accent-text">
-                {t('common.soon')}
+              <span
+                className={
+                  'shrink-0 rounded-full px-2 py-1 text-xs ' +
+                  (rel ? 'bg-primary text-white' : 'border border-line bg-bg text-accent-text')
+                }
+              >
+                {rel ? t('common.start') : t('common.soon')}
               </span>
             </div>
-          </div>
-        ))}
+          )
+          return rel ? (
+            <Link
+              key={i}
+              to={`/p/${p.id}/${rel}`}
+              className="block rounded-xl border border-line bg-surface p-4 transition hover:-translate-y-0.5 hover:shadow-card"
+            >
+              {body}
+            </Link>
+          ) : (
+            <div key={i} className="rounded-xl border border-line bg-surface p-4">
+              {body}
+            </div>
+          )
+        })}
       </div>
 
       <p className="mt-6 text-sm italic text-muted">{t('dashboard.phaseNote')}</p>

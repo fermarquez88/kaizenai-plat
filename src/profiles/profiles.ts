@@ -15,7 +15,7 @@ export interface ProfileDef {
   id: ProfileId
   icon: LucideIcon
   accent: Accent
-  /** number of placeholder module cards shown in the dashboard shell */
+  /** number of module cards shown in the dashboard shell */
   moduleCount: number
 }
 
@@ -35,4 +35,11 @@ export const accentText: Record<Accent, string> = {
   primary: 'text-primary',
   secondary: 'text-secondary',
   accent: 'text-accent',
+}
+
+// Módulos ya implementados: enlazan a una ruta relativa a /p/:profileId.
+// Se va completando a medida que avanzan las fases.
+export const MODULE_LINKS: Partial<Record<ProfileId, Record<number, string>>> = {
+  paciente: { 0: 'pre/prevencion' },
+  agente: { 1: 'pre/prevencion' },
 }

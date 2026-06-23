@@ -1,5 +1,5 @@
 import { db } from './db'
-import type { Person } from './types'
+import type { Person, PreAssessmentSummary } from './types'
 import type { DataRepository } from './DataRepository'
 
 export const dexieRepo: DataRepository = {
@@ -11,6 +11,12 @@ export const dexieRepo: DataRepository = {
   deletePerson: async (id: string) => {
     await db.people.delete(id)
   },
+
+  savePreAssessment: async (a: PreAssessmentSummary) => {
+    await db.preAssessments.put(a)
+  },
+  listPreAssessments: () => db.preAssessments.orderBy('createdAt').toArray(),
+
   clearAll: async () => {
     await Promise.all([db.people.clear(), db.preAssessments.clear()])
   },
