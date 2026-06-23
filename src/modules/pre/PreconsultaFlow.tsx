@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { usePreconsulta } from './preconsultaStore'
 import { useSettings } from '../../lib/store'
 import { ConsentScreen } from '../gov/ConsentScreen'
+import { ModoStep } from './steps/ModoStep'
 import { DemografiaStep } from './steps/DemografiaStep'
 import { PrevencionStep } from './steps/PrevencionStep'
 import { InstrumentStep } from './steps/InstrumentStep'
@@ -17,21 +18,27 @@ interface Step {
   inst?: string
 }
 
-const STEPS: Step[] = [
-  { id: 'demografia', Component: DemografiaStep },
-  { id: 'prevencion', Component: PrevencionStep },
-  { id: 'cqc', inst: 'cqc' },
-  { id: 'gds', inst: 'gds' },
-  { id: 'tadlq', inst: 'tadlq' },
-  { id: 'ad8', inst: 'ad8' },
-  { id: 'medicacion', Component: MedicacionStep },
-  { id: 'banderas', Component: BanderasRojasStep },
-  { id: 'resultado', Component: ResultadoStep },
-]
+// La persona y el agente usan instrumentos AUTORREPORTADOS; el cuidador, de INFORMANTE.
+const SELF = ['cqc', 'gds', 'tadlq']
+const INFORMANT = ['ad8', 'iqcode', 'faq']
+
+function buildSteps(modo?: string): Step[] {
+  const inst = modo === 'cuidador' ? INFORMANT : SELF
+  return [
+    { id: 'modo', Component: ModoStep },
+    { id: 'demografia', Component: DemografiaStep },
+    { id: 'prevencion', Component: PrevencionStep },
+    ...inst.map((id) => ({ id, inst: id })),
+    { id: 'medicacion', Component: MedicacionStep },
+    { id: 'banderas', Component: BanderasRojasStep },
+    { id: 'resultado', Component: ResultadoStep },
+  ]
+}
 
 export function PreconsultaFlow() {
   const { t } = useTranslation()
   const reset = usePreconsulta((s) => s.reset)
+  const modo = usePreconsulta((s) => s.demo.modo)
   const consent = useSettings((s) => s.consentAccepted)
   const setConsent = useSettings((s) => s.setConsent)
   const [step, setStep] = useState(0)
@@ -44,6 +51,7 @@ export function PreconsultaFlow() {
   // Consentimiento antes de cualquier captura.
   if (!consent) return <ConsentScreen onAccept={() => setConsent(true)} />
 
+  const STEPS = buildSteps(modo)
   const entry = STEPS[step]
   const isLast = step === STEPS.length - 1
   const Current = entry.Component

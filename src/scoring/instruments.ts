@@ -180,6 +180,66 @@ export const INSTRUMENTS: Record<string, Instrument> = {
     ],
     interpret: (s) => `${s}/36 (a más puntaje, más dependencia)`,
   },
+  iqcode: {
+    id: 'iqcode',
+    name: 'IQCODE (informante)',
+    why: 'El familiar compara cómo está la persona AHORA respecto a hace 10 años. Corrige el sub-reporte.',
+    options: [
+      { label: 'Mucho mejor', value: 1 },
+      { label: 'Un poco mejor', value: 2 },
+      { label: 'Sin cambios', value: 3 },
+      { label: 'Un poco peor', value: 4 },
+      { label: 'Mucho peor', value: 5 },
+    ],
+    max: 80,
+    items: [
+      'Reconocer las caras de familiares y amigos',
+      'Recordar los nombres de familiares y amigos',
+      'Recordar cosas de familiares y amigos (ocupación, cumpleaños, dirección)',
+      'Recordar cosas que pasaron hace poco',
+      'Recordar conversaciones de unos días atrás',
+      'Recordar su dirección y su teléfono',
+      'Recordar en qué día y mes estamos',
+      'Recordar dónde se guardan habitualmente las cosas',
+      'Encontrar las cosas en el lugar donde las dejó',
+      'Adaptarse a cambios en la rutina diaria',
+      'Manejar aparatos de la casa',
+      'Aprender a usar un aparato o máquina nueva',
+      'Recordar cosas que aprendió hace poco',
+      'Comprender artículos del diario o revistas',
+      'Manejar el dinero para las compras',
+      'Manejar asuntos de plata (jubilación, banco, cuentas)',
+    ],
+    interpret: (s) => {
+      const m = s / 16
+      return `${m.toFixed(2)} de 5 — ${m >= 3.4 ? '≥3,4: sugiere declive' : 'sin indicios'}`
+    },
+  },
+  faq: {
+    id: 'faq',
+    name: 'Funcionalidad — FAQ (informante)',
+    why: 'El familiar indica cuánto puede hacer la persona sola en la vida diaria. Lo que separa una queja de un deterioro que importa.',
+    options: [
+      { label: 'Sin dificultad', value: 0 },
+      { label: 'Con dificultad, solo/a', value: 1 },
+      { label: 'Necesita ayuda', value: 2 },
+      { label: 'No puede / depende', value: 3 },
+    ],
+    max: 30,
+    items: [
+      'Manejar dinero, cuentas o chequera',
+      'Hacer las compras solo/a (comida, ropa)',
+      'Calentar agua o comida y apagar la hornalla',
+      'Preparar una comida',
+      'Estar al tanto de las noticias o lo que pasa',
+      'Prestar atención y entender un programa, libro o revista',
+      'Recordar citas, fechas, medicación o eventos familiares',
+      'Manejar su medicación (dosis correcta y a horario)',
+      'Salir del barrio o usar transporte',
+      'Quedarse solo/a en casa de forma segura',
+    ],
+    interpret: (s) => `${s}/30 — ${s >= 9 ? '≥9: sugiere deterioro funcional' : 'sin indicios'}`,
+  },
 }
 
 export interface InstrumentScore {

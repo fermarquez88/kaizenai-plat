@@ -181,7 +181,12 @@ export function ResultadoStep() {
         </div>
       </section>
 
-      <p className="mt-5 text-xs text-muted">
+      {summary.modo && (
+        <p className="mt-5 text-xs text-muted">
+          {t('triage.completedBy', { modo: t(`pre.modo.short.${summary.modo}`) })}
+        </p>
+      )}
+      <p className="mt-2 text-xs text-muted">
         {t('pre.mrca.modelNote')}
         {summary.mrcaPreliminary && (
           <span className="ml-1 rounded-full border border-line bg-bg px-2 py-0.5">

@@ -75,18 +75,29 @@
   "preconsulta": {
     "stepLabel": "Paso {{current}} de {{total}} · {{name}}",
     "steps": {
+      "modo": "Quién responde",
       "demografia": "Sobre vos",
       "prevencion": "Prevención",
       "cqc": "Memoria",
       "gds": "Ánimo",
       "tadlq": "Funcionalidad",
-      "ad8": "Informante",
+      "ad8": "Cambios (AD8)",
+      "iqcode": "Memoria (informante)",
+      "faq": "Funcionalidad (informante)",
       "medicacion": "Medicación",
       "banderas": "Señales de alarma",
       "resultado": "Resultado"
     }
   },
   "pre": {
+    "modo": {
+      "title": "¿Quién completa esto?",
+      "intro": "Esto adapta las preguntas: la persona se autoevalúa; el familiar/cuidador responde como informante.",
+      "persona": "Soy la persona",
+      "cuidador": "Soy familiar / cuidador/a (informante)",
+      "agente": "Soy agente o promotor/a de salud",
+      "short": { "persona": "la persona", "cuidador": "un familiar/cuidador", "agente": "un agente de salud" }
+    },
     "prevencion": {
       "title": "Prevención — factores que podés cuidar",
       "intro": "Respondé con sinceridad. Esto es una estimación, no un diagnóstico: te muestra qué factores podés trabajar para cuidar tu salud cerebral.",
@@ -241,6 +252,7 @@
       "call": "Llamar al 107 (emergencias)"
     },
     "turno": "Pedir turno (CIDI · WhatsApp)",
+    "completedBy": "Completado por: {{modo}}.",
     "level": {
       "verde": "Verde — seguimiento comunitario",
       "amarillo": "Amarillo — evaluación programada",

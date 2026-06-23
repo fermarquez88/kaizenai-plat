@@ -8,7 +8,10 @@ import { computeMedFlags, type DrugInfo, type MedFlags } from '../scoring/medica
 import { computeTriage, type TriageLevel } from '../scoring/triage'
 import { computeEquity, type Cerca, type Vive } from '../scoring/equity'
 
+export type Modo = 'persona' | 'cuidador' | 'agente'
+
 export interface Demografia {
+  modo?: Modo
   edad?: number
   sexo?: 'Mujer' | 'Hombre'
   edu_anios?: number
@@ -33,13 +36,26 @@ export function buildMrcaInputs(inp: PreconsultaInputs): MrcaRawInputs {
   const cqc = scoreInstrument(INSTRUMENTS.cqc, inp.instruments.cqc ?? {})
   const gds = scoreInstrument(INSTRUMENTS.gds, inp.instruments.gds ?? {})
   const tadlq = scoreInstrument(INSTRUMENTS.tadlq, inp.instruments.tadlq ?? {})
+  // Instrumentos de informante (cuidador): IQCODE → queja cognitiva, FAQ → función.
+  const iqcode = scoreInstrument(INSTRUMENTS.iqcode, inp.instruments.iqcode ?? {})
+  const faq = scoreInstrument(INSTRUMENTS.faq, inp.instruments.faq ?? {})
+  const cqcTotal = cqc.answered
+    ? cqc.score
+    : iqcode.answered
+      ? Math.max(0, ((iqcode.score / 16 - 3) / 2) * 96) // IQCODE medio 3→0, 5→96
+      : undefined
+  const adlqPct = tadlq.answered
+    ? (tadlq.score / INSTRUMENTS.tadlq.max) * 100
+    : faq.answered
+      ? (faq.score / INSTRUMENTS.faq.max) * 100
+      : undefined
   return {
     edad: inp.demo.edad ?? 65,
     sexo: inp.demo.sexo ?? 'Mujer',
     edu_anios: inp.demo.edu_anios ?? 7,
-    cqc_total: cqc.answered ? cqc.score : undefined,
+    cqc_total: cqcTotal,
     gds_total: gds.answered ? gds.score : undefined,
-    adlq_pct: tadlq.answered ? (tadlq.score / INSTRUMENTS.tadlq.max) * 100 : undefined,
+    adlq_pct: adlqPct,
     obesidad: yes('obesity'),
     hipoacusia: yes('hearing'),
     fumador: yes('smoking'),
@@ -52,6 +68,7 @@ export function buildMrcaInputs(inp: PreconsultaInputs): MrcaRawInputs {
 
 export interface PreconsultaSummary {
   createdAt: string
+  modo?: Modo
   depto?: string
   modifiableRiskPct: number
   modifiableRiskShare: number
@@ -91,7 +108,7 @@ export function buildSummary(inp: PreconsultaInputs, createdAtISO: string): Prec
     medConcern: medFlags.anyConcern,
     equityScore: equity.score,
   })
-  const instrumentScores = ['cqc', 'gds', 'tadlq', 'ad8', 'gad', 'ucla']
+  const instrumentScores = ['cqc', 'gds', 'tadlq', 'ad8', 'iqcode', 'faq', 'gad', 'ucla']
     .map((id) => {
       const inst = INSTRUMENTS[id]
       if (!inst) return null
@@ -102,6 +119,7 @@ export function buildSummary(inp: PreconsultaInputs, createdAtISO: string): Prec
 
   return {
     createdAt: createdAtISO,
+    modo: inp.demo.modo,
     depto: inp.demo.depto,
     modifiableRiskPct: Math.round(risk.modifiableRiskPct),
     modifiableRiskShare: risk.share,
