@@ -11,6 +11,9 @@
     "soon": "Próximamente",
     "start": "Empezar"
   },
+  "instrumento": {
+    "progress": "Respondidas: {{current}} de {{total}}"
+  },
   "home": {
     "title": "Elegí tu espacio",
     "subtitle": "Esta red acompaña la salud cerebral antes y después del diagnóstico. Entrá por el espacio que te representa.",
@@ -68,7 +71,9 @@
     "steps": {
       "demografia": "Sobre vos",
       "prevencion": "Prevención",
-      "mrca": "Memoria",
+      "cqc": "Memoria",
+      "gds": "Ánimo",
+      "tadlq": "Funcionalidad",
       "medicacion": "Medicación",
       "banderas": "Señales de alarma",
       "resultado": "Resultado"
@@ -116,7 +121,8 @@
         "poly": "Polifarmacia: {{n}} medicamentos (5 o más). Conviene revisar si todos son necesarios.",
         "acb": "Carga anticolinérgica alta (ACB {{n}}). Puede afectar la memoria; revisar con el médico.",
         "bzd": "{{n}} benzodiacepina(s)/sedante(s). Riesgo de caídas y confusión; revisar.",
-        "beers": "{{n}} medicamento(s) potencialmente inapropiado(s) en adultos mayores (Beers).",
+        "beers": "{{n}} medicamento(s) a revisar según uso en mayores (Beers/STOPP).",
+        "antidementia": "Ya hay tratamiento antidemencia en curso (donepecilo/memantina) — informativo.",
         "none": "Sin alertas farmacológicas por ahora."
       },
       "disclaimer": "Señala para revisión profesional. No prescribe ni suspende tratamientos. Valores orientativos."
@@ -209,6 +215,7 @@
   },
   "triage": {
     "levelLabel": "Prioridad sugerida",
+    "instruments": "Escalas",
     "level": {
       "verde": "Verde — seguimiento comunitario",
       "amarillo": "Amarillo — evaluación programada",

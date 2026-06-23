@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type ComponentType } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { usePreconsulta } from './preconsultaStore'
@@ -6,19 +6,27 @@ import { useSettings } from '../../lib/store'
 import { ConsentScreen } from '../gov/ConsentScreen'
 import { DemografiaStep } from './steps/DemografiaStep'
 import { PrevencionStep } from './steps/PrevencionStep'
-import { MrcaStep } from './steps/MrcaStep'
+import { InstrumentStep } from './steps/InstrumentStep'
 import { MedicacionStep } from './steps/MedicacionStep'
 import { BanderasRojasStep } from './steps/BanderasRojasStep'
 import { ResultadoStep } from './steps/ResultadoStep'
 
-const STEPS = [
+interface Step {
+  id: string
+  Component?: ComponentType
+  inst?: string
+}
+
+const STEPS: Step[] = [
   { id: 'demografia', Component: DemografiaStep },
   { id: 'prevencion', Component: PrevencionStep },
-  { id: 'mrca', Component: MrcaStep },
+  { id: 'cqc', inst: 'cqc' },
+  { id: 'gds', inst: 'gds' },
+  { id: 'tadlq', inst: 'tadlq' },
   { id: 'medicacion', Component: MedicacionStep },
   { id: 'banderas', Component: BanderasRojasStep },
   { id: 'resultado', Component: ResultadoStep },
-] as const
+]
 
 export function PreconsultaFlow() {
   const { t } = useTranslation()
@@ -35,8 +43,9 @@ export function PreconsultaFlow() {
   // Consentimiento antes de cualquier captura.
   if (!consent) return <ConsentScreen onAccept={() => setConsent(true)} />
 
-  const Current = STEPS[step].Component
+  const entry = STEPS[step]
   const isLast = step === STEPS.length - 1
+  const Current = entry.Component
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-6 pb-28">
@@ -52,11 +61,11 @@ export function PreconsultaFlow() {
         {t('preconsulta.stepLabel', {
           current: step + 1,
           total: STEPS.length,
-          name: t(`preconsulta.steps.${STEPS[step].id}`),
+          name: t(`preconsulta.steps.${entry.id}`),
         })}
       </p>
 
-      <Current />
+      {entry.inst ? <InstrumentStep id={entry.inst} /> : Current ? <Current /> : null}
 
       <div className="fixed inset-x-0 bottom-0 border-t border-line bg-bg/90 backdrop-blur no-print">
         <div className="mx-auto flex max-w-2xl items-center gap-3 px-4 py-3">

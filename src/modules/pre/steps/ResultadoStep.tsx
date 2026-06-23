@@ -21,11 +21,11 @@ function LevelIcon({ level, size }: { level: TriageLevel; size: number }) {
 
 export function ResultadoStep() {
   const { t } = useTranslation()
-  const { demo, lancet, mrca, meds, redFlags } = usePreconsulta()
+  const { demo, lancet, instruments, meds, redFlags } = usePreconsulta()
 
   const summary = useMemo<PreconsultaSummary>(
-    () => buildSummary({ demo, lancet, mrca, meds, redFlags }, new Date().toISOString()),
-    [demo, lancet, mrca, meds, redFlags],
+    () => buildSummary({ demo, lancet, instruments, meds, redFlags }, new Date().toISOString()),
+    [demo, lancet, instruments, meds, redFlags],
   )
 
   const saved = useRef(false)
@@ -82,6 +82,25 @@ export function ResultadoStep() {
         <Stat label={t('triage.stats.meds')} value={String(summary.medFlags.count)} />
         <Stat label={t('triage.stats.redflags')} value={String(summary.redFlags.length)} />
       </section>
+
+      {summary.instrumentScores.length > 0 && (
+        <section className="mt-6">
+          <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-muted">
+            {t('triage.instruments')}
+          </h2>
+          <ul className="space-y-2">
+            {summary.instrumentScores.map((s) => (
+              <li
+                key={s.id}
+                className="flex items-center justify-between gap-3 rounded-xl border border-line bg-surface p-3 text-sm"
+              >
+                <span className="text-ink">{s.name}</span>
+                <span className="text-muted">{s.text}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <section className="mt-6 no-print">
         <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-muted">

@@ -1,8 +1,8 @@
-// Resumen de preconsulta: ensambla los resultados de todos los módulos (incl. el
-// modelo MRCA real) y emite export JSON + bundle FHIR R4 (seam hacia la HCE oficial).
+// Resumen de preconsulta: ensambla los resultados (incl. el modelo MRCA real con
+// instrumentos validados) y emite export JSON + bundle FHIR R4 (seam hacia la HCE).
 
 import { computeModifiableRisk, type FactorAnswer } from '../scoring/lancet'
-import { MRCA_ITEMS } from '../scoring/mrca'
+import { INSTRUMENTS, scoreInstrument } from '../scoring/instruments'
 import { predictMrca, type MrcaModelBand, type MrcaRawInputs } from '../scoring/mrcaModel'
 import { computeMedFlags, type DrugInfo, type MedFlags } from '../scoring/medications'
 import { computeTriage, type TriageLevel } from '../scoring/triage'
@@ -16,22 +16,27 @@ export interface Demografia {
 export interface PreconsultaInputs {
   demo: Demografia
   lancet: Record<string, FactorAnswer>
-  mrca: Record<string, 0 | 1>
+  instruments: Record<string, Record<number, number>>
   meds: DrugInfo[]
   redFlags: string[]
 }
 
-// Mapea lo que captura la app → inputs del modelo Kaizen-MRCA. Lo no medido
-// (ADLQ, GDS, CHSC, saneamiento) queda en modo preliminar (lo imputa el modelo).
+// Mapea lo que captura la app → inputs del modelo Kaizen-MRCA. CQC/GDS/T-ADLQ
+// validados alimentan cqc_total/gds_total/adlq con datos REALES; lo que falte
+// queda en modo preliminar (lo imputa el modelo).
 export function buildMrcaInputs(inp: PreconsultaInputs): MrcaRawInputs {
   const L = inp.lancet
   const yes = (k: string) => L[k] === 'si'
-  const complaint = MRCA_ITEMS.filter((id) => inp.mrca[id] === 1).length
+  const cqc = scoreInstrument(INSTRUMENTS.cqc, inp.instruments.cqc ?? {})
+  const gds = scoreInstrument(INSTRUMENTS.gds, inp.instruments.gds ?? {})
+  const tadlq = scoreInstrument(INSTRUMENTS.tadlq, inp.instruments.tadlq ?? {})
   return {
     edad: inp.demo.edad ?? 65,
     sexo: inp.demo.sexo ?? 'Mujer',
     edu_anios: inp.demo.edu_anios ?? 7,
-    cqc_total: (complaint / MRCA_ITEMS.length) * 96, // proxy de queja cognitiva (0-96)
+    cqc_total: cqc.answered ? cqc.score : undefined,
+    gds_total: gds.answered ? gds.score : undefined,
+    adlq_pct: tadlq.answered ? (tadlq.score / INSTRUMENTS.tadlq.max) * 100 : undefined,
     obesidad: yes('obesity'),
     hipoacusia: yes('hearing'),
     fumador: yes('smoking'),
@@ -53,6 +58,7 @@ export interface PreconsultaSummary {
   mrcaDecision: 'derivar' | 'descartar'
   mrcaPreliminary: boolean
   mrcaAceEst: number
+  instrumentScores: { id: string; name: string; text: string }[]
   meds: string[]
   medFlags: MedFlags
   redFlags: string[]
@@ -71,6 +77,15 @@ export function buildSummary(inp: PreconsultaInputs, createdAtISO: string): Prec
     redFlagsCount: inp.redFlags.length,
     medConcern: medFlags.anyConcern,
   })
+  const instrumentScores = ['cqc', 'gds', 'tadlq', 'ad8', 'gad', 'ucla']
+    .map((id) => {
+      const inst = INSTRUMENTS[id]
+      if (!inst) return null
+      const s = scoreInstrument(inst, inp.instruments[id] ?? {})
+      return s.answered ? { id, name: inst.name, text: s.text } : null
+    })
+    .filter((x): x is { id: string; name: string; text: string } => x !== null)
+
   return {
     createdAt: createdAtISO,
     modifiableRiskPct: Math.round(risk.modifiableRiskPct),
@@ -82,6 +97,7 @@ export function buildSummary(inp: PreconsultaInputs, createdAtISO: string): Prec
     mrcaDecision: mrca.decision,
     mrcaPreliminary: mrca.preliminary,
     mrcaAceEst: mrca.aceEst,
+    instrumentScores,
     meds: inp.meds.map((m) => m.name),
     medFlags,
     redFlags: inp.redFlags,
@@ -112,7 +128,7 @@ export function toFhirBundle(s: PreconsultaSummary): Record<string, unknown> {
           ],
           note: [
             {
-              text: `MRCA banda ${s.mrcaBand} (prob ${s.mrcaProb}, ${s.mrcaDecision}${s.mrcaPreliminary ? ', preliminar' : ''}); riesgo modificable ~${s.modifiableRiskPct}%; banderas rojas: ${s.redFlags.length}`,
+              text: `MRCA banda ${s.mrcaBand} (prob ${s.mrcaProb}, ${s.mrcaDecision}${s.mrcaPreliminary ? ', preliminar' : ''}); riesgo modificable ~${s.modifiableRiskPct}%; ${s.instrumentScores.map((i) => `${i.name}: ${i.text}`).join('; ')}`,
             },
           ],
         },

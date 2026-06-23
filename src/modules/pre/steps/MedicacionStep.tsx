@@ -81,6 +81,9 @@ export function MedicacionStep() {
           {flags.beersCount > 0 && (
             <MedFlag text={t('pre.medicacion.flags.beers', { n: flags.beersCount })} />
           )}
+          {flags.antidementia && (
+            <p className="text-sm text-secondary-text">{t('pre.medicacion.flags.antidementia')}</p>
+          )}
           {!flags.anyConcern && (
             <p className="text-sm text-verde-text">{t('pre.medicacion.flags.none')}</p>
           )}
