@@ -7,6 +7,12 @@ import { predictMrca, type MrcaModelBand, type MrcaRawInputs } from '../scoring/
 import { computeMedFlags, type DrugInfo, type MedFlags } from '../scoring/medications'
 import { computeTriage, type TriageLevel } from '../scoring/triage'
 import { computeEquity, type Cerca, type Vive } from '../scoring/equity'
+import {
+  computeRiskScores,
+  MRCA_FEATURE_LABELS,
+  type RiskInputs,
+  type RiskScore,
+} from '../scoring/riskScores'
 
 export type Modo = 'persona' | 'cuidador' | 'agente'
 
@@ -79,6 +85,10 @@ export interface PreconsultaSummary {
   mrcaDecision: 'derivar' | 'descartar'
   mrcaPreliminary: boolean
   mrcaAceEst: number
+  mrcaCut: number
+  mrcaThreshold: number
+  mrcaContribs: { feature: string; label: string; value: number }[]
+  riskScores: RiskScore[]
   instrumentScores: { id: string; name: string; text: string }[]
   meds: string[]
   medFlags: MedFlags
@@ -89,9 +99,34 @@ export interface PreconsultaSummary {
   triageReasons: string[]
 }
 
+function buildRiskInputs(inp: PreconsultaInputs): RiskInputs {
+  const L = inp.lancet
+  const yes = (k: string) => L[k] === 'si'
+  return {
+    edad: inp.demo.edad,
+    sexo: inp.demo.sexo,
+    edu_anios: inp.demo.edu_anios,
+    hipertension: yes('hypertension'),
+    diabetes: yes('diabetes'),
+    colesterol: yes('ldl'),
+    obesidad: yes('obesity'),
+    tabaquismo: yes('smoking'),
+    inactividad: yes('inactivity'),
+    depresion: yes('depression'),
+    tbi: yes('tbi'),
+    alcoholExceso: yes('alcohol'),
+  }
+}
+
 export function buildSummary(inp: PreconsultaInputs, createdAtISO: string): PreconsultaSummary {
   const risk = computeModifiableRisk(inp.lancet)
   const mrca = predictMrca(buildMrcaInputs(inp))
+  const riskScores = computeRiskScores(buildRiskInputs(inp))
+  const mrcaContribs = mrca.contribs.slice(0, 6).map((c) => ({
+    feature: c.feature,
+    label: MRCA_FEATURE_LABELS[c.feature] ?? c.feature,
+    value: c.value,
+  }))
   const medFlags = computeMedFlags(inp.meds)
   const equity = computeEquity({
     edad: inp.demo.edad,
@@ -130,6 +165,10 @@ export function buildSummary(inp: PreconsultaInputs, createdAtISO: string): Prec
     mrcaDecision: mrca.decision,
     mrcaPreliminary: mrca.preliminary,
     mrcaAceEst: mrca.aceEst,
+    mrcaCut: mrca.cut,
+    mrcaThreshold: mrca.threshold,
+    mrcaContribs,
+    riskScores,
     instrumentScores,
     meds: inp.meds.map((m) => m.name),
     medFlags,

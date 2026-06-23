@@ -275,7 +275,8 @@
       "low": "Sin señales de alarma ni puntajes altos."
     },
     "stats": {
-      "risk": "Riesgo modificable",
+      "risk": "Factores modificables",
+      "riskValue": "{{n}} de 14",
       "mrca": "MRCA",
       "meds": "Medicamentos",
       "redflags": "Señales de alarma"
@@ -287,6 +288,19 @@
       "print": "Imprimir / PDF"
     },
     "disclaimer": "Resultado orientativo (estimación con valores a validar). No diagnostica ni reemplaza al profesional. Tus datos quedan en este dispositivo."
+  },
+  "pro": {
+    "title": "Para el profesional · modelo y comparadores",
+    "lancetNote": "El “riesgo modificable” de la Comisión Lancet es una métrica POBLACIONAL (fracción atribuible, PAF), no un riesgo individual. Por eso acá se muestran los factores presentes, no un porcentaje individual. El riesgo individual lo dan el modelo MRCA y los comparadores de abajo.",
+    "mrcaTitle": "Modelo MRCA (Kaizen-MRCA v1)",
+    "cut": "Corte (educación)",
+    "margin": "Margen al corte",
+    "prob": "Prob / umbral",
+    "decision": "Decisión",
+    "contribs": "Qué pesó (contribuciones al ACE)",
+    "contribsNote": "Contribución de cada factor al ACE-III estimado (SHAP exacto del modelo lineal). Valores negativos bajan el ACE estimado (peor desempeño).",
+    "scoresTitle": "Comparadores de riesgo individual (validados)",
+    "disclaimer": "Comparadores de investigación, ponderados por riesgo relativo; requieren RECALIBRACIÓN LOCAL. No para decisión clínica de forma aislada."
   },
   "equity": {
     "title": "Contexto de vulnerabilidad",

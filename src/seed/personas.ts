@@ -1,5 +1,5 @@
 // Personas de ejemplo para la demo (sin datos reales). Cubren los tres niveles de
-// triage y perfiles variados. Valores precomputados, ilustrativos.
+// triage, distintos perfiles, y datos de SEGUIMIENTO (retención) y DÍADA (cuidador).
 import type { TriageLevel } from '../scoring/triage'
 import type { MrcaModelBand } from '../scoring/mrcaModel'
 
@@ -15,6 +15,14 @@ export interface SeedPersona {
   meds: number
   redFlags: number
   note: string
+  /** días desde el último contacto (para el panel de "no volvieron") */
+  lastSeenDays: number
+  /** teléfono de ejemplo para re-contacto por WhatsApp (Nivel 0) */
+  phone: string
+  /** alias del cuidador/informante (díada), si hay */
+  cuidador?: string
+  /** discrepancia persona↔informante (señal clínica) */
+  discrepancia?: boolean
 }
 
 export const SEED_PERSONAS: SeedPersona[] = [
@@ -30,6 +38,10 @@ export const SEED_PERSONAS: SeedPersona[] = [
     meds: 7,
     redFlags: 1,
     note: 'Baja escolaridad, quejas de memoria y polifarmacia.',
+    lastSeenDays: 74,
+    phone: '5492644000001',
+    cuidador: 'su hija',
+    discrepancia: true,
   },
   {
     id: 'p2',
@@ -43,6 +55,8 @@ export const SEED_PERSONAS: SeedPersona[] = [
     meds: 4,
     redFlags: 1,
     note: 'Periférica, con señal de alarma (deterioro rápido).',
+    lastSeenDays: 92,
+    phone: '5492644000002',
   },
   {
     id: 'p3',
@@ -56,6 +70,8 @@ export const SEED_PERSONAS: SeedPersona[] = [
     meds: 5,
     redFlags: 0,
     note: 'Varios factores modificables presentes.',
+    lastSeenDays: 38,
+    phone: '5492644000003',
   },
   {
     id: 'p4',
@@ -69,6 +85,9 @@ export const SEED_PERSONAS: SeedPersona[] = [
     meds: 6,
     redFlags: 0,
     note: 'Polifarmacia con carga anticolinérgica.',
+    lastSeenDays: 12,
+    phone: '5492644000004',
+    cuidador: 'su esposo',
   },
   {
     id: 'p5',
@@ -82,6 +101,8 @@ export const SEED_PERSONAS: SeedPersona[] = [
     meds: 1,
     redFlags: 0,
     note: 'Riesgo bajo: prevención y seguimiento comunitario.',
+    lastSeenDays: 6,
+    phone: '5492644000005',
   },
   {
     id: 'p6',
@@ -95,6 +116,8 @@ export const SEED_PERSONAS: SeedPersona[] = [
     meds: 2,
     redFlags: 0,
     note: 'Control de factores; seguimiento en la comunidad.',
+    lastSeenDays: 49,
+    phone: '5492644000006',
   },
 ]
 

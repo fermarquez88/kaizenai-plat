@@ -127,7 +127,10 @@ export function ResultadoStep() {
       )}
 
       <section className="mt-5 grid grid-cols-2 gap-3">
-        <Stat label={t('triage.stats.risk')} value={`~${summary.modifiableRiskPct}%`} />
+        <Stat
+          label={t('triage.stats.risk')}
+          value={t('triage.stats.riskValue', { n: summary.presentFactors.length })}
+        />
         <Stat
           label={t('triage.stats.mrca')}
           value={`${t(`pre.mrca.band.${summary.mrcaBand}`)} · ${Math.round(summary.mrcaProb * 100)}%`}
@@ -154,6 +157,71 @@ export function ResultadoStep() {
           </ul>
         </section>
       )}
+
+      <details className="mt-6 rounded-2xl border border-line bg-surface p-4">
+        <summary className="cursor-pointer font-semibold text-ink">{t('pro.title')}</summary>
+
+        <p className="mt-3 rounded-xl bg-bg p-3 text-xs text-muted">{t('pro.lancetNote')}</p>
+
+        <h3 className="mt-4 text-sm font-semibold uppercase tracking-wide text-muted">
+          {t('pro.mrcaTitle')}
+        </h3>
+        <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3">
+          <Stat label="ACE est." value={String(summary.mrcaAceEst)} />
+          <Stat label={t('pro.cut')} value={String(summary.mrcaCut)} />
+          <Stat
+            label={t('pro.margin')}
+            value={String(Math.round((summary.mrcaAceEst - summary.mrcaCut) * 10) / 10)}
+          />
+          <Stat
+            label={t('pro.prob')}
+            value={`${Math.round(summary.mrcaProb * 100)}% / ${Math.round(summary.mrcaThreshold * 100)}%`}
+          />
+          <Stat label={t('pro.decision')} value={summary.mrcaDecision} />
+          <Stat label="MRCA" value={t(`pre.mrca.band.${summary.mrcaBand}`)} />
+        </div>
+
+        {summary.mrcaContribs.length > 0 && (
+          <>
+            <h3 className="mt-4 text-sm font-semibold uppercase tracking-wide text-muted">
+              {t('pro.contribs')}
+            </h3>
+            <ul className="mt-2 space-y-1 text-sm">
+              {summary.mrcaContribs.map((c) => (
+                <li key={c.feature} className="flex items-center justify-between gap-3">
+                  <span className="text-ink">{c.label}</span>
+                  <span className={c.value < 0 ? 'text-rojo-text' : 'text-verde-text'}>
+                    {c.value > 0 ? '+' : ''}
+                    {c.value}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-1 text-xs text-muted">{t('pro.contribsNote')}</p>
+          </>
+        )}
+
+        <h3 className="mt-4 text-sm font-semibold uppercase tracking-wide text-muted">
+          {t('pro.scoresTitle')}
+        </h3>
+        <ul className="mt-2 space-y-2">
+          {summary.riskScores.map((sc) => (
+            <li key={sc.id} className="rounded-xl border border-line bg-bg p-3">
+              <div className="flex items-center justify-between">
+                <span className="font-medium text-ink">{sc.name}</span>
+                <span className="text-sm text-secondary-text">
+                  {sc.computable && sc.value != null ? sc.value : '—'}
+                </span>
+              </div>
+              <p className="mt-0.5 text-xs text-muted">{sc.detail}</p>
+              <p className="mt-0.5 text-[11px] text-muted">
+                {sc.source} · {sc.caveat}
+              </p>
+            </li>
+          ))}
+        </ul>
+        <p className="mt-3 text-xs text-muted">{t('pro.disclaimer')}</p>
+      </details>
 
       <section className="mt-6 no-print">
         <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-muted">
