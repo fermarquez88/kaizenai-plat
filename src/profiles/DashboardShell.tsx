@@ -1,5 +1,6 @@
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { ExternalLink } from 'lucide-react'
 import { getProfile, MODULE_LINKS } from './profiles'
 
 export function DashboardShell() {
@@ -29,6 +30,8 @@ export function DashboardShell() {
       <div className="grid gap-3 sm:grid-cols-2">
         {modules.map((i) => {
           const rel = links[i]
+          const external = !!rel && rel.startsWith('http')
+          const to = rel ? (rel.startsWith('/') ? rel : `/p/${p.id}/${rel}`) : ''
           const body = (
             <div className="flex items-start justify-between gap-3">
               <div>
@@ -37,26 +40,32 @@ export function DashboardShell() {
               </div>
               <span
                 className={
-                  'shrink-0 rounded-full px-2 py-1 text-xs ' +
+                  'inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-1 text-xs ' +
                   (rel ? 'bg-primary text-white' : 'border border-line bg-bg text-accent-text')
                 }
               >
+                {external && <ExternalLink size={12} />}
                 {rel ? t('common.start') : t('common.soon')}
               </span>
             </div>
           )
-          return rel ? (
-            <Link
-              key={i}
-              to={`/p/${p.id}/${rel}`}
-              className="block rounded-xl border border-line bg-surface p-4 transition hover:-translate-y-0.5 hover:shadow-card"
-            >
+          const cls =
+            'block rounded-xl border border-line bg-surface p-4 transition hover:-translate-y-0.5 hover:shadow-card'
+          if (!rel) {
+            return (
+              <div key={i} className="rounded-xl border border-line bg-surface p-4">
+                {body}
+              </div>
+            )
+          }
+          return external ? (
+            <a key={i} href={rel} target="_blank" rel="noreferrer" className={cls}>
+              {body}
+            </a>
+          ) : (
+            <Link key={i} to={to} className={cls}>
               {body}
             </Link>
-          ) : (
-            <div key={i} className="rounded-xl border border-line bg-surface p-4">
-              {body}
-            </div>
           )
         })}
       </div>

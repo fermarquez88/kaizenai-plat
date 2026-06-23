@@ -1,4 +1,4 @@
-import type { Person, PreAssessmentSummary } from './types'
+import type { Person, PreAssessmentSummary, Suggestion } from './types'
 
 // Interfaz de persistencia. La UI SOLO habla con esta interfaz, nunca con Dexie
 // directo, para poder migrar a backend/FHIR sin tocar componentes.
@@ -10,6 +10,10 @@ export interface DataRepository {
 
   savePreAssessment(a: PreAssessmentSummary): Promise<void>
   listPreAssessments(): Promise<PreAssessmentSummary[]>
+
+  addSuggestion(s: Suggestion): Promise<void>
+  listSuggestions(): Promise<Suggestion[]>
+  voteSuggestion(id: string): Promise<void>
 
   /** Soberanía: "borrar mis datos". */
   clearAll(): Promise<void>

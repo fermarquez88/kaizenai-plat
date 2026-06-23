@@ -1,5 +1,5 @@
 import { db } from './db'
-import type { Person, PreAssessmentSummary } from './types'
+import type { Person, PreAssessmentSummary, Suggestion } from './types'
 import type { DataRepository } from './DataRepository'
 
 export const dexieRepo: DataRepository = {
@@ -17,8 +17,17 @@ export const dexieRepo: DataRepository = {
   },
   listPreAssessments: () => db.preAssessments.orderBy('createdAt').toArray(),
 
+  addSuggestion: async (s: Suggestion) => {
+    await db.suggestions.put(s)
+  },
+  listSuggestions: () => db.suggestions.orderBy('createdAt').reverse().toArray(),
+  voteSuggestion: async (id: string) => {
+    const s = await db.suggestions.get(id)
+    if (s) await db.suggestions.put({ ...s, votes: s.votes + 1 })
+  },
+
   clearAll: async () => {
-    await Promise.all([db.people.clear(), db.preAssessments.clear()])
+    await Promise.all([db.people.clear(), db.preAssessments.clear(), db.suggestions.clear()])
   },
   exportJSON: async () =>
     JSON.stringify(
@@ -26,6 +35,7 @@ export const dexieRepo: DataRepository = {
         exportedAt: new Date().toISOString(),
         people: await db.people.toArray(),
         preAssessments: await db.preAssessments.toArray(),
+        suggestions: await db.suggestions.toArray(),
       },
       null,
       2,

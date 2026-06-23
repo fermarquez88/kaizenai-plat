@@ -228,5 +228,148 @@
       "print": "Imprimir / PDF"
     },
     "disclaimer": "Resultado orientativo (estimación con valores a validar). No diagnostica ni reemplaza al profesional. Tus datos quedan en este dispositivo."
+  },
+  "zarit": {
+    "title": "¿Cómo venís vos? (sobrecarga del cuidador)",
+    "intro": "12 preguntas breves sobre cómo te sentís cuidando. Es para vos y queda en tu dispositivo.",
+    "options": { "0": "Nunca", "1": "Rara vez", "2": "A veces", "3": "Bastante", "4": "Casi siempre" },
+    "bands": {
+      "poca": "sobrecarga baja",
+      "moderada": "sobrecarga moderada",
+      "alta": "sobrecarga alta"
+    },
+    "result": "Tu puntaje: {{score}} / {{max}} — {{band}}",
+    "hint": {
+      "poca": "Vas bien. Seguí cuidándote y pedí apoyo cuando lo necesites.",
+      "moderada": "Conviene buscar más apoyo y momentos de descanso para vos.",
+      "alta": "Es importante pedir ayuda ahora. Hablá con el equipo de salud o un referente."
+    },
+    "items": {
+      "time": "¿Sentís que no te queda tiempo para vos por cuidar?",
+      "stress": "¿Te sentís estresado/a entre cuidar y tus otras obligaciones?",
+      "health": "¿Sentís que tu salud se vio afectada por cuidar?",
+      "control": "¿Sentís que perdiste el control de tu vida?",
+      "distress": "¿Te angustia el futuro de la persona que cuidás?",
+      "social": "¿Sentís que tu vida social se redujo?",
+      "uncomfortable": "¿Te incomodan algunas conductas de la persona?",
+      "dependent": "¿Sentís que la persona depende mucho de vos?",
+      "tense": "¿Te sentís tenso/a cuando estás con la persona?",
+      "more": "¿Sentís que no vas a poder cuidar mucho más tiempo?",
+      "privacy": "¿Sentís que perdiste privacidad o intimidad?",
+      "overall": "En general, ¿te sentís muy sobrecargado/a?"
+    }
+  },
+  "post": {
+    "paciente": {
+      "title": "Después del diagnóstico",
+      "intro": "Un diagnóstico no define quién sos. Se puede vivir bien, con apoyos y planificación.",
+      "note": "Información orientativa. Tu equipo de salud te acompaña en cada paso.",
+      "cards": {
+        "0": { "t": "Qué esperar", "b": "La demencia avanza distinto en cada persona. Hay etapas, y cada una tiene sus apoyos." },
+        "1": { "t": "Hábitos que protegen", "b": "Actividad física, vínculos, buen sueño, controlar presión y azúcar, y mantener la mente activa." },
+        "2": { "t": "Planificar a tiempo", "b": "Decisiones sobre salud, finanzas y deseos mientras podés expresarlos. Da tranquilidad." },
+        "3": { "t": "Tus derechos", "b": "Tenés derecho a información clara, a participar de las decisiones y a un trato digno (Ley 26.529)." },
+        "4": { "t": "No estás solo/a", "b": "Buscá grupos, asociaciones y a tu equipo de salud. Pedir ayuda es parte del cuidado." }
+      }
+    },
+    "cuidador": {
+      "title": "Guía del cuidador",
+      "dice": {
+        "title": "Método DICE — para conductas difíciles",
+        "intro": "Las conductas son comunicación. DICE ayuda a entender y responder sin pelear.",
+        "d": { "t": "Describir", "b": "¿Qué pasó exactamente? Cuándo, dónde y quién estaba." },
+        "i": { "t": "Investigar", "b": "¿Qué pudo causarlo? Dolor, hambre, miedo, ruido, medicación, aburrimiento." },
+        "c": { "t": "Crear", "b": "Probá un plan: ajustar el entorno, la rutina o la forma de comunicar." },
+        "e": { "t": "Evaluar", "b": "¿Funcionó? Si no, volvé a investigar y probá otra cosa." }
+      },
+      "help": {
+        "title": "Necesito ayuda ahora",
+        "body": "Si hay riesgo para la persona o para vos, buscá ayuda de inmediato. Para el día a día, la guía completa para cuidadores está siempre disponible (también sin conexión).",
+        "link": "Abrir la Guía para Cuidadores"
+      }
+    }
+  },
+  "gov": {
+    "consent": {
+      "tag": "Consentimiento",
+      "title": "Antes de empezar",
+      "intro": "Esta herramienta orienta y ayuda a derivar mejor. No diagnostica ni reemplaza a un profesional. Para continuar, leé y aceptá:",
+      "points": {
+        "0": "Pedimos solo lo necesario. Sin datos identificatorios (usá iniciales o un alias).",
+        "1": "Todo se guarda en este dispositivo. Vos decidís si lo compartís.",
+        "2": "El resultado es una estimación, no un diagnóstico.",
+        "3": "Podés ver, exportar o borrar tus datos cuando quieras."
+      },
+      "accept": "Entiendo y acepto",
+      "note": "Al aceptar, empezás el cribado. Podés revisar tus datos en 'Mis datos'."
+    },
+    "datos": {
+      "tag": "Soberanía de datos",
+      "title": "Mis datos",
+      "intro": "Tus datos viven en este dispositivo. Acá los controlás vos.",
+      "count": "Tenés {{n}} cribado(s) guardado(s) en este dispositivo.",
+      "export": "Exportar mis datos",
+      "delete": "Borrar mis datos",
+      "confirm": "¿Seguro? No se puede deshacer.",
+      "confirmYes": "Sí, borrar",
+      "confirmNo": "Cancelar",
+      "deleted": "Listo: tus datos fueron borrados de este dispositivo.",
+      "points": {
+        "0": "Nada se envía a un servidor sin tu consentimiento.",
+        "1": "El export es un archivo tuyo, para compartir con quien quieras.",
+        "2": "Borrar acá elimina la información de este dispositivo."
+      },
+      "footer": "Mis datos y privacidad"
+    },
+    "community": {
+      "tag": "Gobernanza comunitaria",
+      "title": "Comunidad",
+      "intro": "Esta red se co-diseña con quienes la usan. Tu voz cambia lo que construimos.",
+      "suggestTitle": "Qué pide la comunidad",
+      "suggestPlaceholder": "Sugerí una mejora…",
+      "suggestBtn": "Enviar sugerencia",
+      "seed": {
+        "0": "Que el cribado tenga audios para quienes leen poco.",
+        "1": "Más materiales para cuidadores rurales, sin conexión.",
+        "2": "Un recordatorio amable para los controles de presión."
+      },
+      "changelogTitle": "Qué cambiamos",
+      "changelog": {
+        "0": { "req": "Pidieron: letras más grandes.", "done": "Hecho: control A− / A+ en toda la app." },
+        "1": { "req": "Pidieron: que funcione sin internet.", "done": "Hecho: la app abre offline." },
+        "2": { "req": "Pidieron: que no diagnostique, solo oriente.", "done": "Hecho: aviso visible en cada resultado." }
+      },
+      "repsTitle": "Representantes",
+      "reps": {
+        "0": { "role": "Persona con diagnóstico", "desc": "Aporta la mirada de quien lo vive." },
+        "1": { "role": "Cuidador/a familiar", "desc": "Lleva la voz del cuidado cotidiano." },
+        "2": { "role": "Agente sanitario", "desc": "Representa al territorio." }
+      }
+    }
+  },
+  "red": {
+    "titles": {
+      "gente": "Mi gente",
+      "cola": "Cola de derivaciones",
+      "bandeja": "Bandeja de preconsulta",
+      "tablero": "Tablero poblacional"
+    },
+    "seedNote": "Datos de ejemplo (demo).",
+    "labels": {
+      "years": "años",
+      "eduYears": "{{n}} años de escuela",
+      "risk": "Riesgo modif.",
+      "mrca": "MRCA",
+      "meds": "Medicamentos",
+      "redflags": "Señales"
+    },
+    "tablero": {
+      "total": "Personas",
+      "verde": "Verde",
+      "amarillo": "Amarillo",
+      "rojo": "Rojo",
+      "avgRisk": "Riesgo modificable promedio",
+      "anon": "Datos agregados y anónimos — sin información personal."
+    }
   }
 }

@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { usePreconsulta } from './preconsultaStore'
+import { useSettings } from '../../lib/store'
+import { ConsentScreen } from '../gov/ConsentScreen'
 import { PrevencionStep } from './steps/PrevencionStep'
 import { MrcaStep } from './steps/MrcaStep'
 import { MedicacionStep } from './steps/MedicacionStep'
@@ -19,12 +21,17 @@ const STEPS = [
 export function PreconsultaFlow() {
   const { t } = useTranslation()
   const reset = usePreconsulta((s) => s.reset)
+  const consent = useSettings((s) => s.consentAccepted)
+  const setConsent = useSettings((s) => s.setConsent)
   const [step, setStep] = useState(0)
 
   // Empieza limpio cada vez que se entra al flujo.
   useEffect(() => {
     reset()
   }, [reset])
+
+  // Consentimiento antes de cualquier captura.
+  if (!consent) return <ConsentScreen onAccept={() => setConsent(true)} />
 
   const Current = STEPS[step].Component
   const isLast = step === STEPS.length - 1

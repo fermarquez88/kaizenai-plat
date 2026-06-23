@@ -66,9 +66,12 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       <main className="flex-1">{children}</main>
 
-      <footer className="border-t border-line bg-surface">
-        <div className="mx-auto max-w-5xl px-4 py-4 text-center text-xs text-muted">
-          {t('common.disclaimer')}
+      <footer className="border-t border-line bg-surface no-print">
+        <div className="mx-auto flex max-w-5xl flex-col items-center gap-1 px-4 py-4 text-center text-xs text-muted">
+          <span>{t('common.disclaimer')}</span>
+          <Link to="/datos" className="text-secondary-text underline-offset-2 hover:underline">
+            {t('gov.datos.footer')}
+          </Link>
         </div>
       </footer>
     </div>
