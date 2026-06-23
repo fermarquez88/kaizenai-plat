@@ -7,6 +7,7 @@ const base = {
   mrcaDerivar: false,
   redFlagsCount: 0,
   medConcern: false,
+  equityScore: 0,
 }
 
 describe('triage', () => {
@@ -24,9 +25,18 @@ describe('triage', () => {
     expect(computeTriage({ ...base, mrcaBand: 'alto', mrcaDerivar: true }).level).toBe('rojo')
   })
 
-  it('amarillo: deriva (banda moderada), riesgo alto o medicación', () => {
+  it('amarillo: deriva, riesgo alto o medicación', () => {
     expect(computeTriage({ ...base, mrcaBand: 'moderado', mrcaDerivar: true }).level).toBe('amarillo')
     expect(computeTriage({ ...base, modifiableRiskShare: 0.6 }).level).toBe('amarillo')
     expect(computeTriage({ ...base, medConcern: true }).level).toBe('amarillo')
+  })
+
+  it('equidad: vulnerabilidad alta + señal mínima sube verde→amarillo', () => {
+    // riesgo modificable 0.4 (señal) + equidad alta → amarillo por equidad
+    const r = computeTriage({ ...base, modifiableRiskShare: 0.4, equityScore: 4 })
+    expect(r.level).toBe('amarillo')
+    expect(r.reasons).toContain('equidad')
+    // equidad alta SIN ninguna señal → sigue verde (no sobre-derivar)
+    expect(computeTriage({ ...base, equityScore: 5 }).level).toBe('verde')
   })
 })

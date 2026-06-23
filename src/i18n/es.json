@@ -8,6 +8,7 @@
     "remove": "Quitar",
     "fontSmaller": "Achicar la letra",
     "fontLarger": "Agrandar la letra",
+    "voice": "Leer en voz alta",
     "soon": "Próximamente",
     "start": "Empezar"
   },
@@ -74,6 +75,7 @@
       "cqc": "Memoria",
       "gds": "Ánimo",
       "tadlq": "Funcionalidad",
+      "ad8": "Informante",
       "medicacion": "Medicación",
       "banderas": "Señales de alarma",
       "resultado": "Resultado"
@@ -93,7 +95,19 @@
       "sexo_mujer": "Mujer",
       "sexo_hombre": "Hombre",
       "eduLabel": "Años de educación",
-      "eduHint": "Cuántos años fuiste a la escuela (primaria, secundaria, etc.)."
+      "eduHint": "Cuántos años fuiste a la escuela (primaria, secundaria, etc.).",
+      "deptoLabel": "Departamento",
+      "deptoPlaceholder": "Elegir…",
+      "viveLabel": "¿Dónde vive?",
+      "vive_campo": "En el campo / un paraje",
+      "vive_pueblo": "En un pueblo",
+      "vive_ciudad": "En la ciudad",
+      "cercaLabel": "¿A qué distancia está el centro de salud más cercano?",
+      "cerca_lt15": "Menos de 15 min",
+      "cerca_m15": "15 a 30 min",
+      "cerca_m30": "30 min a 1 h",
+      "cerca_gt60": "Más de 1 h",
+      "cerca_nose": "No sé / no hay"
     },
     "mrca": {
       "title": "Memoria y cambios cognitivos",
@@ -216,6 +230,12 @@
   "triage": {
     "levelLabel": "Prioridad sugerida",
     "instruments": "Escalas",
+    "urgent": {
+      "title": "Señales que conviene no esperar",
+      "donde": "Dónde ir: {{guardia}}.",
+      "call": "Llamar al 107 (emergencias)"
+    },
+    "turno": "Pedir turno (CIDI · WhatsApp)",
     "level": {
       "verde": "Verde — seguimiento comunitario",
       "amarillo": "Amarillo — evaluación programada",
@@ -234,6 +254,7 @@
       "mrcaDerivar": "El modelo MRCA sugiere derivar (descarte no seguro).",
       "riskHigh": "Varios factores de riesgo modificables presentes.",
       "meds": "Hay medicación para revisar.",
+      "equidad": "Contexto de mayor vulnerabilidad (equidad): priorizamos no perder el seguimiento.",
       "low": "Sin señales de alarma ni puntajes altos."
     },
     "stats": {
@@ -249,6 +270,18 @@
       "print": "Imprimir / PDF"
     },
     "disclaimer": "Resultado orientativo (estimación con valores a validar). No diagnostica ni reemplaza al profesional. Tus datos quedan en este dispositivo."
+  },
+  "equity": {
+    "title": "Contexto de vulnerabilidad",
+    "note": "Lo tenemos en cuenta para que el acceso a la salud sea más justo, no para etiquetar.",
+    "factors": {
+      "rural": "Vive en el campo",
+      "lejos": "Lejos del centro de salud",
+      "bajaEdu": "Baja escolaridad",
+      "edu": "Escolaridad media",
+      "aislamiento": "Aislamiento social",
+      "edad80": "80 años o más"
+    }
   },
   "zarit": {
     "title": "¿Cómo venís vos? (sobrecarga del cuidador)",

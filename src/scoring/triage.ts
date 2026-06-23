@@ -1,7 +1,9 @@
-// Motor de triage: combina el modelo MRCA real (banda + decisión derivar/descartar)
-// con el índice de riesgo modificable (Lancet), banderas rojas y preocupación
-// farmacológica → Verde / Amarillo / Rojo. ⚠️ Reglas configurables, a validar. No diagnostica.
+// Motor de triage: combina el modelo MRCA real (banda + decisión) con el índice de
+// riesgo modificable (Lancet), banderas rojas, preocupación farmacológica y un
+// término de EQUIDAD que evita dejar atrás a quien tiene más barreras de acceso.
+// ⚠️ Reglas configurables, a validar. No diagnostica.
 import type { MrcaModelBand } from './mrcaModel'
+import { EQUITY_HIGH } from './equity'
 
 export type TriageLevel = 'verde' | 'amarillo' | 'rojo'
 
@@ -11,6 +13,7 @@ export interface TriageInput {
   mrcaDerivar: boolean // decisión del modelo (prob ≥ umbral)
   redFlagsCount: number
   medConcern: boolean
+  equityScore: number
 }
 
 export interface TriageResult {
@@ -33,6 +36,15 @@ export function computeTriage(i: TriageInput): TriageResult {
     i.medConcern
   ) {
     level = 'amarillo'
+  }
+
+  // Equidad: con vulnerabilidad alta y ALGUNA señal, no dejar en verde — priorizar
+  // una evaluación programada para que no se pierda en el sistema.
+  const someSignal =
+    i.mrcaBand !== 'bajo' || i.mrcaDerivar || i.modifiableRiskShare >= 0.33 || i.medConcern
+  if (level === 'verde' && i.equityScore >= EQUITY_HIGH && someSignal) {
+    level = 'amarillo'
+    reasons.push('equidad')
   }
 
   if (i.redFlagsCount > 0) reasons.push('redflags')

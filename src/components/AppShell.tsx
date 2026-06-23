@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { ArrowLeft, Minus, Plus } from 'lucide-react'
+import { ArrowLeft, Minus, Plus, Volume2 } from 'lucide-react'
 import { useSettings } from '../lib/store'
 import { Logo } from './Logo'
 
@@ -54,8 +54,26 @@ export function AppShell({ children }: { children: ReactNode }) {
             >
               <Plus size={18} />
             </button>
+            <button
+              onClick={() => {
+                if (!window.speechSynthesis) return
+                const m = document.querySelector('main')
+                const txt = (m instanceof HTMLElement ? m.innerText : '').trim().slice(0, 600)
+                window.speechSynthesis.cancel()
+                if (txt) {
+                  const u = new SpeechSynthesisUtterance(txt)
+                  u.lang = 'es-AR'
+                  u.rate = 0.95
+                  window.speechSynthesis.speak(u)
+                }
+              }}
+              aria-label={t('common.voice')}
+              className="rounded-lg p-2 text-muted hover:bg-surface"
+            >
+              <Volume2 size={18} />
+            </button>
             <span
-              className="ml-2 rounded-full border border-line bg-surface px-2 py-1 text-xs font-semibold text-secondary-text"
+              className="ml-1 rounded-full border border-line bg-surface px-2 py-1 text-xs font-semibold text-secondary-text"
               title={t('common.soon')}
             >
               ES

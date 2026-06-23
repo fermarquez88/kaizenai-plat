@@ -23,6 +23,7 @@ const STEPS: Step[] = [
   { id: 'cqc', inst: 'cqc' },
   { id: 'gds', inst: 'gds' },
   { id: 'tadlq', inst: 'tadlq' },
+  { id: 'ad8', inst: 'ad8' },
   { id: 'medicacion', Component: MedicacionStep },
   { id: 'banderas', Component: BanderasRojasStep },
   { id: 'resultado', Component: ResultadoStep },

@@ -1,10 +1,20 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { AlertOctagon, AlertTriangle, CheckCircle2, Download, FileJson, Printer } from 'lucide-react'
+import {
+  AlertOctagon,
+  AlertTriangle,
+  CalendarCheck,
+  CheckCircle2,
+  Download,
+  FileJson,
+  Phone,
+  Printer,
+} from 'lucide-react'
 import { usePreconsulta } from '../preconsultaStore'
 import { buildSummary, toFhirBundle, type PreconsultaSummary } from '../../../data/preconsultaSummary'
 import { downloadJSON } from '../../../lib/download'
 import { dexieRepo } from '../../../data/dexieRepo'
+import { cidiTurnoLink, guardiaDe } from '../../../data/sanjuan'
 import type { TriageLevel } from '../../../scoring/triage'
 
 const LEVEL_STYLE: Record<TriageLevel, string> = {
@@ -59,6 +69,30 @@ export function ResultadoStep() {
         {t(`triage.action.${level}`)}
       </p>
 
+      {summary.redFlags.length > 0 && (
+        <div className="mt-3 rounded-2xl border border-rojo bg-rojo/10 p-4 text-rojo-text">
+          <p className="flex items-center gap-2 font-medium">
+            <AlertOctagon size={18} /> {t('triage.urgent.title')}
+          </p>
+          <p className="mt-1 text-sm">{t('triage.urgent.donde', { guardia: guardiaDe(summary.depto) })}</p>
+          <a
+            href="tel:107"
+            className="mt-3 inline-flex items-center gap-2 rounded-xl bg-rojo px-4 py-2 font-medium text-white"
+          >
+            <Phone size={18} /> {t('triage.urgent.call')}
+          </a>
+        </div>
+      )}
+
+      <a
+        href={cidiTurnoLink(t(`triage.level.${level}`))}
+        target="_blank"
+        rel="noreferrer"
+        className="mt-3 inline-flex items-center gap-2 rounded-xl border border-secondary bg-surface px-4 py-2.5 font-medium text-secondary-text no-print"
+      >
+        <CalendarCheck size={18} /> {t('triage.turno')}
+      </a>
+
       <section className="mt-5">
         <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-muted">
           {t('triage.why')}
@@ -72,6 +106,25 @@ export function ResultadoStep() {
           ))}
         </ul>
       </section>
+
+      {summary.equityFactors.length > 0 && (
+        <section className="mt-5 rounded-2xl border border-line bg-surface p-4">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">
+            {t('equity.title')}
+          </h2>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {summary.equityFactors.map((f) => (
+              <span
+                key={f}
+                className="rounded-full border border-line bg-bg px-2.5 py-1 text-xs text-accent-text"
+              >
+                {t(`equity.factors.${f}`)}
+              </span>
+            ))}
+          </div>
+          <p className="mt-2 text-xs text-muted">{t('equity.note')}</p>
+        </section>
+      )}
 
       <section className="mt-5 grid grid-cols-2 gap-3">
         <Stat label={t('triage.stats.risk')} value={`~${summary.modifiableRiskPct}%`} />

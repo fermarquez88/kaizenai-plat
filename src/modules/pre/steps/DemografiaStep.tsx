@@ -1,7 +1,21 @@
 import { useTranslation } from 'react-i18next'
 import { usePreconsulta } from '../preconsultaStore'
+import { DEPTOS } from '../../../data/sanjuan'
+import type { Cerca, Vive } from '../../../scoring/equity'
 
 const SEXOS = ['Mujer', 'Hombre'] as const
+const VIVE: Vive[] = ['campo', 'pueblo', 'ciudad']
+const CERCA: { value: Cerca; key: string }[] = [
+  { value: '<15', key: 'lt15' },
+  { value: '15-30', key: 'm15' },
+  { value: '30-60', key: 'm30' },
+  { value: '>60', key: 'gt60' },
+  { value: 'nose', key: 'nose' },
+]
+
+const btn = (sel: boolean) =>
+  'rounded-lg border px-3 py-2 text-sm font-medium transition ' +
+  (sel ? 'border-secondary bg-secondary text-white' : 'border-line bg-bg text-ink hover:border-secondary')
 
 export function DemografiaStep() {
   const { t } = useTranslation()
@@ -33,24 +47,16 @@ export function DemografiaStep() {
         <div>
           <span className="block text-sm font-medium text-ink">{t('pre.demografia.sexoLabel')}</span>
           <div className="mt-2 flex gap-2">
-            {SEXOS.map((sx) => {
-              const sel = demo.sexo === sx
-              return (
-                <button
-                  key={sx}
-                  onClick={() => setDemo({ sexo: sx })}
-                  aria-pressed={sel}
-                  className={
-                    'rounded-lg border px-4 py-2 text-sm font-medium transition ' +
-                    (sel
-                      ? 'border-secondary bg-secondary text-white'
-                      : 'border-line bg-bg text-ink hover:border-secondary')
-                  }
-                >
-                  {t(`pre.demografia.sexo_${sx === 'Mujer' ? 'mujer' : 'hombre'}`)}
-                </button>
-              )
-            })}
+            {SEXOS.map((sx) => (
+              <button
+                key={sx}
+                onClick={() => setDemo({ sexo: sx })}
+                aria-pressed={demo.sexo === sx}
+                className={btn(demo.sexo === sx)}
+              >
+                {t(`pre.demografia.sexo_${sx === 'Mujer' ? 'mujer' : 'hombre'}`)}
+              </button>
+            ))}
           </div>
         </div>
 
@@ -71,6 +77,57 @@ export function DemografiaStep() {
             className="mt-1 w-32 rounded-xl border border-line bg-surface px-4 py-3 text-ink focus:border-secondary"
           />
           <p className="mt-1 text-sm text-muted">{t('pre.demografia.eduHint')}</p>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-ink" htmlFor="depto">
+            {t('pre.demografia.deptoLabel')}
+          </label>
+          <select
+            id="depto"
+            value={demo.depto ?? ''}
+            onChange={(e) => setDemo({ depto: e.target.value || undefined })}
+            className="mt-1 w-full rounded-xl border border-line bg-surface px-4 py-3 text-ink focus:border-secondary"
+          >
+            <option value="">{t('pre.demografia.deptoPlaceholder')}</option>
+            {DEPTOS.map((d) => (
+              <option key={d} value={d}>
+                {d}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <span className="block text-sm font-medium text-ink">{t('pre.demografia.viveLabel')}</span>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {VIVE.map((vv) => (
+              <button
+                key={vv}
+                onClick={() => setDemo({ vive: vv })}
+                aria-pressed={demo.vive === vv}
+                className={btn(demo.vive === vv)}
+              >
+                {t(`pre.demografia.vive_${vv}`)}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <span className="block text-sm font-medium text-ink">{t('pre.demografia.cercaLabel')}</span>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {CERCA.map((c) => (
+              <button
+                key={c.key}
+                onClick={() => setDemo({ cerca: c.value })}
+                aria-pressed={demo.cerca === c.value}
+                className={btn(demo.cerca === c.value)}
+              >
+                {t(`pre.demografia.cerca_${c.key}`)}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </div>
