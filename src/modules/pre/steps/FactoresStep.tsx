@@ -3,7 +3,7 @@ import { FACTOR_QUESTIONS } from '../harmonizedFactores'
 import { usePreconsulta } from '../preconsultaStore'
 
 const btn = (sel: boolean) =>
-  'rounded-lg border px-2.5 py-1.5 text-xs font-medium transition ' +
+  'rounded-lg border px-3 py-2.5 text-sm font-medium transition ' +
   (sel ? 'border-secondary bg-secondary text-white' : 'border-line bg-bg text-ink hover:border-secondary')
 
 export function FactoresStep() {
@@ -24,7 +24,6 @@ export function FactoresStep() {
                 {q.text}
                 {q.unit ? ` (${q.unit})` : ''}
               </p>
-              <p className="mt-0.5 text-[11px] text-muted">{q.feeds}</p>
 
               {q.type === 'number' && (
                 <input

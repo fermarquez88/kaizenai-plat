@@ -10,10 +10,15 @@
     "fontLarger": "Agrandar la letra",
     "voice": "Leer en voz alta",
     "soon": "Próximamente",
-    "start": "Empezar"
+    "start": "Empezar",
+    "loading": "Cargando…",
+    "required": "*",
+    "optional": "(opcional)",
+    "skip": "Saltar al contenido"
   },
   "instrumento": {
-    "progress": "Respondidas: {{current}} de {{total}}"
+    "progress": "Respondidas: {{current}} de {{total}}",
+    "help": "Si no sabés una respuesta, dejala en blanco o pasá a la siguiente. Podés cambiar una respuesta tocando otra opción."
   },
   "home": {
     "title": "Elegí tu espacio",
@@ -102,15 +107,17 @@
     "prevencion": {
       "title": "Prevención — factores que podés cuidar",
       "intro": "Respondé con sinceridad. Esto es una estimación, no un diagnóstico: te muestra qué factores podés trabajar para cuidar tu salud cerebral.",
+      "whatToDo": "¿Qué puedo hacer?",
       "answer": { "si": "Sí", "no": "No", "nose": "No sé" }
     },
     "factores": {
-      "title": "Tus factores (para los índices de riesgo)",
-      "intro": "Unas preguntas más, graduadas, que alimentan varios índices a la vez (LIBRA, CAIDE, ANU-ADRI). Lo que no sepas, dejalo en blanco."
+      "title": "Unas preguntas más sobre tus hábitos",
+      "intro": "Sirven para entender mejor tu salud cerebral. Lo que no sepas, dejalo en blanco."
     },
     "demografia": {
       "title": "Sobre vos",
       "intro": "Estos datos ayudan a interpretar el resultado: la norma se ajusta por educación (criterio Bruno).",
+      "fieldHint": "Los campos con * son obligatorios. Si no sabés un dato, dejalo en blanco.",
       "edad": "Edad",
       "sexoLabel": "Sexo",
       "sexo_mujer": "Mujer",
@@ -134,6 +141,7 @@
       "title": "Memoria y cambios cognitivos",
       "intro": "Pensá en los últimos meses y respondé Sí o No. Estas respuestas alimentan el modelo.",
       "note": "Estas respuestas alimentan el modelo Kaizen-MRCA (estimación de primer nivel, no diagnóstico).",
+      "modelNoteLay": "Estimación de primer nivel para orientar, no un diagnóstico.",
       "modelNote": "Estimación del modelo Kaizen-MRCA (AUC ~0,80 en desarrollo / ~0,63 en validación). Cribado de primer nivel, no diagnóstico.",
       "preliminary": "estimación preliminar",
       "band": { "bajo": "bajo", "moderado": "moderado", "alto": "alto" },
@@ -153,18 +161,19 @@
       "search": "Buscar un medicamento…",
       "empty": "Todavía no agregaste medicamentos.",
       "flags": {
-        "poly": "Polifarmacia: {{n}} medicamentos (5 o más). Conviene revisar si todos son necesarios.",
-        "acb": "Carga anticolinérgica alta (ACB {{n}}). Puede afectar la memoria; revisar con el médico.",
-        "bzd": "{{n}} benzodiacepina(s)/sedante(s). Riesgo de caídas y confusión; revisar.",
-        "beers": "{{n}} medicamento(s) a revisar según uso en mayores (Beers/STOPP).",
-        "antidementia": "Ya hay tratamiento antidemencia en curso (donepecilo/memantina) — informativo.",
-        "none": "Sin alertas farmacológicas por ahora."
+        "poly": "Tomás {{n}} medicamentos (5 o más). Conviene revisar con tu equipo si todos son necesarios.",
+        "acb": "Algunos de tus medicamentos pueden afectar la memoria. Conviene revisarlos con tu médico/a.",
+        "bzd": "{{n}} medicamento(s) para dormir o calmar los nervios: pueden dar caídas o confusión. Conviene revisar.",
+        "beers": "{{n}} medicamento(s) que en personas mayores conviene revisar con el equipo de salud.",
+        "antidementia": "Ya hay tratamiento para la memoria en curso (donepecilo/memantina) — informativo.",
+        "none": "Sin alertas en la medicación por ahora."
       },
       "disclaimer": "Señala para revisión profesional. No prescribe ni suspende tratamientos. Valores orientativos."
     },
     "banderas": {
       "title": "Señales de alarma",
       "intro": "Marcá si aparece alguna de estas situaciones.",
+      "help": "Marcá solo las que notaste. Si no estás seguro/a, dejalo sin marcar.",
       "warning": "Hay señales de alarma: conviene una consulta prioritaria.",
       "items": {
         "rapid": "Empeoramiento rápido (en semanas).",
@@ -250,7 +259,26 @@
   },
   "triage": {
     "levelLabel": "Prioridad sugerida",
-    "instruments": "Escalas",
+    "meaningTitle": "¿Qué significa esto?",
+    "nextStepTitle": "¿Qué hago ahora?",
+    "meaning": {
+      "verde": "Verde — tranquilo/a. No vimos señales que pidan una consulta urgente. Seguí con tus controles de siempre y cuidando tus hábitos.",
+      "amarillo": "Amarillo — conviene revisar, sin alarmarse. No es urgente, pero sería bueno que un profesional te evalúe en las próximas semanas.",
+      "rojo": "Rojo — mejor no esperar. Conviene que un especialista te vea pronto. Esto NO quiere decir que tengas una enfermedad: es para que te atiendan rápido."
+    },
+    "instruments": "Tus respuestas en detalle",
+    "instrumentsPlain": {
+      "cqc": "Memoria (cómo la sentís vos)",
+      "gds": "Estado de ánimo",
+      "tadlq": "Tareas del día a día",
+      "ad8": "Cambios notados",
+      "iqcode": "Memoria (según un familiar)",
+      "faq": "Funcionalidad (según un familiar)",
+      "gad": "Ansiedad",
+      "ucla": "Sensación de soledad"
+    },
+    "instrumentsSkipped": "Si dejaste alguna sección sin responder, no aparece acá. Completarlas le da más detalle a tu equipo.",
+    "comparadoresIntro": "Estas son reglas científicas de riesgo. Miran cosas parecidas desde distintos ángulos. Importa la tendencia, no el número exacto.",
     "urgent": {
       "title": "Señales que conviene no esperar",
       "donde": "Dónde ir: {{guardia}}.",
@@ -280,11 +308,20 @@
       "low": "Sin señales de alarma ni puntajes altos."
     },
     "stats": {
-      "risk": "Factores modificables",
+      "risk": "Cosas que podés mejorar",
       "riskValue": "{{n}} de 14",
-      "mrca": "MRCA",
-      "meds": "Medicamentos",
+      "riskHelp": "Hábitos y cuidados de salud que están en tus manos. Que aparezcan varios no es una mala noticia: son justo las cosas sobre las que sí podés actuar.",
+      "mrca": "Riesgo estimado de memoria",
+      "mrcaHelp": "Estimación según tus respuestas, no un diagnóstico. Bajo = seguí como venís · Moderado = conviene revisar sin apuro · Alto = buscá una cita pronto.",
+      "meds": "Medicamentos a revisar",
       "redflags": "Señales de alarma"
+    },
+    "factorsExplain": "Encontramos {{n}} de 14 cosas que están en tus manos, como {{ejemplos}}. Que aparezcan varias es una buena noticia: son justo las que podés trabajar para cuidar tu memoria.",
+    "factorsExplainNone": "No marcaste factores para mejorar entre los 14 que miramos. Seguí cuidando tus hábitos.",
+    "mrcaBandExplain": {
+      "bajo": "Según tus respuestas no aparecen muchas señales. Seguí como venís.",
+      "moderado": "No es una urgencia, pero conviene que un profesional lo revise para quedarte tranquilo/a.",
+      "alto": "Conviene buscar una evaluación pronto. Es una estimación, no un diagnóstico."
     },
     "export": {
       "title": "Compartir con el equipo de salud",
@@ -292,10 +329,15 @@
       "fhir": "Exportar FHIR",
       "print": "Imprimir / PDF"
     },
+    "disclaimerShort": "Estimación orientativa. No es un diagnóstico — consultá con tu equipo de salud.",
     "disclaimer": "Resultado orientativo (estimación con valores a validar). No diagnostica ni reemplaza al profesional. Tus datos quedan en este dispositivo."
   },
   "pro": {
     "title": "Para el profesional · modelo y comparadores",
+    "secResumen": "Resumen ejecutivo",
+    "secMrca": "Modelo MRCA (detalle técnico)",
+    "secComparadores": "Comparadores validados",
+    "mrcaValidation": "AUC ~0,80 en desarrollo / ~0,63 en validación. Cribado de primer nivel, no diagnóstico.",
     "lancetNote": "El “riesgo modificable” de la Comisión Lancet es una métrica POBLACIONAL (fracción atribuible, PAF), no un riesgo individual. Por eso acá se muestran los factores presentes, no un porcentaje individual. El riesgo individual lo dan el modelo MRCA y los comparadores de abajo.",
     "mrcaTitle": "Modelo MRCA (Kaizen-MRCA v1)",
     "cut": "Corte (educación)",
@@ -309,14 +351,15 @@
     "disclaimer": "Comparadores de investigación, ponderados por riesgo relativo; requieren RECALIBRACIÓN LOCAL. No para decisión clínica de forma aislada."
   },
   "equity": {
-    "title": "Contexto de vulnerabilidad",
+    "title": "Contexto del acompañamiento",
+    "intro": "Esto no es un juicio sobre vos. Nos ayuda a acompañarte mejor según dónde y cómo vivís, para que nadie se pierda en el seguimiento.",
     "note": "Lo tenemos en cuenta para que el acceso a la salud sea más justo, no para etiquetar.",
     "factors": {
       "rural": "Vive en el campo",
       "lejos": "Lejos del centro de salud",
-      "bajaEdu": "Baja escolaridad",
+      "bajaEdu": "Menos años de escuela",
       "edu": "Escolaridad media",
-      "aislamiento": "Aislamiento social",
+      "aislamiento": "Poco contacto social",
       "edad80": "80 años o más"
     }
   },
@@ -386,7 +429,7 @@
       "title": "Antes de empezar",
       "intro": "Esta herramienta orienta y ayuda a derivar mejor. No diagnostica ni reemplaza a un profesional. Para continuar, leé y aceptá:",
       "points": {
-        "0": "Pedimos solo lo necesario. Sin datos identificatorios (usá iniciales o un alias).",
+        "0": "Pedimos solo lo necesario. Sin tu nombre real — usá iniciales o un apodo.",
         "1": "Todo se guarda en este dispositivo. Vos decidís si lo compartís.",
         "2": "El resultado es una estimación, no un diagnóstico.",
         "3": "Podés ver, exportar o borrar tus datos cuando quieras."

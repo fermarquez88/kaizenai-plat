@@ -17,6 +17,7 @@ export function InstrumentStep({ id }: { id: string }) {
       <p className="mt-2 text-sm text-secondary-text">
         {t('instrumento.progress', { current: sc.answered, total: inst.items.length })}
       </p>
+      <p className="mt-1 text-sm text-muted">{t('instrumento.help')}</p>
 
       <ul className="mt-4 space-y-3">
         {inst.items.map((it, i) => (
@@ -33,7 +34,7 @@ export function InstrumentStep({ id }: { id: string }) {
                     onClick={() => setItem(id, i, o.value)}
                     aria-pressed={sel}
                     className={
-                      'rounded-lg border px-2.5 py-1.5 text-xs font-medium transition ' +
+                      'rounded-lg border px-3 py-2.5 text-sm font-medium transition ' +
                       (sel
                         ? 'border-secondary bg-secondary text-white'
                         : 'border-line bg-bg text-ink hover:border-secondary')

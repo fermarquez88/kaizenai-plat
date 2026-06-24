@@ -60,12 +60,16 @@ export function PreconsultaFlow() {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-6 pb-28">
-      <div className="mb-3 flex items-center gap-1.5 no-print">
+      <div
+        className="mb-3 flex items-center gap-1.5 no-print"
+        role="progressbar"
+        aria-valuenow={step + 1}
+        aria-valuemin={1}
+        aria-valuemax={STEPS.length}
+        aria-label={t(`preconsulta.steps.${entry.id}`)}
+      >
         {STEPS.map((s, i) => (
-          <div
-            key={s.id}
-            className={'h-1.5 flex-1 rounded-full ' + (i <= step ? 'bg-secondary' : 'bg-line')}
-          />
+          <div key={s.id} className={'h-2 flex-1 rounded-full ' + (i <= step ? 'bg-secondary' : 'bg-line')} />
         ))}
       </div>
       <p className="mb-4 text-sm text-muted no-print">

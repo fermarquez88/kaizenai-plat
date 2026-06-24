@@ -54,6 +54,9 @@ export interface RiskScore {
   computable: boolean
   value: number | null
   detail: string
+  interpret?: string // explicación en lenguaje claro (qué significa, no sólo el número)
+  barMin?: number // rango de la barra visual SÓLO si la fuente define un rango (LIBRA, CAIDE)
+  barMax?: number
   source: string
   caveat: string
   url?: string
@@ -78,6 +81,7 @@ export function anuAdri(i: RiskInputs): RiskScore {
       computable: false,
       value: null,
       detail: 'requiere edad, sexo y educación',
+      interpret: 'Necesita edad, sexo y años de educación para calcularse.',
       source: 'Anstey 2014 (PLOS One, Tabla 2)',
       caveat: 'Versión autorreporte de 11 factores.',
     }
@@ -106,6 +110,8 @@ export function anuAdri(i: RiskInputs): RiskScore {
     computable: true,
     value: v,
     detail: `${v} pts (11 factores; ↑ = ↑ riesgo)`,
+    interpret:
+      'Suma factores de tu historia y tus hábitos: a más puntos, más conviene cuidarse. Lo que más ayuda a bajarlo: moverte, mantener la mente activa y los vínculos.',
     source: 'Anstey 2014 (PLOS One, Tabla 2; pesos verificados)',
     caveat:
       'IMC y colesterol EXCLUIDOS por diseño en esta versión; alcohol "excesivo" sin puntaje en la fuente. Recalibrar localmente.',
@@ -127,12 +133,16 @@ export function libra(i: RiskInputs): RiskScore {
   if (i.renal) v += 1.1
   if (esInactivo(i)) v += 1.1
   if (i.cardiopatia) v += 1.0
+  const nivel = v <= 0 ? 'vas bien' : v <= 3 ? 'hay margen para mejorar' : 'varias cosas para trabajar'
   return {
     id: 'libra',
     name: 'LIBRA',
     computable: true,
     value: round1(v),
     detail: `${round1(v)} (rango −5,9 a +12,7; ↑ = ↑ riesgo modificable)`,
+    interpret: `Mira hábitos y salud que se pueden cambiar (presión, peso, actividad, ánimo). Más bajo es mejor: tu valor da ${round1(v)} (${nivel}). Casi todo lo que cuenta acá se puede mejorar.`,
+    barMin: -5.9,
+    barMax: 12.7,
     source: 'Schiepers 2018; validado Vos 2017, Rosenau 2024 (12 factores)',
     caveat: 'Ponderado por riesgo relativo. Recalibrar localmente.',
   }
@@ -148,6 +158,7 @@ export function caide(i: RiskInputs): RiskScore {
       computable: false,
       value: null,
       detail: 'requiere edad y educación',
+      interpret: 'Necesita edad y años de educación para calcularse.',
       source: 'Kivipelto 2006 (Lancet Neurol)',
       caveat: 'Score de mediana edad.',
     }
@@ -168,6 +179,9 @@ export function caide(i: RiskInputs): RiskScore {
     computable: true,
     value: v,
     detail: `${v}/15 · riesgo a 20 años ${r20}${medido ? '' : ' (proxy)'}`,
+    interpret: `Fue pensada para personas de mediana edad; en mayores tomala como referencia general, no como número exacto para tu edad. Tu valor: ${v} de 15.`,
+    barMin: 0,
+    barMax: 15,
     source: 'Kivipelto 2006 (Lancet Neurol)',
     caveat: medido
       ? 'Validado en MEDIANA EDAD: interpretar con cautela en mayores.'
@@ -184,6 +198,7 @@ export function cogdrisk(_i: RiskInputs): RiskScore {
     computable: false,
     value: null,
     detail: '17 factores; la app ya recoge sus inputs (edad×sexo, diabetes, ictus, FA, insomnio, depresión…)',
+    interpret: 'No se calcula en esta app. Si querés un detalle más completo, podés hacer el cuestionario oficial.',
     source: 'Anstey 2022 (Alzheimers Dement DADM); verificación: pesos OK, algoritmo no reproducible',
     caveat: 'El puntaje validado se computa en la herramienta oficial (cuestionario completo).',
     url: 'https://www.cogdrisk.com',

@@ -53,7 +53,11 @@ export function DashboardShell() {
             'block rounded-xl border border-line bg-surface p-4 transition hover:-translate-y-0.5 hover:shadow-card'
           if (!rel) {
             return (
-              <div key={i} className="rounded-xl border border-line bg-surface p-4">
+              <div
+                key={i}
+                aria-disabled
+                className="rounded-xl border border-dashed border-line bg-surface p-4 opacity-70"
+              >
                 {body}
               </div>
             )

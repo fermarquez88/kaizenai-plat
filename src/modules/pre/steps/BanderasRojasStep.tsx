@@ -12,6 +12,7 @@ export function BanderasRojasStep() {
     <div>
       <h1 className="font-serif text-2xl text-ink">{t('pre.banderas.title')}</h1>
       <p className="mt-2 text-muted">{t('pre.banderas.intro')}</p>
+      <p className="mt-1 text-sm text-muted">{t('pre.banderas.help')}</p>
       <ul className="mt-5 space-y-2">
         {RED_FLAGS.map((id) => {
           const on = present.includes(id)

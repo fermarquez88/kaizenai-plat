@@ -15,6 +15,12 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-20 focus:rounded-lg focus:bg-primary focus:px-3 focus:py-2 focus:text-white"
+      >
+        {t('common.skip')}
+      </a>
       <header className="sticky top-0 z-10 border-b border-line bg-bg/85 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between gap-3 px-4">
           <div className="flex items-center gap-2">
@@ -22,7 +28,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               <button
                 onClick={() => navigate(-1)}
                 aria-label={t('common.back')}
-                className="rounded-lg p-2 text-muted hover:bg-surface"
+                className="rounded-lg p-3 text-muted hover:bg-surface"
               >
                 <ArrowLeft size={20} />
               </button>
@@ -40,7 +46,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             <button
               onClick={decFont}
               aria-label={t('common.fontSmaller')}
-              className="rounded-lg p-2 text-muted hover:bg-surface"
+              className="rounded-lg p-3 text-muted hover:bg-surface"
             >
               <Minus size={18} />
             </button>
@@ -50,7 +56,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             <button
               onClick={incFont}
               aria-label={t('common.fontLarger')}
-              className="rounded-lg p-2 text-muted hover:bg-surface"
+              className="rounded-lg p-3 text-muted hover:bg-surface"
             >
               <Plus size={18} />
             </button>
@@ -68,13 +74,13 @@ export function AppShell({ children }: { children: ReactNode }) {
                 }
               }}
               aria-label={t('common.voice')}
-              className="rounded-lg p-2 text-muted hover:bg-surface"
+              className="rounded-lg p-3 text-muted hover:bg-surface"
             >
               <Volume2 size={18} />
             </button>
             <span
               className="ml-1 rounded-full border border-line bg-surface px-2 py-1 text-xs font-semibold text-secondary-text"
-              title={t('common.soon')}
+              title="Español"
             >
               ES
             </span>
@@ -82,7 +88,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       </header>
 
-      <main className="flex-1">{children}</main>
+      <main id="main" className="flex-1">{children}</main>
 
       <footer className="border-t border-line bg-surface no-print">
         <div className="mx-auto flex max-w-5xl flex-col items-center gap-1 px-4 py-4 text-center text-xs text-muted">

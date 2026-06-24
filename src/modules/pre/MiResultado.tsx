@@ -8,7 +8,7 @@ import type { PreAssessmentSummary, TriageLevel } from '../../data/types'
 
 const STYLE: Record<TriageLevel, string> = {
   verde: 'border-verde bg-verde/10 text-verde-text',
-  amarillo: 'border-amarillo bg-amarillo/10 text-accent-text',
+  amarillo: 'border-amarillo bg-amarillo/10 text-ink',
   rojo: 'border-rojo bg-rojo/10 text-rojo-text',
 }
 
@@ -42,7 +42,11 @@ export function MiResultado() {
   }
 
   if (a === undefined) {
-    return <div className="mx-auto max-w-2xl px-4 py-8 text-muted">…</div>
+    return (
+      <div role="status" className="mx-auto max-w-2xl px-4 py-8 text-muted">
+        {t('common.loading')}
+      </div>
+    )
   }
 
   return (
@@ -69,13 +73,22 @@ export function MiResultado() {
         </div>
       ) : (
         <>
-          <div className={`mt-5 flex items-center gap-3 rounded-2xl border p-5 ${STYLE[a.triage]}`}>
+          <div
+            role="status"
+            aria-label={`${t('triage.levelLabel')}: ${t(`triage.level.${a.triage}`)}`}
+            className={`mt-5 flex items-center gap-3 rounded-2xl border p-5 ${STYLE[a.triage]}`}
+          >
             <LevelIcon level={a.triage} />
             <div>
               <p className="text-xs uppercase tracking-wide opacity-80">{t('triage.levelLabel')}</p>
               <p className="font-serif text-2xl">{t(`triage.level.${a.triage}`)}</p>
             </div>
           </div>
+          <section className="mt-3 rounded-2xl border border-line bg-surface p-5 shadow-card">
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">{t('triage.meaningTitle')}</h2>
+            <p className="mt-2 text-lg text-ink">{t(`triage.meaning.${a.triage}`)}</p>
+            <p className="mt-3 text-sm text-muted">{t('triage.disclaimerShort')}</p>
+          </section>
           <p className="mt-3 rounded-xl border border-line bg-surface p-3 text-ink">
             {t(`triage.action.${a.triage}`)}
           </p>
@@ -83,7 +96,7 @@ export function MiResultado() {
             href={cidiTurnoLink(t(`triage.level.${a.triage}`))}
             target="_blank"
             rel="noreferrer"
-            className="mt-3 inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 font-medium text-white"
+            className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 font-medium text-white sm:w-auto"
           >
             <CalendarCheck size={18} /> {t('triage.turno')}
           </a>
