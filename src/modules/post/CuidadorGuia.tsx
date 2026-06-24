@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { ExternalLink, LifeBuoy } from 'lucide-react'
 import { ZARIT_ITEMS, ZARIT_MAX, computeZarit } from '../../scoring/zarit'
+import { CONDUCTAS } from '../../data/conductas'
 
 const GUIDE_URL = 'https://fermarquez88.github.io/kaizenai-cuidadores/'
 const OPTS = [0, 1, 2, 3, 4] as const
@@ -96,6 +97,42 @@ export function CuidadorGuia() {
               </div>
             ))}
           </div>
+
+          <h3 className="mt-6 font-serif text-lg text-ink">{t('post.cuidador.conductas.title')}</h3>
+          <p className="mt-1 text-sm text-muted">{t('post.cuidador.conductas.intro')}</p>
+          <ul className="mt-3 space-y-2">
+            {CONDUCTAS.map((c) => (
+              <li key={c.id}>
+                <details className="rounded-xl border border-line bg-surface p-4">
+                  <summary className="cursor-pointer font-medium text-ink">{c.titulo}</summary>
+                  <p className="mt-2 text-sm text-muted">
+                    <span className="font-medium text-ink">Por qué pasa: </span>
+                    {c.porque}
+                  </p>
+                  <p className="mt-2 text-sm text-muted">
+                    <span className="font-medium text-secondary-text">DICE: </span>
+                    {c.dice}
+                  </p>
+                  <ul className="mt-2 space-y-1">
+                    {c.tips.map((tip, i) => (
+                      <li key={i} className="flex items-start gap-2 text-sm text-ink">
+                        <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-secondary" />
+                        {tip}
+                      </li>
+                    ))}
+                  </ul>
+                </details>
+              </li>
+            ))}
+          </ul>
+          <a
+            href={GUIDE_URL}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-3 inline-block text-sm text-secondary-text underline underline-offset-2"
+          >
+            {t('post.cuidador.conductas.more')}
+          </a>
         </section>
       )}
 

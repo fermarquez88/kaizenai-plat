@@ -49,7 +49,7 @@ export function DemografiaStep() {
           <>
             <div>
               <label className="block text-sm font-medium text-ink" htmlFor="phone">
-                {t('pre.demografia.phoneLabel')} <span className="text-muted">{t('common.optional')}</span>
+                {t('pre.demografia.phoneLabel')} <span className="text-rojo-text" aria-hidden>{t('common.required')}</span>
               </label>
               <input
                 id="phone"

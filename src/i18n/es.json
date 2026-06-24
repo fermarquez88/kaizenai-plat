@@ -418,7 +418,7 @@
   },
   "zarit": {
     "title": "¿Cómo venís vos? (sobrecarga del cuidador)",
-    "intro": "12 preguntas breves sobre cómo te sentís cuidando. Es para vos y queda en tu dispositivo.",
+    "intro": "Este test es PRIVADO, solo para vos: no se reporta a nadie y queda en este dispositivo. Son 12 preguntas breves sobre cómo te sentís cuidando.",
     "options": { "0": "Nunca", "1": "Rara vez", "2": "A veces", "3": "Bastante", "4": "Casi siempre" },
     "bands": {
       "poca": "sobrecarga baja",
@@ -469,6 +469,11 @@
         "i": { "t": "Investigar", "b": "¿Qué pudo causarlo? Dolor, hambre, miedo, ruido, medicación, aburrimiento.", "ej": "Ej.: ¿tenía hambre o dolor? ¿estaba cansado/a? ¿había mucho ruido?" },
         "c": { "t": "Crear", "b": "Probá un plan: ajustar el entorno, la rutina o la forma de comunicar.", "ej": "Ej.: bajar la radio, ofrecer un mate y dejar la llave siempre en el mismo lugar." },
         "e": { "t": "Evaluar", "b": "¿Funcionó? Si no, volvé a investigar y probá otra cosa.", "ej": "Ej.: probá una semana; si se repite, cambiá una sola cosa por vez." }
+      },
+      "conductas": {
+        "title": "Conductas frecuentes (DICE aplicado)",
+        "intro": "Tocá cada situación para ver por qué pasa y qué hacer.",
+        "more": "¿Tu situación no aparece? Abrí la guía completa"
       },
       "help": {
         "title": "Necesito ayuda ahora",
