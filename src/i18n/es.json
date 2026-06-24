@@ -22,6 +22,7 @@
     "help": "Si no sabés una respuesta, dejala en blanco o pasá a la siguiente. Podés cambiar una respuesta tocando otra opción."
   },
   "home": {
+    "demoBanner": "Recorrido de la red · vista de demostración: entrá por cada espacio para ver cómo se conecta.",
     "title": "Elegí tu espacio",
     "subtitle": "Esta red acompaña la salud cerebral antes y después del diagnóstico. Entrá por el espacio que te representa.",
     "example": "Ver un caso de ejemplo",
@@ -53,7 +54,8 @@
       "0": { "t": "¿Cómo venís vos?", "d": "Índice de estrés del cuidador (Zarit, ánimo)." },
       "1": { "t": "Qué hago en cada situación", "d": "Manejo no farmacológico — método DICE." },
       "2": { "t": "Guía para cuidadores", "d": "Material práctico, también sin conexión." },
-      "3": { "t": "Necesito ayuda ahora", "d": "Recursos inmediatos y contacto." }
+      "3": { "t": "Necesito ayuda ahora", "d": "Recursos inmediatos y contacto." },
+      "4": { "t": "Cribar a quien cuido", "d": "Evaluá a tu familiar desde lo que vos notás." }
     },
     "agente": {
       "0": { "t": "Mi gente", "d": "Personas en seguimiento en el territorio." },
@@ -80,6 +82,7 @@
   },
   "preconsulta": {
     "stepLabel": "Paso {{current}} de {{total}} · {{name}}",
+    "finish": "Listo, volver a mi espacio",
     "steps": {
       "modo": "Quién responde",
       "demografia": "Sobre vos",
@@ -117,7 +120,7 @@
     },
     "demografia": {
       "title": "Sobre vos",
-      "intro": "Estos datos ayudan a interpretar el resultado: la norma se ajusta por educación (criterio Bruno).",
+      "intro": "Estos datos nos ayudan a interpretar mejor tu resultado.",
       "fieldHint": "Los campos con * son obligatorios. Si no sabés un dato, dejalo en blanco.",
       "aliasLabel": "Iniciales o apodo",
       "aliasPlaceholder": "Ej.: M. R.",
@@ -339,6 +342,7 @@
       "json": "Descargar archivo",
       "fhir": "Exportar FHIR",
       "print": "Imprimir / PDF",
+      "more": "Más opciones (para tu equipo)",
       "privacyNote": "El alias viaja en el enlace de WhatsApp sin cifrar. Si preferís más privacidad, usá “Copiar resumen”."
     },
     "derivLabel": "Derivación",
@@ -428,6 +432,7 @@
     },
     "cuidador": {
       "title": "Guía del cuidador",
+      "tabs": { "zarit": "¿Cómo venís vos?", "dice": "Conductas difíciles", "ayuda": "Necesito ayuda" },
       "dice": {
         "title": "Método DICE — para conductas difíciles",
         "intro": "Las conductas son comunicación. DICE ayuda a entender y responder sin pelear.",

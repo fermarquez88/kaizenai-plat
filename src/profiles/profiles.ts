@@ -21,7 +21,7 @@ export interface ProfileDef {
 
 export const PROFILES: ProfileDef[] = [
   { id: 'paciente', icon: User, accent: 'secondary', moduleCount: 3 },
-  { id: 'cuidador', icon: HeartHandshake, accent: 'primary', moduleCount: 4 },
+  { id: 'cuidador', icon: HeartHandshake, accent: 'primary', moduleCount: 5 },
   { id: 'agente', icon: MapPin, accent: 'secondary', moduleCount: 4 },
   { id: 'gestor', icon: BarChart3, accent: 'accent', moduleCount: 3 },
   { id: 'unidad', icon: Building2, accent: 'secondary', moduleCount: 3 },
@@ -43,10 +43,11 @@ export const accentText: Record<Accent, string> = {
 export const MODULE_LINKS: Partial<Record<ProfileId, Record<number, string>>> = {
   paciente: { 0: 'preconsulta', 1: 'mi-resultado', 2: 'post/paciente' },
   cuidador: {
-    0: 'post/cuidador',
-    1: 'post/cuidador',
+    0: 'post/cuidador?tab=zarit',
+    1: 'post/cuidador?tab=dice',
     2: 'https://fermarquez88.github.io/kaizenai-cuidadores/',
-    3: 'post/cuidador',
+    3: 'post/cuidador?tab=ayuda',
+    4: 'preconsulta',
   },
   agente: { 0: 'seguimiento', 1: 'preconsulta', 2: 'red/cola', 3: 'agenda' },
   gestor: { 0: 'red/tablero', 1: 'red/cola', 2: 'metricas' },

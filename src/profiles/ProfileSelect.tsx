@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
-import { ShieldCheck, Sparkles } from 'lucide-react'
+import { Compass, ShieldCheck, Sparkles } from 'lucide-react'
 import { PROFILES } from './profiles'
 import { ProfileCard } from '../components/ProfileCard'
 
@@ -8,6 +8,9 @@ export function ProfileSelect() {
   const { t } = useTranslation()
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 sm:py-10">
+      <div className="mx-auto mb-6 flex max-w-2xl items-center justify-center gap-2 rounded-full border border-line bg-surface px-4 py-2 text-center text-sm text-secondary-text">
+        <Compass size={16} aria-hidden /> {t('home.demoBanner')}
+      </div>
       <header className="mb-8 text-center">
         <h1 className="font-serif text-3xl text-ink sm:text-4xl">{t('home.title')}</h1>
         <p className="mx-auto mt-3 max-w-2xl text-muted">{t('home.subtitle')}</p>

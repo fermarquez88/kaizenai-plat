@@ -1,6 +1,7 @@
 import { useEffect, useState, type ComponentType } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { ArrowLeft, ArrowRight } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Check } from 'lucide-react'
 import { usePreconsulta } from './preconsultaStore'
 import { useSettings } from '../../lib/store'
 import { ConsentScreen } from '../gov/ConsentScreen'
@@ -23,10 +24,19 @@ interface Step {
 const SELF = ['cqc', 'gds', 'tadlq']
 const INFORMANT = ['ad8', 'iqcode', 'faq']
 
-function buildSteps(modo?: string): Step[] {
+// El PERFIL ya dijo quién es: derivamos el modo y NO lo volvemos a preguntar.
+// Sólo el agente (perfil sin modo fijo) elige "¿quién responde?" en el flujo.
+function modoFromProfile(profileId?: string): 'persona' | 'cuidador' | undefined {
+  if (profileId === 'paciente') return 'persona'
+  if (profileId === 'cuidador') return 'cuidador'
+  return undefined
+}
+
+function buildSteps(modo: string | undefined, askModo: boolean): Step[] {
   const inst = modo === 'cuidador' ? INFORMANT : SELF
-  return [
-    { id: 'modo', Component: ModoStep },
+  const steps: Step[] = []
+  if (askModo) steps.push({ id: 'modo', Component: ModoStep })
+  steps.push(
     { id: 'demografia', Component: DemografiaStep },
     { id: 'prevencion', Component: PrevencionStep },
     { id: 'factores', Component: FactoresStep },
@@ -34,26 +44,33 @@ function buildSteps(modo?: string): Step[] {
     { id: 'medicacion', Component: MedicacionStep },
     { id: 'banderas', Component: BanderasRojasStep },
     { id: 'resultado', Component: ResultadoStep },
-  ]
+  )
+  return steps
 }
 
 export function PreconsultaFlow() {
   const { t } = useTranslation()
+  const { profileId } = useParams()
+  const navigate = useNavigate()
   const reset = usePreconsulta((s) => s.reset)
+  const setDemo = usePreconsulta((s) => s.setDemo)
   const modo = usePreconsulta((s) => s.demo.modo)
   const consent = useSettings((s) => s.consentAccepted)
   const setConsent = useSettings((s) => s.setConsent)
   const [step, setStep] = useState(0)
 
-  // Empieza limpio cada vez que se entra al flujo.
+  // Empieza limpio y, si el perfil define el modo, lo setea (sin re-preguntar).
   useEffect(() => {
     reset()
-  }, [reset])
+    const m = modoFromProfile(profileId)
+    if (m) setDemo({ modo: m })
+  }, [reset, setDemo, profileId])
 
   // Consentimiento antes de cualquier captura.
   if (!consent) return <ConsentScreen onAccept={() => setConsent(true)} />
 
-  const STEPS = buildSteps(modo)
+  const askModo = !modoFromProfile(profileId)
+  const STEPS = buildSteps(modo, askModo)
   const entry = STEPS[step]
   const isLast = step === STEPS.length - 1
   const Current = entry.Component
@@ -91,12 +108,19 @@ export function PreconsultaFlow() {
           >
             <ArrowLeft size={18} /> {t('common.prev')}
           </button>
-          {!isLast && (
+          {!isLast ? (
             <button
               onClick={() => setStep((s) => Math.min(STEPS.length - 1, s + 1))}
               className="ml-auto inline-flex items-center gap-1 rounded-xl bg-primary px-5 py-2.5 font-medium text-white"
             >
               {t('common.next')} <ArrowRight size={18} />
+            </button>
+          ) : (
+            <button
+              onClick={() => navigate(`/p/${profileId ?? 'paciente'}`)}
+              className="ml-auto inline-flex items-center gap-1 rounded-xl bg-primary px-5 py-2.5 font-medium text-white"
+            >
+              <Check size={18} /> {t('preconsulta.finish')}
             </button>
           )}
         </div>

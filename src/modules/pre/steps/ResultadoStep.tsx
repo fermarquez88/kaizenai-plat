@@ -119,6 +119,8 @@ export function ResultadoStep() {
   }, [summary, demo, ensureSelfPersonId])
 
   const level = summary.triageLevel
+  // La persona ve por defecto la versión simple (sin el detalle profesional).
+  const simple = simpleMode || summary.modo === 'persona'
   const shareText = [
     `KaizenAI — cribado de salud cerebral${demo.alias ? ` · ${demo.alias}` : ''}`,
     `Prioridad sugerida: ${t(`triage.level.${level}`)}`,
@@ -275,8 +277,8 @@ export function ResultadoStep() {
         </section>
       )}
 
-      {/* 9 · Para el profesional (oculto en lectura fácil) */}
-      {!simpleMode && (
+      {/* 9 · Para el profesional (oculto en lectura fácil / para la persona) */}
+      {!simple && (
       <details className="mt-6 rounded-2xl border border-line bg-surface p-4">
         <summary className="flex cursor-pointer items-center justify-between gap-2 font-semibold text-ink">
           {t('pro.title')}
@@ -377,32 +379,37 @@ export function ResultadoStep() {
             <MessageCircle size={18} /> {t('triage.export.whatsapp')}
           </a>
           <button
-            onClick={copyResumen}
-            className="inline-flex items-center gap-2 rounded-xl border border-line bg-surface px-4 py-2.5 text-ink hover:bg-bg"
-          >
-            {copied ? <Check size={18} /> : <FileJson size={18} />}{' '}
-            {copied ? t('triage.export.copied') : t('triage.export.copy')}
-          </button>
-          <button
-            onClick={() => downloadJSON('preconsulta.json', summary)}
-            className="inline-flex items-center gap-2 rounded-xl border border-line bg-surface px-4 py-2.5 text-ink hover:bg-bg"
-          >
-            <FileJson size={18} /> {t('triage.export.json')}
-          </button>
-          <button
-            onClick={() => downloadJSON('preconsulta-fhir.json', toFhirBundle(summary))}
-            className="inline-flex items-center gap-2 rounded-xl border border-line bg-surface px-4 py-2.5 text-ink hover:bg-bg"
-          >
-            <Download size={18} /> {t('triage.export.fhir')}
-          </button>
-          <button
             onClick={() => window.print()}
             className="inline-flex items-center gap-2 rounded-xl border border-line bg-surface px-4 py-2.5 text-ink hover:bg-bg"
           >
             <Printer size={18} /> {t('triage.export.print')}
           </button>
         </div>
-        <p className="mt-2 text-xs text-muted">{t('triage.export.privacyNote')}</p>
+        <details className="mt-3">
+          <summary className="cursor-pointer text-sm text-secondary-text">{t('triage.export.more')}</summary>
+          <div className="mt-2 flex flex-wrap gap-2">
+            <button
+              onClick={copyResumen}
+              className="inline-flex items-center gap-2 rounded-xl border border-line bg-surface px-4 py-2.5 text-ink hover:bg-bg"
+            >
+              {copied ? <Check size={18} /> : <FileJson size={18} />}{' '}
+              {copied ? t('triage.export.copied') : t('triage.export.copy')}
+            </button>
+            <button
+              onClick={() => downloadJSON('preconsulta.json', summary)}
+              className="inline-flex items-center gap-2 rounded-xl border border-line bg-surface px-4 py-2.5 text-ink hover:bg-bg"
+            >
+              <FileJson size={18} /> {t('triage.export.json')}
+            </button>
+            <button
+              onClick={() => downloadJSON('preconsulta-fhir.json', toFhirBundle(summary))}
+              className="inline-flex items-center gap-2 rounded-xl border border-line bg-surface px-4 py-2.5 text-ink hover:bg-bg"
+            >
+              <Download size={18} /> {t('triage.export.fhir')}
+            </button>
+          </div>
+          <p className="mt-2 text-xs text-muted">{t('triage.export.privacyNote')}</p>
+        </details>
       </section>
 
       {summary.modo && (
