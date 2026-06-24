@@ -9,6 +9,7 @@
     "fontSmaller": "Achicar la letra",
     "fontLarger": "Agrandar la letra",
     "voice": "Leer en voz alta",
+    "voiceStop": "Dejar de leer",
     "soon": "Próximamente",
     "start": "Empezar",
     "loading": "Cargando…",
@@ -411,10 +412,10 @@
       "dice": {
         "title": "Método DICE — para conductas difíciles",
         "intro": "Las conductas son comunicación. DICE ayuda a entender y responder sin pelear.",
-        "d": { "t": "Describir", "b": "¿Qué pasó exactamente? Cuándo, dónde y quién estaba." },
-        "i": { "t": "Investigar", "b": "¿Qué pudo causarlo? Dolor, hambre, miedo, ruido, medicación, aburrimiento." },
-        "c": { "t": "Crear", "b": "Probá un plan: ajustar el entorno, la rutina o la forma de comunicar." },
-        "e": { "t": "Evaluar", "b": "¿Funcionó? Si no, volvé a investigar y probá otra cosa." }
+        "d": { "t": "Describir", "b": "¿Qué pasó exactamente? Cuándo, dónde y quién estaba.", "ej": "Ej.: «A las 18 h, en la cocina, se puso a buscar la llave y se enojó.»" },
+        "i": { "t": "Investigar", "b": "¿Qué pudo causarlo? Dolor, hambre, miedo, ruido, medicación, aburrimiento.", "ej": "Ej.: ¿tenía hambre o dolor? ¿estaba cansado/a? ¿había mucho ruido?" },
+        "c": { "t": "Crear", "b": "Probá un plan: ajustar el entorno, la rutina o la forma de comunicar.", "ej": "Ej.: bajar la radio, ofrecer un mate y dejar la llave siempre en el mismo lugar." },
+        "e": { "t": "Evaluar", "b": "¿Funcionó? Si no, volvé a investigar y probá otra cosa.", "ej": "Ej.: probá una semana; si se repite, cambiá una sola cosa por vez." }
       },
       "help": {
         "title": "Necesito ayuda ahora",

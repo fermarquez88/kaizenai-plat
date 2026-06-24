@@ -16,18 +16,27 @@ export function Comunidad() {
   const { t } = useTranslation()
   const [local, setLocal] = useState<Suggestion[]>([])
   const [text, setText] = useState('')
+  const [busy, setBusy] = useState(false)
 
   const refresh = () => dexieRepo.listSuggestions().then(setLocal)
   useEffect(() => {
     void refresh()
   }, [])
 
+  const uid = () =>
+    typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2)
+
   const submit = async () => {
     const v = text.trim()
-    if (!v) return
-    await dexieRepo.addSuggestion({ id: crypto.randomUUID(), text: v, createdAt: Date.now(), votes: 1 })
-    setText('')
-    await refresh()
+    if (!v || busy) return
+    setBusy(true)
+    try {
+      await dexieRepo.addSuggestion({ id: uid(), text: v, createdAt: Date.now(), votes: 1 })
+      setText('')
+      await refresh()
+    } finally {
+      setBusy(false)
+    }
   }
   const vote = async (id: string) => {
     await dexieRepo.voteSuggestion(id)
@@ -56,8 +65,9 @@ export function Comunidad() {
           />
           <button
             onClick={submit}
+            disabled={busy || !text.trim()}
             aria-label={t('gov.community.suggestBtn')}
-            className="inline-flex items-center gap-1 rounded-xl bg-primary px-4 py-3 font-medium text-white"
+            className="inline-flex items-center gap-1 rounded-xl bg-primary px-4 py-3 font-medium text-white disabled:opacity-50"
           >
             <Send size={18} />
           </button>

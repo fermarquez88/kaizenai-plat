@@ -9,6 +9,7 @@ export function MisDatos() {
   const [count, setCount] = useState(0)
   const [confirming, setConfirming] = useState(false)
   const [deleted, setDeleted] = useState(false)
+  const [busy, setBusy] = useState<'export' | 'clear' | null>(null)
 
   const refresh = () => dexieRepo.listPreAssessments().then((a) => setCount(a.length))
   useEffect(() => {
@@ -16,14 +17,24 @@ export function MisDatos() {
   }, [])
 
   const exportAll = async () => {
-    const json = await dexieRepo.exportJSON()
-    downloadJSON('mis-datos-kaizenai.json', JSON.parse(json))
+    setBusy('export')
+    try {
+      const json = await dexieRepo.exportJSON()
+      downloadJSON('mis-datos-kaizenai.json', JSON.parse(json))
+    } finally {
+      setBusy(null)
+    }
   }
   const clearAll = async () => {
-    await dexieRepo.clearAll()
-    setConfirming(false)
-    setDeleted(true)
-    await refresh()
+    setBusy('clear')
+    try {
+      await dexieRepo.clearAll()
+      setConfirming(false)
+      setDeleted(true)
+      await refresh()
+    } finally {
+      setBusy(null)
+    }
   }
 
   return (
@@ -40,9 +51,11 @@ export function MisDatos() {
         <div className="mt-4 flex flex-wrap items-center gap-2">
           <button
             onClick={exportAll}
-            className="inline-flex items-center gap-2 rounded-xl border border-line bg-bg px-4 py-2 text-ink hover:bg-surface"
+            disabled={busy !== null}
+            aria-label={t('gov.datos.export')}
+            className="inline-flex items-center gap-2 rounded-xl border border-line bg-bg px-4 py-2 text-ink hover:bg-surface disabled:opacity-50"
           >
-            <Download size={18} /> {t('gov.datos.export')}
+            <Download size={18} /> {busy === 'export' ? t('common.loading') : t('gov.datos.export')}
           </button>
           {!confirming ? (
             <button
@@ -56,9 +69,10 @@ export function MisDatos() {
               <span className="text-sm text-rojo-text">{t('gov.datos.confirm')}</span>
               <button
                 onClick={clearAll}
-                className="rounded-xl bg-rojo px-3 py-2 text-sm font-medium text-white"
+                disabled={busy !== null}
+                className="rounded-xl bg-rojo px-3 py-2 text-sm font-medium text-white disabled:opacity-50"
               >
-                {t('gov.datos.confirmYes')}
+                {busy === 'clear' ? t('common.loading') : t('gov.datos.confirmYes')}
               </button>
               <button
                 onClick={() => setConfirming(false)}

@@ -1,7 +1,7 @@
-import type { ReactNode } from 'react'
+import { useState, type ReactNode } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { ArrowLeft, Minus, Plus, Volume2 } from 'lucide-react'
+import { ArrowLeft, Minus, Plus, Volume2, VolumeX } from 'lucide-react'
 import { useSettings } from '../lib/store'
 import { Logo } from './Logo'
 
@@ -9,6 +9,8 @@ export function AppShell({ children }: { children: ReactNode }) {
   const { t } = useTranslation()
   const incFont = useSettings((s) => s.incFont)
   const decFont = useSettings((s) => s.decFont)
+  const fontScale = useSettings((s) => s.fontScale)
+  const [speaking, setSpeaking] = useState(false)
   const location = useLocation()
   const navigate = useNavigate()
   const atHome = location.pathname === '/' || location.pathname === ''
@@ -37,7 +39,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               <Logo className="h-8 w-8 text-secondary" />
               <span className="leading-none">
                 <span className="block font-serif text-lg text-ink">{t('app.name')}</span>
-                <span className="block font-sans text-[11px] text-muted">{t('app.tagline')}</span>
+                <span className="block font-sans text-xs text-muted">{t('app.tagline')}</span>
               </span>
             </Link>
           </div>
@@ -45,8 +47,9 @@ export function AppShell({ children }: { children: ReactNode }) {
           <div className="flex items-center gap-1">
             <button
               onClick={decFont}
+              disabled={fontScale <= 0.9}
               aria-label={t('common.fontSmaller')}
-              className="rounded-lg p-3 text-muted hover:bg-surface"
+              className="rounded-lg p-3 text-muted hover:bg-surface disabled:opacity-40"
             >
               <Minus size={18} />
             </button>
@@ -55,28 +58,46 @@ export function AppShell({ children }: { children: ReactNode }) {
             </span>
             <button
               onClick={incFont}
+              disabled={fontScale >= 1.4}
               aria-label={t('common.fontLarger')}
-              className="rounded-lg p-3 text-muted hover:bg-surface"
+              className="rounded-lg p-3 text-muted hover:bg-surface disabled:opacity-40"
             >
               <Plus size={18} />
             </button>
             <button
               onClick={() => {
-                if (!window.speechSynthesis) return
-                const m = document.querySelector('main')
-                const txt = (m instanceof HTMLElement ? m.innerText : '').trim().slice(0, 600)
-                window.speechSynthesis.cancel()
-                if (txt) {
-                  const u = new SpeechSynthesisUtterance(txt)
-                  u.lang = 'es-AR'
-                  u.rate = 0.95
-                  window.speechSynthesis.speak(u)
+                const synth = window.speechSynthesis
+                if (!synth) return
+                if (speaking) {
+                  synth.cancel()
+                  setSpeaking(false)
+                  return
                 }
+                const m = document.querySelector('main')
+                let txt = ''
+                if (m instanceof HTMLElement) {
+                  const clone = m.cloneNode(true) as HTMLElement
+                  // No leer el detalle profesional ni controles: voz clara para la persona.
+                  clone.querySelectorAll('details, .no-print').forEach((el) => el.remove())
+                  txt = clone.innerText.trim().slice(0, 1500)
+                  const cut = txt.lastIndexOf('. ')
+                  if (cut > 400) txt = txt.slice(0, cut + 1)
+                }
+                synth.cancel()
+                if (!txt) return
+                const u = new SpeechSynthesisUtterance(txt)
+                u.lang = 'es-AR'
+                u.rate = 0.95
+                u.onend = () => setSpeaking(false)
+                u.onerror = () => setSpeaking(false)
+                setSpeaking(true)
+                synth.speak(u)
               }}
-              aria-label={t('common.voice')}
-              className="rounded-lg p-3 text-muted hover:bg-surface"
+              aria-label={speaking ? t('common.voiceStop') : t('common.voice')}
+              aria-pressed={speaking}
+              className={'rounded-lg p-3 hover:bg-surface ' + (speaking ? 'text-secondary-text' : 'text-muted')}
             >
-              <Volume2 size={18} />
+              {speaking ? <VolumeX size={18} /> : <Volume2 size={18} />}
             </button>
             <span
               className="ml-1 rounded-full border border-line bg-surface px-2 py-1 text-xs font-semibold text-secondary-text"

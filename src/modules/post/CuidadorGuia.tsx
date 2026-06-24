@@ -19,6 +19,9 @@ export function CuidadorGuia() {
       <section className="mt-6">
         <h2 className="font-serif text-xl text-ink">{t('zarit.title')}</h2>
         <p className="mt-1 text-muted">{t('zarit.intro')}</p>
+        <p className="mt-2 text-sm text-secondary-text">
+          {t('instrumento.progress', { current: answered, total: ZARIT_ITEMS.length })}
+        </p>
         <ul className="mt-4 space-y-3">
           {ZARIT_ITEMS.map((id) => (
             <li key={id} className="rounded-xl border border-line bg-surface p-4">
@@ -32,7 +35,7 @@ export function CuidadorGuia() {
                       onClick={() => setAns((p) => ({ ...p, [id]: o }))}
                       aria-pressed={sel}
                       className={
-                        'rounded-lg border px-2.5 py-1.5 text-xs font-medium transition ' +
+                        'rounded-lg border px-3 py-2.5 text-sm font-medium transition ' +
                         (sel
                           ? 'border-secondary bg-secondary text-white'
                           : 'border-line bg-bg text-ink hover:border-secondary')
@@ -64,6 +67,7 @@ export function CuidadorGuia() {
             <div key={k} className="rounded-xl border border-line bg-surface p-4">
               <p className="font-medium text-secondary-text">{t(`post.cuidador.dice.${k}.t`)}</p>
               <p className="mt-1 text-sm text-muted">{t(`post.cuidador.dice.${k}.b`)}</p>
+              <p className="mt-2 text-xs italic text-muted">{t(`post.cuidador.dice.${k}.ej`)}</p>
             </div>
           ))}
         </div>
