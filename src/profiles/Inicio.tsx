@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Brain, Compass, HeartHandshake, MapPin, ShieldCheck, Stethoscope } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
@@ -22,8 +22,15 @@ const TASKS: Task[] = [
 
 export function Inicio() {
   const { t } = useTranslation()
+  const [params] = useSearchParams()
+  const invited = params.get('ref') === 'invite'
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
+      {invited && (
+        <div className="mx-auto mb-5 max-w-xl rounded-2xl border border-secondary bg-secondary/10 p-4 text-center text-sm text-secondary-text">
+          {t('inicio.invitedBanner')}
+        </div>
+      )}
       <header className="text-center">
         <h1 className="font-serif text-3xl text-ink sm:text-4xl">{t('inicio.title')}</h1>
         <p className="mx-auto mt-3 max-w-xl text-muted">{t('inicio.subtitle')}</p>

@@ -34,6 +34,7 @@
   "inicio": {
     "title": "¿Qué te trae hoy?",
     "subtitle": "Salud cerebral cerca tuyo, antes y después del diagnóstico. Entrá por lo que necesitás.",
+    "invitedBanner": "Te invitaron a acompañar a alguien. Entrá por «Acompaño a alguien».",
     "tasks": {
       "persona": { "t": "Quiero cuidar mi memoria", "d": "Una evaluación breve y clara, y qué hacer después." },
       "cuidador": { "t": "Acompaño a alguien", "d": "Cuidarte vos, manejar situaciones difíciles y evaluar a quien cuidás." },

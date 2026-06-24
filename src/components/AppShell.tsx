@@ -13,7 +13,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const [speaking, setSpeaking] = useState(false)
   const location = useLocation()
   const navigate = useNavigate()
-  const atHome = location.pathname === '/' || location.pathname === ''
+  const atHome = ['/', '', '/inicio'].includes(location.pathname)
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -35,7 +35,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                 <ArrowLeft size={20} />
               </button>
             )}
-            <Link to="/" className="flex items-center gap-2">
+            <Link to="/inicio" className="flex items-center gap-2">
               <Logo className="h-8 w-8 text-secondary" />
               <span className="leading-none">
                 <span className="block font-serif text-lg text-ink">{t('app.name')}</span>

@@ -54,7 +54,7 @@ export function PreconsultaFlow() {
   const navigate = useNavigate()
   const reset = usePreconsulta((s) => s.reset)
   const setDemo = usePreconsulta((s) => s.setDemo)
-  const modo = usePreconsulta((s) => s.demo.modo)
+  const storedModo = usePreconsulta((s) => s.demo.modo)
   const consent = useSettings((s) => s.consentAccepted)
   const setConsent = useSettings((s) => s.setConsent)
   const [step, setStep] = useState(0)
@@ -69,8 +69,10 @@ export function PreconsultaFlow() {
   // Consentimiento antes de cualquier captura.
   if (!consent) return <ConsentScreen onAccept={() => setConsent(true)} />
 
-  const askModo = !modoFromProfile(profileId)
-  const STEPS = buildSteps(modo, askModo)
+  // Modo SINCRÓNICO: el perfil prevalece desde el primer render (sin ventana SELF/INFORMANT).
+  const profileModo = modoFromProfile(profileId)
+  const askModo = !profileModo
+  const STEPS = buildSteps(profileModo ?? storedModo, askModo)
   const entry = STEPS[step]
   const isLast = step === STEPS.length - 1
   const Current = entry.Component

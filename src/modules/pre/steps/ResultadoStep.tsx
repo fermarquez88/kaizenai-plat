@@ -139,8 +139,8 @@ export function ResultadoStep() {
     )
   }
   // Invitación del cuidador (activación = palanca de retención). Link a la app real.
-  const appBase = window.location.href.split('#')[0]
-  const inviteText = `${t('triage.invite.msg')} ${appBase}#/inicio`
+  const appBase = window.location.origin + window.location.pathname
+  const inviteText = `${t('triage.invite.msg')} ${appBase}#/inicio?ref=invite`
   const nFactores = summary.presentFactors.length
   const ejemplos = summary.presentFactors
     .slice(0, 3)
