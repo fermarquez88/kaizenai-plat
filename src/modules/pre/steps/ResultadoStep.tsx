@@ -12,6 +12,7 @@ import {
   MessageCircle,
   Phone,
   Printer,
+  Users,
 } from 'lucide-react'
 import { usePreconsulta } from '../preconsultaStore'
 import { buildSummary, toFhirBundle, type PreconsultaSummary } from '../../../data/preconsultaSummary'
@@ -137,6 +138,9 @@ export function ResultadoStep() {
       () => {},
     )
   }
+  // Invitación del cuidador (activación = palanca de retención). Link a la app real.
+  const appBase = window.location.href.split('#')[0]
+  const inviteText = `${t('triage.invite.msg')} ${appBase}#/inicio`
   const nFactores = summary.presentFactors.length
   const ejemplos = summary.presentFactors
     .slice(0, 3)
@@ -192,6 +196,20 @@ export function ResultadoStep() {
           className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 font-medium text-white sm:w-auto no-print"
         >
           <CalendarCheck size={18} /> {t('triage.turno')}
+        </a>
+      </section>
+
+      {/* 4b · Invitar a un familiar (activación del cuidador = palanca de retención) */}
+      <section className="mt-3 rounded-2xl border border-line bg-surface p-5 no-print">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">{t('triage.invite.title')}</h2>
+        <p className="mt-2 text-ink">{t('triage.invite.desc')}</p>
+        <a
+          href={waMeLink('', inviteText)}
+          target="_blank"
+          rel="noreferrer"
+          className="mt-3 inline-flex items-center gap-2 rounded-xl border border-secondary bg-surface px-4 py-2.5 font-medium text-secondary-text hover:bg-bg"
+        >
+          <Users size={18} /> {t('triage.invite.btn')}
         </a>
       </section>
 

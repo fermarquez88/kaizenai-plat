@@ -294,6 +294,12 @@
     "levelLabel": "Prioridad sugerida",
     "meaningTitle": "¿Qué significa esto?",
     "nextStepTitle": "¿Qué hago ahora?",
+    "invite": {
+      "title": "Invitá a un familiar",
+      "desc": "Compartir el cuidado funciona: un familiar puede acompañarte y aprender a ayudar. Es lo que más sostiene el seguimiento.",
+      "btn": "Invitar por WhatsApp",
+      "msg": "Hola, estoy cuidando mi salud cerebral con KaizenAI. ¿Me acompañás? Entrá acá:"
+    },
     "meaning": {
       "verde": "Verde — tranquilo/a. No vimos señales que pidan una consulta urgente. Seguí con tus controles de siempre y cuidando tus hábitos.",
       "amarillo": "Amarillo — conviene revisar, sin alarmarse. No es urgente, pero sería bueno que un profesional te evalúe en las próximas semanas.",
