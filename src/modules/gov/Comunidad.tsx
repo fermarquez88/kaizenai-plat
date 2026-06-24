@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { GitCommitHorizontal, Send, ThumbsUp, Users } from 'lucide-react'
+import { Check, GitCommitHorizontal, Send, ThumbsUp, Users } from 'lucide-react'
 import { dexieRepo } from '../../data/dexieRepo'
-import type { Suggestion } from '../../data/types'
+import type { Suggestion, SuggestionStatus } from '../../data/types'
 
 const SEED = [
   { key: '0', votes: 28 },
@@ -11,6 +11,18 @@ const SEED = [
 ]
 const CHANGELOG = ['0', '1', '2']
 const REPS = ['0', '1', '2']
+
+const STATUS_CHIP: Record<SuggestionStatus, string> = {
+  abierta: 'border border-line bg-bg text-muted',
+  aceptada: 'border border-secondary bg-secondary/10 text-secondary-text',
+  hecha: 'border border-verde bg-verde/10 text-verde-text',
+}
+
+function uid() {
+  return typeof crypto !== 'undefined' && crypto.randomUUID
+    ? crypto.randomUUID()
+    : Math.random().toString(36).slice(2)
+}
 
 export function Comunidad() {
   const { t } = useTranslation()
@@ -23,15 +35,12 @@ export function Comunidad() {
     void refresh()
   }, [])
 
-  const uid = () =>
-    typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2)
-
   const submit = async () => {
     const v = text.trim()
     if (!v || busy) return
     setBusy(true)
     try {
-      await dexieRepo.addSuggestion({ id: uid(), text: v, createdAt: Date.now(), votes: 1 })
+      await dexieRepo.addSuggestion({ id: uid(), text: v, createdAt: Date.now(), votes: 1, status: 'abierta' })
       setText('')
       await refresh()
     } finally {
@@ -42,6 +51,12 @@ export function Comunidad() {
     await dexieRepo.voteSuggestion(id)
     await refresh()
   }
+  const setStatus = async (id: string, status: SuggestionStatus) => {
+    await dexieRepo.setSuggestionStatus(id, status)
+    await refresh()
+  }
+
+  const hechas = local.filter((s) => s.status === 'hecha')
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-8">
@@ -74,20 +89,43 @@ export function Comunidad() {
         </div>
 
         <ul className="mt-4 space-y-2">
-          {local.map((s) => (
-            <li
-              key={s.id}
-              className="flex items-center justify-between gap-3 rounded-xl border border-line bg-surface p-3"
-            >
-              <span className="text-ink">{s.text}</span>
-              <button
-                onClick={() => vote(s.id)}
-                className="inline-flex shrink-0 items-center gap-1 rounded-full border border-line bg-bg px-2.5 py-1 text-sm text-secondary-text"
-              >
-                <ThumbsUp size={14} /> {s.votes}
-              </button>
-            </li>
-          ))}
+          {local.map((s) => {
+            const status = s.status ?? 'abierta'
+            return (
+              <li key={s.id} className="rounded-xl border border-line bg-surface p-3">
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-ink">{s.text}</span>
+                  <button
+                    onClick={() => vote(s.id)}
+                    className="inline-flex shrink-0 items-center gap-1 rounded-full border border-line bg-bg px-2.5 py-1 text-sm text-secondary-text"
+                  >
+                    <ThumbsUp size={14} /> {s.votes}
+                  </button>
+                </div>
+                <div className="mt-2 flex flex-wrap items-center gap-2">
+                  <span className={`rounded-full px-2 py-0.5 text-[11px] font-medium ${STATUS_CHIP[status]}`}>
+                    {t(`gov.community.status.${status}`)}
+                  </span>
+                  {status !== 'aceptada' && status !== 'hecha' && (
+                    <button
+                      onClick={() => setStatus(s.id, 'aceptada')}
+                      className="text-xs text-secondary-text underline underline-offset-2"
+                    >
+                      {t('gov.community.markAccepted')}
+                    </button>
+                  )}
+                  {status !== 'hecha' && (
+                    <button
+                      onClick={() => setStatus(s.id, 'hecha')}
+                      className="text-xs text-verde-text underline underline-offset-2"
+                    >
+                      {t('gov.community.markDone')}
+                    </button>
+                  )}
+                </div>
+              </li>
+            )
+          })}
           {SEED.map((s) => (
             <li
               key={s.key}
@@ -102,12 +140,20 @@ export function Comunidad() {
         </ul>
       </section>
 
-      {/* Qué cambiamos */}
+      {/* Qué cambiamos — incluye lo que la comunidad marcó como HECHO */}
       <section className="mt-8">
         <h2 className="flex items-center gap-2 font-serif text-xl text-ink">
           <GitCommitHorizontal size={20} className="text-secondary" /> {t('gov.community.changelogTitle')}
         </h2>
         <ul className="mt-3 space-y-2">
+          {hechas.map((s) => (
+            <li key={s.id} className="rounded-xl border border-line bg-surface p-4">
+              <p className="text-sm text-muted">{t('gov.community.pidieron', { x: s.text })}</p>
+              <p className="mt-1 inline-flex items-center gap-1 font-medium text-verde-text">
+                <Check size={16} /> {t('gov.community.doneGeneric')}
+              </p>
+            </li>
+          ))}
           {CHANGELOG.map((k) => (
             <li key={k} className="rounded-xl border border-line bg-surface p-4">
               <p className="text-sm text-muted">{t(`gov.community.changelog.${k}.req`)}</p>

@@ -1,13 +1,15 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   AlertOctagon,
   AlertTriangle,
   CalendarCheck,
+  Check,
   CheckCircle2,
   ChevronDown,
   Download,
   FileJson,
+  MessageCircle,
   Phone,
   Printer,
 } from 'lucide-react'
@@ -15,7 +17,9 @@ import { usePreconsulta } from '../preconsultaStore'
 import { buildSummary, toFhirBundle, type PreconsultaSummary } from '../../../data/preconsultaSummary'
 import { downloadJSON } from '../../../lib/download'
 import { dexieRepo } from '../../../data/dexieRepo'
+import { useSettings } from '../../../lib/store'
 import { cidiTurnoLink, guardiaDe } from '../../../data/sanjuan'
+import { waMeLink } from '../../../channel/ChannelAdapter'
 import type { TriageLevel } from '../../../scoring/triage'
 
 // Amarillo usa text-ink (no text-accent-text) por contraste WCAG sobre bg-amarillo/10.
@@ -55,6 +59,10 @@ export function ResultadoStep() {
   const { t } = useTranslation()
   const { demo, lancet, instruments, factores, meds, redFlags } = usePreconsulta()
 
+  const ensureSelfPersonId = useSettings((s) => s.ensureSelfPersonId)
+  const simpleMode = useSettings((s) => s.simpleMode)
+  const [copied, setCopied] = useState(false)
+
   const summary = useMemo<PreconsultaSummary>(
     () => buildSummary({ demo, lancet, instruments, factores, meds, redFlags }, new Date().toISOString()),
     [demo, lancet, instruments, factores, meds, redFlags],
@@ -64,19 +72,53 @@ export function ResultadoStep() {
   useEffect(() => {
     if (saved.current) return
     saved.current = true
+    // Lazo de derivación: si no es verde / hay banderas / el modelo deriva, se EMITE.
+    const derivar =
+      summary.triageLevel === 'rojo' || summary.mrcaDecision === 'derivar' || summary.redFlags.length > 0
     dexieRepo
       .savePreAssessment({
         id: crypto.randomUUID(),
-        personId: 'anon',
+        // Persona = id estable (re-evaluaciones enlazadas); agente/cuidador = nuevo registro.
+        personId: summary.modo === 'persona' ? ensureSelfPersonId() : crypto.randomUUID(),
         createdAt: Date.now(),
         modifiableRiskIndex: summary.modifiableRiskShare,
+        riskPct: summary.modifiableRiskPct,
         mrcaBand: summary.mrcaBand,
+        mrcaProb: summary.mrcaProb,
         triage: summary.triageLevel,
+        medsCount: summary.medFlags.count,
+        redFlagsCount: summary.redFlags.length,
+        alias: demo.alias,
+        ageYears: demo.edad,
+        educationYears: demo.edu_anios,
+        depto: summary.depto,
+        phone: demo.phone,
+        modo: summary.modo,
+        source: summary.modo,
+        cuidadorAlias: demo.cuidadorAlias,
+        derivationStatus: derivar ? 'emitida' : undefined,
+        derivationUpdatedAt: derivar ? Date.now() : undefined,
       })
       .catch(() => {})
-  }, [summary])
+  }, [summary, demo, ensureSelfPersonId])
 
   const level = summary.triageLevel
+  const shareText = [
+    `KaizenAI — cribado de salud cerebral${demo.alias ? ` · ${demo.alias}` : ''}`,
+    `Prioridad sugerida: ${t(`triage.level.${level}`)}`,
+    `Riesgo estimado de memoria: ${t(`pre.mrca.band.${summary.mrcaBand}`)}`,
+    `Factores para mejorar: ${summary.presentFactors.length} de 14`,
+    `(Estimación orientativa, no diagnóstico — KaizenAI.)`,
+  ].join('\n')
+  const copyResumen = () => {
+    navigator.clipboard?.writeText(shareText).then(
+      () => {
+        setCopied(true)
+        setTimeout(() => setCopied(false), 2000)
+      },
+      () => {},
+    )
+  }
   const nFactores = summary.presentFactors.length
   const ejemplos = summary.presentFactors
     .slice(0, 3)
@@ -217,7 +259,8 @@ export function ResultadoStep() {
         </section>
       )}
 
-      {/* 9 · Para el profesional */}
+      {/* 9 · Para el profesional (oculto en lectura fácil) */}
+      {!simpleMode && (
       <details className="mt-6 rounded-2xl border border-line bg-surface p-4">
         <summary className="flex cursor-pointer items-center justify-between gap-2 font-semibold text-ink">
           {t('pro.title')}
@@ -303,11 +346,27 @@ export function ResultadoStep() {
         </ul>
         <p className="mt-3 text-xs text-muted">{t('pro.disclaimer')}</p>
       </details>
+      )}
 
       {/* 10 · Compartir */}
       <section className="mt-6 no-print">
         <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-muted">{t('triage.export.title')}</h2>
         <div className="flex flex-wrap gap-2">
+          <a
+            href={waMeLink('', shareText)}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 rounded-xl bg-secondary px-4 py-2.5 font-medium text-white"
+          >
+            <MessageCircle size={18} /> {t('triage.export.whatsapp')}
+          </a>
+          <button
+            onClick={copyResumen}
+            className="inline-flex items-center gap-2 rounded-xl border border-line bg-surface px-4 py-2.5 text-ink hover:bg-bg"
+          >
+            {copied ? <Check size={18} /> : <FileJson size={18} />}{' '}
+            {copied ? t('triage.export.copied') : t('triage.export.copy')}
+          </button>
           <button
             onClick={() => downloadJSON('preconsulta.json', summary)}
             className="inline-flex items-center gap-2 rounded-xl border border-line bg-surface px-4 py-2.5 text-ink hover:bg-bg"

@@ -20,6 +20,9 @@ export type Modo = 'persona' | 'cuidador' | 'agente'
 
 export interface Demografia {
   modo?: Modo
+  alias?: string
+  phone?: string
+  cuidadorAlias?: string
   edad?: number
   sexo?: 'Mujer' | 'Hombre'
   edu_anios?: number
@@ -78,6 +81,9 @@ export function buildMrcaInputs(inp: PreconsultaInputs): MrcaRawInputs {
 export interface PreconsultaSummary {
   createdAt: string
   modo?: Modo
+  alias?: string
+  ageYears?: number
+  sexo?: 'Mujer' | 'Hombre'
   depto?: string
   modifiableRiskPct: number
   modifiableRiskShare: number
@@ -176,6 +182,9 @@ export function buildSummary(inp: PreconsultaInputs, createdAtISO: string): Prec
   return {
     createdAt: createdAtISO,
     modo: inp.demo.modo,
+    alias: inp.demo.alias,
+    ageYears: inp.demo.edad,
+    sexo: inp.demo.sexo,
     depto: inp.demo.depto,
     modifiableRiskPct: Math.round(risk.modifiableRiskPct),
     modifiableRiskShare: risk.share,
@@ -201,50 +210,99 @@ export function buildSummary(inp: PreconsultaInputs, createdAtISO: string): Prec
   }
 }
 
-// FHIR R4 (mínimo). Se conecta a la HCE oficial en el piloto.
+// FHIR R4. Bundle con Patient + Consent + RiskAssessment + Observations +
+// QuestionnaireResponse (uno por escala). Listo para la HCE oficial en el piloto.
 export function toFhirBundle(s: PreconsultaSummary): Record<string, unknown> {
+  const subject = { reference: 'Patient/p' }
+  const patient = {
+    resource: {
+      resourceType: 'Patient',
+      id: 'p',
+      ...(s.alias ? { name: [{ text: s.alias }] } : {}),
+      ...(s.sexo ? { gender: s.sexo === 'Mujer' ? 'female' : 'male' } : {}),
+    },
+  }
+  const consent = {
+    resource: {
+      resourceType: 'Consent',
+      status: 'active',
+      scope: { text: 'Cribado y acompañamiento de salud cerebral' },
+      category: [{ text: 'Consentimiento informado in-app (KaizenAI)' }],
+      dateTime: s.createdAt,
+      patient: subject,
+      policyRule: { text: 'Datos en el dispositivo de la persona (soberanía). Comparte con consentimiento.' },
+    },
+  }
+  const riskAssessment = {
+    resource: {
+      resourceType: 'RiskAssessment',
+      status: 'final',
+      subject,
+      code: { text: 'Cribado de riesgo cognitivo (KaizenAI · Kaizen-MRCA v1)' },
+      occurrenceDateTime: s.createdAt,
+      prediction: [
+        {
+          outcome: { text: 'Prioridad de derivación' },
+          qualitativeRisk: { text: s.triageLevel },
+          probabilityDecimal: s.mrcaProb,
+        },
+      ],
+      note: [
+        {
+          text: `MRCA banda ${s.mrcaBand} (prob ${s.mrcaProb}, ${s.mrcaDecision}${s.mrcaPreliminary ? ', preliminar' : ''}); riesgo modificable ~${s.modifiableRiskPct}%; equidad ${s.equityScore}; ${s.instrumentScores.map((i) => `${i.name}: ${i.text}`).join('; ')}`,
+        },
+      ],
+    },
+  }
+  const observations = [
+    {
+      resource: {
+        resourceType: 'Observation',
+        status: 'final',
+        subject,
+        code: { text: 'ACE-III estimado (Kaizen-MRCA)' },
+        valueQuantity: { value: s.mrcaAceEst },
+      },
+    },
+    {
+      resource: {
+        resourceType: 'Observation',
+        status: 'final',
+        subject,
+        code: { text: 'Carga anticolinérgica ACB' },
+        valueInteger: s.medFlags.acbTotal,
+      },
+    },
+    ...(s.ageYears != null
+      ? [
+          {
+            resource: {
+              resourceType: 'Observation',
+              status: 'final',
+              subject,
+              code: { text: 'Edad (años)' },
+              valueQuantity: { value: s.ageYears, unit: 'a' },
+            },
+          },
+        ]
+      : []),
+  ]
+  const questionnaireResponses = s.instrumentScores.map((i) => ({
+    resource: {
+      resourceType: 'QuestionnaireResponse',
+      status: 'completed',
+      subject,
+      authored: s.createdAt,
+      questionnaire: `KaizenAI/${i.id}`,
+      item: [{ text: i.name, answer: [{ valueString: i.text }] }],
+    },
+  }))
+
   return {
     resourceType: 'Bundle',
     type: 'collection',
     timestamp: s.createdAt,
-    entry: [
-      {
-        resource: {
-          resourceType: 'RiskAssessment',
-          status: 'final',
-          code: { text: 'Cribado de riesgo cognitivo (KaizenAI · Kaizen-MRCA v1)' },
-          occurrenceDateTime: s.createdAt,
-          prediction: [
-            {
-              outcome: { text: 'Prioridad de derivación' },
-              qualitativeRisk: { text: s.triageLevel },
-              probabilityDecimal: s.mrcaProb,
-            },
-          ],
-          note: [
-            {
-              text: `MRCA banda ${s.mrcaBand} (prob ${s.mrcaProb}, ${s.mrcaDecision}${s.mrcaPreliminary ? ', preliminar' : ''}); riesgo modificable ~${s.modifiableRiskPct}%; equidad ${s.equityScore}; ${s.instrumentScores.map((i) => `${i.name}: ${i.text}`).join('; ')}`,
-            },
-          ],
-        },
-      },
-      {
-        resource: {
-          resourceType: 'Observation',
-          status: 'final',
-          code: { text: 'ACE-III estimado (Kaizen-MRCA)' },
-          valueQuantity: { value: s.mrcaAceEst },
-        },
-      },
-      {
-        resource: {
-          resourceType: 'Observation',
-          status: 'final',
-          code: { text: 'Carga anticolinérgica ACB' },
-          valueInteger: s.medFlags.acbTotal,
-        },
-      },
-    ],
+    entry: [patient, consent, riskAssessment, ...observations, ...questionnaireResponses],
     meta: {
       tag: [{ display: 'KaizenAI · estimación, no diagnóstico · placeholders a validar' }],
     },

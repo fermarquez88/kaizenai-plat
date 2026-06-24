@@ -16,6 +16,11 @@ export class KaizenDB extends Dexie {
     this.version(2).stores({
       suggestions: 'id, createdAt',
     })
+    // v3: índices para la red real (derivación + seguimiento). Los campos nuevos
+    // no-indexados no requieren migración; sólo añadimos índices de consulta.
+    this.version(3).stores({
+      preAssessments: 'id, personId, createdAt, derivationStatus, lastContactAt',
+    })
   }
 }
 

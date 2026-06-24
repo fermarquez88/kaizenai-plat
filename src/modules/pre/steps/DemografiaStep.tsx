@@ -29,6 +29,55 @@ export function DemografiaStep() {
       <p className="mt-1 text-sm text-muted">{t('pre.demografia.fieldHint')}</p>
 
       <div className="mt-5 space-y-5">
+        {/* Identidad mínima sin PII: alias/iniciales. Para el agente, también teléfono y cuidador (díada). */}
+        <div>
+          <label className="block text-sm font-medium text-ink" htmlFor="alias">
+            {t('pre.demografia.aliasLabel')} <span className="text-muted">{t('common.optional')}</span>
+          </label>
+          <input
+            id="alias"
+            type="text"
+            value={demo.alias ?? ''}
+            onChange={(e) => setDemo({ alias: e.target.value || undefined })}
+            placeholder={t('pre.demografia.aliasPlaceholder')}
+            className="mt-1 w-full rounded-xl border border-line bg-surface px-4 py-3 text-ink focus:border-secondary"
+          />
+          <p className="mt-1 text-sm text-muted">{t('pre.demografia.aliasHint')}</p>
+        </div>
+
+        {demo.modo !== 'persona' && (
+          <>
+            <div>
+              <label className="block text-sm font-medium text-ink" htmlFor="phone">
+                {t('pre.demografia.phoneLabel')} <span className="text-muted">{t('common.optional')}</span>
+              </label>
+              <input
+                id="phone"
+                type="tel"
+                inputMode="tel"
+                value={demo.phone ?? ''}
+                onChange={(e) => setDemo({ phone: e.target.value || undefined })}
+                placeholder="549264…"
+                className="mt-1 w-full rounded-xl border border-line bg-surface px-4 py-3 text-ink focus:border-secondary"
+              />
+              <p className="mt-1 text-sm text-muted">{t('pre.demografia.phoneHint')}</p>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-ink" htmlFor="cuidador">
+                {t('pre.demografia.cuidadorLabel')} <span className="text-muted">{t('common.optional')}</span>
+              </label>
+              <input
+                id="cuidador"
+                type="text"
+                value={demo.cuidadorAlias ?? ''}
+                onChange={(e) => setDemo({ cuidadorAlias: e.target.value || undefined })}
+                placeholder={t('pre.demografia.cuidadorPlaceholder')}
+                className="mt-1 w-full rounded-xl border border-line bg-surface px-4 py-3 text-ink focus:border-secondary"
+              />
+            </div>
+          </>
+        )}
+
         <div>
           <label className="block text-sm font-medium text-ink" htmlFor="edad">
             {t('pre.demografia.edad')} <span className="text-rojo-text" aria-hidden>{t('common.required')}</span>

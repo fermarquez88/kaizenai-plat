@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { AlertOctagon, AlertTriangle, CalendarCheck, CheckCircle2 } from 'lucide-react'
 import { dexieRepo } from '../../data/dexieRepo'
+import { useSettings } from '../../lib/store'
 import { cidiTurnoLink } from '../../data/sanjuan'
 import type { PreAssessmentSummary, TriageLevel } from '../../data/types'
 
@@ -21,20 +22,32 @@ function LevelIcon({ level }: { level: TriageLevel }) {
 export function MiResultado() {
   const { t } = useTranslation()
   const [a, setA] = useState<PreAssessmentSummary | null | undefined>(undefined)
+  const [history, setHistory] = useState<PreAssessmentSummary[]>([])
+  const selfPersonId = useSettings((s) => s.selfPersonId)
+  const ensureSelfPersonId = useSettings((s) => s.ensureSelfPersonId)
 
-  const load = () =>
-    dexieRepo.listPreAssessments().then((list) => setA(list.length ? list[list.length - 1] : null))
+  const load = useCallback(
+    () =>
+      dexieRepo.listPreAssessments().then((list) => {
+        const mine = selfPersonId ? list.filter((x) => x.personId === selfPersonId) : list
+        const sorted = [...mine].sort((x, y) => x.createdAt - y.createdAt)
+        setHistory(sorted)
+        setA(sorted.length ? sorted[sorted.length - 1] : null)
+      }),
+    [selfPersonId],
+  )
 
   useEffect(() => {
     void load()
-  }, [])
+  }, [load])
 
   const verEjemplo = async () => {
     await dexieRepo.savePreAssessment({
       id: crypto.randomUUID(),
-      personId: 'demo',
+      personId: ensureSelfPersonId(),
       createdAt: Date.now(),
       modifiableRiskIndex: 0.4,
+      riskPct: 22,
       mrcaBand: 'moderado',
       triage: 'amarillo',
     })
@@ -109,6 +122,29 @@ export function MiResultado() {
           >
             {t('mi.again')}
           </Link>
+
+          {history.length > 1 && (
+            <section className="mt-6">
+              <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-muted">
+                {t('mi.historyTitle')}
+              </h2>
+              <ul className="space-y-2">
+                {[...history].reverse().map((h) => (
+                  <li
+                    key={h.id}
+                    className="flex items-center justify-between rounded-xl border border-line bg-surface p-3 text-sm"
+                  >
+                    <span className="text-muted">{new Date(h.createdAt).toLocaleDateString('es-AR')}</span>
+                    <span className="text-ink">
+                      {h.triage ? t(`triage.level.${h.triage}`).split(' — ')[0] : '—'}
+                      {h.mrcaBand ? ` · ${t(`pre.mrca.band.${h.mrcaBand}`)}` : ''}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-2 text-xs text-muted">{t('mi.historyNote')}</p>
+            </section>
+          )}
         </>
       )}
 

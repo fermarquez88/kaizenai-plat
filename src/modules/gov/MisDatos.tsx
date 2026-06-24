@@ -1,15 +1,23 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Download, ShieldCheck, Trash2 } from 'lucide-react'
+import { Download, FileJson, ShieldCheck, Trash2 } from 'lucide-react'
 import { dexieRepo } from '../../data/dexieRepo'
 import { downloadJSON } from '../../lib/download'
+import { bundleFromData } from '../../data/fhirExport'
+import { useSettings, CONSENT_VERSION } from '../../lib/store'
+import { ImportButton } from '../red/ImportButton'
+import type { ConsentRecord } from '../../data/types'
 
 export function MisDatos() {
   const { t } = useTranslation()
   const [count, setCount] = useState(0)
   const [confirming, setConfirming] = useState(false)
   const [deleted, setDeleted] = useState(false)
-  const [busy, setBusy] = useState<'export' | 'clear' | null>(null)
+  const [busy, setBusy] = useState<'export' | 'fhir' | 'clear' | null>(null)
+  const simpleMode = useSettings((s) => s.simpleMode)
+  const setSimpleMode = useSettings((s) => s.setSimpleMode)
+  const consentAccepted = useSettings((s) => s.consentAccepted)
+  const consentAt = useSettings((s) => s.consentAt)
 
   const refresh = () => dexieRepo.listPreAssessments().then((a) => setCount(a.length))
   useEffect(() => {
@@ -36,6 +44,26 @@ export function MisDatos() {
       setBusy(null)
     }
   }
+  const exportFhir = async () => {
+    setBusy('fhir')
+    try {
+      const [people, assessments] = await Promise.all([
+        dexieRepo.listPeople(),
+        dexieRepo.listPreAssessments(),
+      ])
+      const consent: ConsentRecord | undefined = consentAccepted
+        ? {
+            accepted: true,
+            at: consentAt ?? Date.now(),
+            version: CONSENT_VERSION,
+            scope: 'Cribado y acompañamiento de salud cerebral',
+          }
+        : undefined
+      downloadJSON('mis-datos-fhir.json', bundleFromData({ people, assessments, consent }))
+    } finally {
+      setBusy(null)
+    }
+  }
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-8">
@@ -56,6 +84,14 @@ export function MisDatos() {
             className="inline-flex items-center gap-2 rounded-xl border border-line bg-bg px-4 py-2 text-ink hover:bg-surface disabled:opacity-50"
           >
             <Download size={18} /> {busy === 'export' ? t('common.loading') : t('gov.datos.export')}
+          </button>
+          <button
+            onClick={exportFhir}
+            disabled={busy !== null}
+            aria-label={t('gov.datos.exportFhir')}
+            className="inline-flex items-center gap-2 rounded-xl border border-line bg-bg px-4 py-2 text-ink hover:bg-surface disabled:opacity-50"
+          >
+            <FileJson size={18} /> {busy === 'fhir' ? t('common.loading') : t('gov.datos.exportFhir')}
           </button>
           {!confirming ? (
             <button
@@ -94,6 +130,38 @@ export function MisDatos() {
           </li>
         ))}
       </ul>
+
+      {/* Bus de integración: importar el sobre de otra persona/dispositivo. */}
+      <div className="mt-5 rounded-2xl border border-line bg-surface p-5">
+        <p className="font-medium text-ink">{t('gov.datos.importTitle')}</p>
+        <p className="mb-3 mt-0.5 text-sm text-muted">{t('gov.datos.importDesc')}</p>
+        <ImportButton onDone={refresh} />
+      </div>
+
+      {/* Accesibilidad: lectura fácil (letra grande + sin tecnicismos). */}
+      <div className="mt-5 rounded-2xl border border-line bg-surface p-5">
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <p className="font-medium text-ink">{t('gov.datos.simpleTitle')}</p>
+            <p className="mt-0.5 text-sm text-muted">{t('gov.datos.simpleDesc')}</p>
+          </div>
+          <button
+            role="switch"
+            aria-checked={simpleMode}
+            aria-label={t('gov.datos.simpleTitle')}
+            onClick={() => setSimpleMode(!simpleMode)}
+            className={
+              'relative h-7 w-12 shrink-0 rounded-full transition ' + (simpleMode ? 'bg-secondary' : 'bg-line')
+            }
+          >
+            <span
+              className={
+                'absolute top-1 h-5 w-5 rounded-full bg-white transition-all ' + (simpleMode ? 'left-6' : 'left-1')
+              }
+            />
+          </button>
+        </div>
+      </div>
     </div>
   )
 }

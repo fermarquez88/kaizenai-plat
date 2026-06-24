@@ -119,6 +119,13 @@
       "title": "Sobre vos",
       "intro": "Estos datos ayudan a interpretar el resultado: la norma se ajusta por educación (criterio Bruno).",
       "fieldHint": "Los campos con * son obligatorios. Si no sabés un dato, dejalo en blanco.",
+      "aliasLabel": "Iniciales o apodo",
+      "aliasPlaceholder": "Ej.: M. R.",
+      "aliasHint": "Sin nombre completo. Sirve para reconocer tu seguimiento sin exponer tu identidad.",
+      "phoneLabel": "Teléfono (WhatsApp)",
+      "phoneHint": "Para el re-contacto del seguimiento. Formato 549264…",
+      "cuidadorLabel": "Cuidador/a o familiar (díada)",
+      "cuidadorPlaceholder": "Ej.: su hija",
       "edad": "Edad",
       "sexoLabel": "Sexo",
       "sexo_mujer": "Mujer",
@@ -326,9 +333,20 @@
     },
     "export": {
       "title": "Compartir con el equipo de salud",
-      "json": "Descargar (JSON)",
+      "whatsapp": "Compartir por WhatsApp",
+      "copy": "Copiar resumen",
+      "copied": "¡Copiado!",
+      "json": "Descargar archivo",
       "fhir": "Exportar FHIR",
       "print": "Imprimir / PDF"
+    },
+    "derivLabel": "Derivación",
+    "deriv": {
+      "emitida": "Derivación emitida",
+      "agendada": "Turno agendado",
+      "atendida": "Atendida",
+      "noVino": "No asistió",
+      "cerrada": "Cerrada"
     },
     "disclaimerShort": "Estimación orientativa. No es un diagnóstico — consultá con tu equipo de salud.",
     "disclaimer": "Resultado orientativo (estimación con valores a validar). No diagnostica ni reemplaza al profesional. Tus datos quedan en este dispositivo."
@@ -444,6 +462,7 @@
       "intro": "Tus datos viven en este dispositivo. Acá los controlás vos.",
       "count": "Tenés {{n}} cribado(s) guardado(s) en este dispositivo.",
       "export": "Exportar mis datos",
+      "exportFhir": "Exportar FHIR",
       "delete": "Borrar mis datos",
       "confirm": "¿Seguro? No se puede deshacer.",
       "confirmYes": "Sí, borrar",
@@ -454,7 +473,11 @@
         "1": "El export es un archivo tuyo, para compartir con quien quieras.",
         "2": "Borrar acá elimina la información de este dispositivo."
       },
-      "footer": "Mis datos y privacidad"
+      "footer": "Mis datos y privacidad",
+      "importTitle": "Importar un registro compartido",
+      "importDesc": "Si alguien te compartió su archivo (el “sobre” KaizenAI), cargalo acá para sumarlo a este dispositivo.",
+      "simpleTitle": "Lectura fácil",
+      "simpleDesc": "Letra más grande y pantallas sin tecnicismos."
     },
     "community": {
       "tag": "Gobernanza comunitaria",
@@ -463,6 +486,11 @@
       "suggestTitle": "Qué pide la comunidad",
       "suggestPlaceholder": "Sugerí una mejora…",
       "suggestBtn": "Enviar sugerencia",
+      "status": { "abierta": "Abierta", "aceptada": "Aceptada", "hecha": "Hecha" },
+      "markAccepted": "Marcar aceptada",
+      "markDone": "Marcar hecha",
+      "pidieron": "Pidieron: {{x}}",
+      "doneGeneric": "Hecho",
       "seed": {
         "0": "Que el cribado tenga audios para quienes leen poco.",
         "1": "Más materiales para cuidadores rurales, sin conexión.",
@@ -496,11 +524,19 @@
     "discrepancia": "Discrepancia persona↔informante (revisar)",
     "estado": { "aldia": "Al día", "porvencer": "Por vencer", "novolvio": "No volvió" },
     "recontact": "Re-contactar",
+    "registrar": "Registrar contacto",
     "contactCuidador": "Cuidador",
     "msg": "Hola {{alias}}, soy del equipo de salud cerebral. ¿Cómo venís? Queremos acompañarte.",
     "msgCuidador": "Hola, soy del equipo de salud cerebral. Queríamos saber cómo viene el acompañamiento."
   },
   "red": {
+    "realNote": "{{real}} reales · {{demo}} de ejemplo (demo).",
+    "demoTag": "ejemplo",
+    "import": {
+      "btn": "Importar persona (archivo)",
+      "ok": "Importado: {{n}} cribado(s).",
+      "err": "No pude leer el archivo (¿es un sobre KaizenAI?)."
+    },
     "titles": {
       "gente": "Mi gente",
       "cola": "Cola de derivaciones",
@@ -531,10 +567,14 @@
     "start": "Hacer mi autoevaluación",
     "example": "Ver un caso de ejemplo",
     "again": "Volver a evaluarme",
-    "savedAt": "Guardado el {{date}}."
+    "savedAt": "Guardado el {{date}}.",
+    "historyTitle": "Tu evolución",
+    "historyNote": "Volver a evaluarte cada tanto deja ver cómo cambian tus resultados en el tiempo."
   },
   "agenda": {
     "title": "Agenda de visitas",
+    "intro": "A quién conviene ir a ver: seguimiento por vencer o personas que no volvieron.",
+    "empty": "Por ahora no hay visitas pendientes. ¡Todo al día!",
     "kind": {
       "control": "Control posderivación",
       "primera": "Primera visita domiciliaria",
