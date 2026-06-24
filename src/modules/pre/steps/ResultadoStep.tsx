@@ -72,15 +72,31 @@ export function ResultadoStep() {
   useEffect(() => {
     if (saved.current) return
     saved.current = true
-    // Lazo de derivación: si no es verde / hay banderas / el modelo deriva, se EMITE.
+    const now = Date.now()
+    // Persona = id estable (re-evaluaciones enlazadas); agente/cuidador = nuevo registro.
+    const personId = summary.modo === 'persona' ? ensureSelfPersonId() : crypto.randomUUID()
+    // Lazo de derivación: si es rojo / hay banderas / el modelo deriva, se EMITE.
     const derivar =
       summary.triageLevel === 'rojo' || summary.mrcaDecision === 'derivar' || summary.redFlags.length > 0
+    // Cada cribado tiene su Person → referencias FHIR resueltas y el sobre lleva a la persona.
+    dexieRepo
+      .upsertPerson({
+        id: personId,
+        alias: demo.alias ?? '—',
+        ageYears: demo.edad,
+        educationYears: demo.edu_anios,
+        depto: summary.depto,
+        phone: demo.phone,
+        lang: 'es',
+        createdAt: now,
+        cuidadorAlias: demo.cuidadorAlias,
+      })
+      .catch(() => {})
     dexieRepo
       .savePreAssessment({
         id: crypto.randomUUID(),
-        // Persona = id estable (re-evaluaciones enlazadas); agente/cuidador = nuevo registro.
-        personId: summary.modo === 'persona' ? ensureSelfPersonId() : crypto.randomUUID(),
-        createdAt: Date.now(),
+        personId,
+        createdAt: now,
         modifiableRiskIndex: summary.modifiableRiskShare,
         riskPct: summary.modifiableRiskPct,
         mrcaBand: summary.mrcaBand,
@@ -97,7 +113,7 @@ export function ResultadoStep() {
         source: summary.modo,
         cuidadorAlias: demo.cuidadorAlias,
         derivationStatus: derivar ? 'emitida' : undefined,
-        derivationUpdatedAt: derivar ? Date.now() : undefined,
+        derivationUpdatedAt: derivar ? now : undefined,
       })
       .catch(() => {})
   }, [summary, demo, ensureSelfPersonId])
@@ -386,6 +402,7 @@ export function ResultadoStep() {
             <Printer size={18} /> {t('triage.export.print')}
           </button>
         </div>
+        <p className="mt-2 text-xs text-muted">{t('triage.export.privacyNote')}</p>
       </section>
 
       {summary.modo && (

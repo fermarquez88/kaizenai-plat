@@ -58,6 +58,7 @@ function DerivControl({ r, onChange }: { r: RedRecord; onChange: () => void }) {
       <span className="text-xs text-muted">{t('triage.derivLabel')}</span>
       <select
         value={r.derivationStatus ?? 'emitida'}
+        aria-label={t('triage.derivLabel')}
         onChange={(e) => dexieRepo.updateDerivation(r.id, e.target.value as DerivationStatus).then(onChange)}
         className="rounded-lg border border-line bg-bg px-2 py-1.5 text-sm text-ink focus:border-secondary"
       >

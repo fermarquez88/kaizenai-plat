@@ -28,6 +28,8 @@ describe('FHIR bundleFromData', () => {
     const ra = b.entry.find((e) => e.resource.resourceType === 'RiskAssessment')!.resource as Record<string, any>
     expect(ra.subject.reference).toBe('Patient/x')
     expect(ra.prediction[0].qualitativeRisk.text).toBe('rojo')
+    const consent = b.entry.find((e) => e.resource.resourceType === 'Consent')!.resource as Record<string, any>
+    expect(consent.patient.reference).toBe('Patient/x')
   })
 
   it('omite Consent si no se pasa y produce un Bundle vacío válido', () => {

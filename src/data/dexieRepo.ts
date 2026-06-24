@@ -1,5 +1,6 @@
 import { db } from './db'
 import type {
+  ConsentRecord,
   ContactEvent,
   DerivationStatus,
   KaizenBundle,
@@ -11,6 +12,57 @@ import type {
 import type { DataRepository } from './DataRepository'
 
 const BUNDLE_VERSION = 1
+
+// --- Validación de import (sin dependencias; el sobre puede venir editado a mano) ---
+const isStr = (x: unknown): x is string => typeof x === 'string' && x.length > 0
+const isNum = (x: unknown): x is number => typeof x === 'number' && Number.isFinite(x)
+const TRIAGE = new Set(['verde', 'amarillo', 'rojo'])
+const DERIV = new Set(['emitida', 'agendada', 'atendida', 'noVino', 'cerrada'])
+const MODO = new Set(['persona', 'cuidador', 'agente'])
+const SUGG = new Set(['abierta', 'aceptada', 'hecha'])
+const inSet = (s: Set<string>, x: unknown) => x == null || (typeof x === 'string' && s.has(x))
+
+function validPerson(p: unknown): p is Person {
+  const o = p as Record<string, unknown>
+  return !!o && isStr(o.id) && isNum(o.createdAt)
+}
+function validAssessment(a: unknown): a is PreAssessmentSummary {
+  const o = a as Record<string, unknown>
+  return (
+    !!o &&
+    isStr(o.id) &&
+    isStr(o.personId) &&
+    isNum(o.createdAt) &&
+    inSet(TRIAGE, o.triage) &&
+    inSet(DERIV, o.derivationStatus) &&
+    inSet(MODO, o.modo) &&
+    inSet(MODO, o.source)
+  )
+}
+function validSuggestion(s: unknown): s is Suggestion {
+  const o = s as Record<string, unknown>
+  return !!o && isStr(o.id) && isStr(o.text) && isNum(o.createdAt) && isNum(o.votes) && inSet(SUGG, o.status)
+}
+
+// Consentimiento PORTABLE: vive en el store persistido (localStorage); lo leemos
+// para que viaje en el sobre (sin que dexieRepo dependa de la UI).
+function readConsent(): ConsentRecord | undefined {
+  try {
+    const raw = typeof localStorage !== 'undefined' ? localStorage.getItem('kaizenai-settings') : null
+    const state = raw ? JSON.parse(raw)?.state : null
+    if (state?.consentAccepted) {
+      return {
+        accepted: true,
+        at: state.consentAt ?? Date.now(),
+        version: '1.0',
+        scope: 'Cribado y acompañamiento de salud cerebral',
+      }
+    }
+  } catch {
+    /* ignore */
+  }
+  return undefined
+}
 
 export const dexieRepo: DataRepository = {
   listPeople: () => db.people.orderBy('createdAt').toArray(),
@@ -36,11 +88,7 @@ export const dexieRepo: DataRepository = {
   logContact: async (id: string, ev: ContactEvent) => {
     const a = await db.preAssessments.get(id)
     if (a) {
-      await db.preAssessments.put({
-        ...a,
-        lastContactAt: ev.at,
-        contacts: [...(a.contacts ?? []), ev],
-      })
+      await db.preAssessments.put({ ...a, lastContactAt: ev.at, contacts: [...(a.contacts ?? []), ev] })
     }
   },
 
@@ -65,6 +113,7 @@ export const dexieRepo: DataRepository = {
       kind: 'kaizenai-bundle',
       version: BUNDLE_VERSION,
       exportedAt: new Date().toISOString(),
+      consent: readConsent(),
       people: await db.people.toArray(),
       preAssessments: await db.preAssessments.toArray(),
       suggestions: await db.suggestions.toArray(),
@@ -72,18 +121,41 @@ export const dexieRepo: DataRepository = {
     return JSON.stringify(bundle, null, 2)
   },
   importJSON: async (json: string) => {
-    const raw = JSON.parse(json) as Partial<KaizenBundle>
-    if (raw.kind !== 'kaizenai-bundle') {
-      throw new Error('Archivo no reconocido (no es un sobre KaizenAI).')
+    let raw: Partial<KaizenBundle>
+    try {
+      raw = JSON.parse(json)
+    } catch {
+      throw new Error('Archivo ilegible.')
     }
-    const people = raw.people ?? []
-    const assessments = raw.preAssessments ?? []
-    const suggestions = raw.suggestions ?? []
-    await Promise.all([
-      people.length ? db.people.bulkPut(people) : Promise.resolve(),
-      assessments.length ? db.preAssessments.bulkPut(assessments) : Promise.resolve(),
-      suggestions.length ? db.suggestions.bulkPut(suggestions) : Promise.resolve(),
+    if (raw.kind !== 'kaizenai-bundle') throw new Error('Archivo no reconocido (no es un sobre KaizenAI).')
+    if (raw.version != null && raw.version > BUNDLE_VERSION) {
+      throw new Error(`El sobre es de una versión más nueva (${raw.version}). Actualizá la app.`)
+    }
+    // Sólo registros bien formados (el sobre puede venir editado).
+    const people = (raw.people ?? []).filter(validPerson)
+    const assessments = (raw.preAssessments ?? []).filter(validAssessment)
+    const suggestions = (raw.suggestions ?? []).filter(validSuggestion)
+    // Insert-only: nunca pisar registros locales (preserva contactos/derivación propios).
+    const [pp, aa, ss] = await Promise.all([
+      db.people.toArray(),
+      db.preAssessments.toArray(),
+      db.suggestions.toArray(),
     ])
-    return { people: people.length, assessments: assessments.length, suggestions: suggestions.length }
+    const pSet = new Set(pp.map((p) => p.id))
+    const aSet = new Set(aa.map((a) => a.id))
+    const sSet = new Set(ss.map((s) => s.id))
+    const newPeople = people.filter((p) => !pSet.has(p.id))
+    const newAssessments = assessments.filter((a) => !aSet.has(a.id))
+    const newSuggestions = suggestions.filter((s) => !sSet.has(s.id))
+    await Promise.all([
+      newPeople.length ? db.people.bulkPut(newPeople) : Promise.resolve(),
+      newAssessments.length ? db.preAssessments.bulkPut(newAssessments) : Promise.resolve(),
+      newSuggestions.length ? db.suggestions.bulkPut(newSuggestions) : Promise.resolve(),
+    ])
+    return {
+      people: newPeople.length,
+      assessments: newAssessments.length,
+      suggestions: newSuggestions.length,
+    }
   },
 }

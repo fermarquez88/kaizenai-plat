@@ -85,6 +85,7 @@ export interface PreconsultaSummary {
   ageYears?: number
   sexo?: 'Mujer' | 'Hombre'
   depto?: string
+  phone?: string
   modifiableRiskPct: number
   modifiableRiskShare: number
   presentFactors: string[]
@@ -186,6 +187,7 @@ export function buildSummary(inp: PreconsultaInputs, createdAtISO: string): Prec
     ageYears: inp.demo.edad,
     sexo: inp.demo.sexo,
     depto: inp.demo.depto,
+    phone: inp.demo.phone,
     modifiableRiskPct: Math.round(risk.modifiableRiskPct),
     modifiableRiskShare: risk.share,
     presentFactors: risk.presentFactors.map((f) => f.id),
@@ -220,6 +222,7 @@ export function toFhirBundle(s: PreconsultaSummary): Record<string, unknown> {
       id: 'p',
       ...(s.alias ? { name: [{ text: s.alias }] } : {}),
       ...(s.sexo ? { gender: s.sexo === 'Mujer' ? 'female' : 'male' } : {}),
+      ...(s.phone ? { telecom: [{ system: 'phone', value: s.phone }] } : {}),
     },
   }
   const consent = {

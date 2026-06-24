@@ -21,6 +21,7 @@ export function bundleFromData(input: FhirExportInput): Record<string, unknown> 
         scope: { text: consent.scope },
         category: [{ text: 'Consentimiento informado in-app (KaizenAI)' }],
         dateTime: new Date(consent.at).toISOString(),
+        ...(people[0] ? { patient: { reference: `Patient/${people[0].id}` } } : {}),
         policyRule: { text: `KaizenAI consent v${consent.version} · datos en el dispositivo de la persona` },
       },
     })

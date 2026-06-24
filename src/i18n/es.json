@@ -338,7 +338,8 @@
       "copied": "¡Copiado!",
       "json": "Descargar archivo",
       "fhir": "Exportar FHIR",
-      "print": "Imprimir / PDF"
+      "print": "Imprimir / PDF",
+      "privacyNote": "El alias viaja en el enlace de WhatsApp sin cifrar. Si preferís más privacidad, usá “Copiar resumen”."
     },
     "derivLabel": "Derivación",
     "deriv": {
