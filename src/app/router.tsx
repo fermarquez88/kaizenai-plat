@@ -1,6 +1,7 @@
 import { createHashRouter } from 'react-router-dom'
 import { App } from '../App'
 import { ProfileSelect } from '../profiles/ProfileSelect'
+import { Inicio } from '../profiles/Inicio'
 import { DashboardShell } from '../profiles/DashboardShell'
 import { PreconsultaFlow } from '../modules/pre/PreconsultaFlow'
 import { MiResultado } from '../modules/pre/MiResultado'
@@ -22,6 +23,7 @@ export const router = createHashRouter([
     element: <App />,
     children: [
       { index: true, element: <ProfileSelect /> },
+      { path: 'inicio', element: <Inicio /> },
       { path: 'ejemplo', element: <CasoEjemplo /> },
       { path: 'p/:profileId', element: <DashboardShell /> },
       { path: 'p/:profileId/preconsulta', element: <PreconsultaFlow /> },

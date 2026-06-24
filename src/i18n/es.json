@@ -21,6 +21,18 @@
     "progress": "Respondidas: {{current}} de {{total}}",
     "help": "Si no sabés una respuesta, dejala en blanco o pasá a la siguiente. Podés cambiar una respuesta tocando otra opción."
   },
+  "inicio": {
+    "title": "¿Qué te trae hoy?",
+    "subtitle": "Salud cerebral cerca tuyo, antes y después del diagnóstico. Entrá por lo que necesitás.",
+    "tasks": {
+      "persona": { "t": "Quiero cuidar mi memoria", "d": "Una evaluación breve y clara, y qué hacer después." },
+      "cuidador": { "t": "Acompaño a alguien", "d": "Cuidarte vos, manejar situaciones difíciles y evaluar a quien cuidás." },
+      "promotor": { "t": "Soy promotor/a de salud", "d": "Tu gente, a quién visitar y cribado en terreno." }
+    },
+    "pro": "Soy profesional de la Unidad de Memoria",
+    "demo": "Ver el recorrido de la red (demostración)",
+    "privacy": "Tus datos quedan en este dispositivo. Vos decidís qué compartir."
+  },
   "home": {
     "demoBanner": "Recorrido de la red · vista de demostración: entrá por cada espacio para ver cómo se conecta.",
     "title": "Elegí tu espacio",
