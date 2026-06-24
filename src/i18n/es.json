@@ -21,6 +21,16 @@
     "progress": "Respondidas: {{current}} de {{total}}",
     "help": "Si no sabés una respuesta, dejala en blanco o pasá a la siguiente. Podés cambiar una respuesta tocando otra opción."
   },
+  "promotor": {
+    "title": "Tu espacio de promotor",
+    "subtitle": "Tu gente y qué conviene hacer hoy.",
+    "cribar": "Cribar en terreno",
+    "cribarSub": "Nueva preconsulta, funciona sin señal.",
+    "paraHoy": "Para hoy · a quién visitar o llamar",
+    "empty": "Todo al día. Cuando cribes a alguien, va a aparecer acá su seguimiento.",
+    "todaMiGente": "Toda mi gente",
+    "cola": "Cola de derivaciones"
+  },
   "inicio": {
     "title": "¿Qué te trae hoy?",
     "subtitle": "Salud cerebral cerca tuyo, antes y después del diagnóstico. Entrá por lo que necesitás.",
