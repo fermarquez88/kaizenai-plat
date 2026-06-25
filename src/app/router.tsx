@@ -12,6 +12,7 @@ import { PacienteGuia } from '../modules/post/PacienteGuia'
 import { Comunidad } from '../modules/gov/Comunidad'
 import { MisDatos } from '../modules/gov/MisDatos'
 import { AvisoLegal } from '../modules/gov/AvisoLegal'
+import { PerfilHub } from '../modules/profile/PerfilHub'
 import { RedView } from '../modules/red/RedView'
 import { Seguimiento } from '../modules/red/Seguimiento'
 import { FichaPaciente } from '../modules/red/FichaPaciente'
@@ -45,6 +46,7 @@ export const router = createHashRouter([
       { path: 'gobernanza', element: <Comunidad /> },
       { path: 'datos', element: <MisDatos /> },
       { path: 'aviso-legal', element: <AvisoLegal /> },
+      { path: 'perfil', element: <PerfilHub /> },
     ],
   },
 ])

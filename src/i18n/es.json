@@ -42,6 +42,7 @@
     },
     "pro": "Soy profesional de la Unidad de Memoria",
     "demo": "Ver el recorrido de la red (demostración)",
+    "mapaPerfil": "Mapa del perfil de salud cerebral",
     "privacy": "Tus datos quedan en este dispositivo. Vos decidís qué compartir."
   },
   "home": {
@@ -432,6 +433,41 @@
       "sueno": "Sueño",
       "habitos": "Hábitos y estilo de vida",
       "fisica": "Salud física (factores)"
+    }
+  },
+  "perfil": {
+    "title": "Mapa del perfil de salud cerebral",
+    "intro": "Lo que puede cubrir el perfil de una persona, organizado por dominio. No hace falta completarlo todo: se llena de a poco y entre varios actores.",
+    "completa": "Lo completa: {{rol}}",
+    "nota": "Estructura basada en los dominios de salud cerebral de la OMS. El medidor de completitud aparece en el chequeo.",
+    "tier": {
+      "obligatorio": "obligatorio",
+      "deseable": "deseable",
+      "posterior": "posterior",
+      "aparte": "aparte"
+    },
+    "rol": {
+      "persona": "la persona",
+      "cuidador": "el cuidador/informante",
+      "agente": "el agente sanitario",
+      "medico": "el médico",
+      "neuropsico": "el neuropsicólogo"
+    },
+    "dominio": {
+      "identidad": "Identidad y curso de vida",
+      "gate": "Señales de alarma",
+      "cognitivo": "Cognición",
+      "socioemocional": "Ánimo y emociones",
+      "conductual": "Funcionalidad diaria",
+      "sensorial": "Sentidos (visión / audición)",
+      "motor": "Movilidad",
+      "saludFisica": "Salud física y factores de riesgo",
+      "habitos": "Hábitos y reserva",
+      "sueno": "Sueño",
+      "determinantesSociales": "Determinantes sociales",
+      "medico": "Antecedentes y medicación",
+      "cuidador": "Cuidador",
+      "sintesis": "Diagnóstico y plan"
     }
   },
   "pro": {

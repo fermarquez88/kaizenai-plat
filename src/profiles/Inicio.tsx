@@ -64,6 +64,9 @@ export function Inicio() {
         <Link to="/demo" className="inline-flex items-center gap-2 text-muted hover:underline">
           <Compass size={16} aria-hidden /> {t('inicio.demo')}
         </Link>
+        <Link to="/perfil" className="inline-flex items-center gap-2 text-muted hover:underline">
+          <Brain size={16} aria-hidden /> {t('inicio.mapaPerfil')}
+        </Link>
       </div>
 
       <Link
