@@ -1,0 +1,20 @@
+#!/bin/sh
+# Quality gate VERSIONADO (no "atado con alambre"): corre typecheck + tests antes de CADA
+# push y ABORTA si fallan. Se activa solo con `npm install` (script "prepare" →
+# git config core.hooksPath .githooks). Saltear en emergencia: git push --no-verify.
+set -e
+ROOT="$(git rev-parse --show-toplevel)"
+cd "$ROOT" || exit 1
+# Node local del proyecto (si está) sin pisar un node global del sistema.
+[ -d "$HOME/.local/node/bin" ] && PATH="$HOME/.local/node/bin:$PATH"
+export PATH
+
+echo "▶ pre-push: typecheck…"
+npm run typecheck >/tmp/kaizen-prepush.log 2>&1 || {
+  echo "❌ typecheck FALLÓ — push abortado:"; tail -20 /tmp/kaizen-prepush.log; exit 1;
+}
+echo "▶ pre-push: tests…"
+npm test >>/tmp/kaizen-prepush.log 2>&1 || {
+  echo "❌ tests FALLARON — push abortado:"; tail -25 /tmp/kaizen-prepush.log; exit 1;
+}
+echo "✅ pre-push: verde (typecheck + tests)"

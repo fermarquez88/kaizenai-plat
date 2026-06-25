@@ -23,6 +23,10 @@ npm test         # tests (Vitest) — lógica de scoring
 npm run typecheck
 ```
 
+> **Calidad / hooks:** `npm install` configura un hook **pre-push** (`core.hooksPath=.githooks`)
+> que corre `typecheck + test` y **aborta el push si fallan** — no se publica código roto.
+> Emergencia: `git push --no-verify`.
+
 ## Deploy
 
 El build es **estático** (`dist/`), publicable en Vercel/Netlify o GitHub Pages.
