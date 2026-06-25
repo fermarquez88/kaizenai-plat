@@ -413,6 +413,21 @@
     "noDx": { "t": "No es diagnóstico", "d": "Los resultados son estimaciones orientativas para acompañar la consulta, no un diagnóstico ni un dispositivo médico." },
     "nota": "Versión de demostración. El responsable del tratamiento y la política definitiva se completan para el piloto."
   },
+  "completitud": {
+    "title": "Completitud del perfil",
+    "sinIniciar": "sin iniciar",
+    "lancet": "Factores Lancet: {{a}}/{{total}}",
+    "mrca": "Datos para el riesgo (MRCA): {{a}}/{{total}}",
+    "dominio": {
+      "identidad": "Identidad y demarcación",
+      "cognitivo": "Cognición",
+      "animo": "Ánimo y emociones",
+      "funcional": "Funcionalidad diaria",
+      "sueno": "Sueño",
+      "habitos": "Hábitos y estilo de vida",
+      "fisica": "Salud física (factores)"
+    }
+  },
   "pro": {
     "title": "Para el profesional · modelo y comparadores",
     "secResumen": "Resumen ejecutivo",

@@ -22,6 +22,8 @@ import { useSettings } from '../../../lib/store'
 import { cidiTurnoLink, guardiaDe } from '../../../data/sanjuan'
 import { waMeLink } from '../../../channel/ChannelAdapter'
 import type { TriageLevel } from '../../../scoring/triage'
+import { computeDomainCompleteness } from '../../../scoring/domainCompleteness'
+import { CompletitudPorDominio } from '../../profile/CompletitudPorDominio'
 
 // Amarillo usa text-ink (no text-accent-text) por contraste WCAG sobre bg-amarillo/10.
 const LEVEL_STYLE: Record<TriageLevel, string> = {
@@ -67,6 +69,10 @@ export function ResultadoStep() {
   const summary = useMemo<PreconsultaSummary>(
     () => buildSummary({ demo, lancet, instruments, factores, meds, redFlags }, new Date().toISOString()),
     [demo, lancet, instruments, factores, meds, redFlags],
+  )
+  const completitud = useMemo(
+    () => computeDomainCompleteness({ demo, lancet, instruments }),
+    [demo, lancet, instruments],
   )
 
   const saved = useRef(false)
@@ -300,6 +306,11 @@ export function ResultadoStep() {
           <Stat label={t('triage.stats.meds')} value={String(summary.medFlags.count)} />
           <Stat label={t('triage.stats.redflags')} value={String(summary.redFlags.length)} />
         </div>
+      </section>
+
+      {/* 7b · Completitud del perfil por dominio de salud cerebral */}
+      <section className="mt-5">
+        <CompletitudPorDominio result={completitud} />
       </section>
 
       {/* 8 · Tus respuestas en detalle */}
