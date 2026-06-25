@@ -1,7 +1,7 @@
-import { useEffect, useState, type ComponentType } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useEffect, useRef, useState, type ComponentType } from 'react'
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { ArrowLeft, ArrowRight, Check } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Check, Sparkles } from 'lucide-react'
 import { usePreconsulta } from './preconsultaStore'
 import { useSettings } from '../../lib/store'
 import { ConsentScreen } from '../gov/ConsentScreen'
@@ -25,8 +25,27 @@ interface Step {
 const SELF = ['cqc', 'gds', 'tadlq', 'isi', 'mind']
 const INFORMANT = ['ad8', 'iqcode', 'faq']
 
+// Bloques del chequeo, para micro-logros y progreso cálido.
+const BLOQUE: Record<string, string> = {
+  modo: 'vos',
+  demografia: 'vos',
+  prevencion: 'salud',
+  factores: 'salud',
+  cqc: 'chequeo',
+  gds: 'chequeo',
+  tadlq: 'chequeo',
+  isi: 'chequeo',
+  mind: 'chequeo',
+  ad8: 'chequeo',
+  iqcode: 'chequeo',
+  faq: 'chequeo',
+  ipaq: 'chequeo',
+  medicacion: 'medicacion',
+  banderas: 'senales',
+  resultado: 'resultado',
+}
+
 // El PERFIL ya dijo quién es: derivamos el modo y NO lo volvemos a preguntar.
-// Sólo el agente (perfil sin modo fijo) elige "¿quién responde?" en el flujo.
 function modoFromProfile(profileId?: string): 'persona' | 'cuidador' | undefined {
   if (profileId === 'paciente') return 'persona'
   if (profileId === 'cuidador') return 'cuidador'
@@ -55,67 +74,109 @@ export function PreconsultaFlow() {
   const { t } = useTranslation()
   const { profileId } = useParams()
   const navigate = useNavigate()
+  const [params] = useSearchParams()
   const reset = usePreconsulta((s) => s.reset)
   const setDemo = usePreconsulta((s) => s.setDemo)
   const storedModo = usePreconsulta((s) => s.demo.modo)
+  const step = usePreconsulta((s) => s.step)
+  const setStep = usePreconsulta((s) => s.setStep)
   const consent = useSettings((s) => s.consentAccepted)
   const setConsent = useSettings((s) => s.setConsent)
-  const [step, setStep] = useState(0)
+  const [victoria, setVictoria] = useState<string | null>(null)
 
-  // Empieza limpio y, si el perfil define el modo, lo setea (sin re-preguntar).
+  // Guardar-y-retomar: SOLO reseteamos si se pidió empezar de nuevo (?nuevo=1).
+  // Si no, retomamos donde quedó (el store está persistido).
   useEffect(() => {
-    reset()
-    const m = modoFromProfile(profileId)
-    if (m) setDemo({ modo: m })
-  }, [reset, setDemo, profileId])
+    if (params.get('nuevo') === '1') {
+      reset()
+      const m = modoFromProfile(profileId)
+      if (m) setDemo({ modo: m })
+      setStep(0)
+    } else {
+      const m = modoFromProfile(profileId)
+      if (m && !storedModo) setDemo({ modo: m })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profileId])
 
   // Consentimiento antes de cualquier captura.
   if (!consent) return <ConsentScreen onAccept={() => setConsent(true)} />
 
-  // Modo SINCRÓNICO: el perfil prevalece desde el primer render (sin ventana SELF/INFORMANT).
   const profileModo = modoFromProfile(profileId)
   const askModo = !profileModo
   const STEPS = buildSteps(profileModo ?? storedModo, askModo)
-  const entry = STEPS[step]
-  const isLast = step === STEPS.length - 1
+  const safeStep = Math.min(Math.max(0, step), STEPS.length - 1)
+  const entry = STEPS[safeStep]
+  const isLast = safeStep === STEPS.length - 1
   const Current = entry.Component
+  const restantes = STEPS.length - 1 - safeStep
+
+  const empezarDeNuevo = () => {
+    reset()
+    const m = modoFromProfile(profileId)
+    if (m) setDemo({ modo: m })
+    setStep(0)
+  }
+
+  const go = (next: number) => {
+    const target = Math.min(Math.max(0, next), STEPS.length - 1)
+    // Micro-logro al CERRAR un bloque (solo avanzando).
+    if (target > safeStep) {
+      const bPrev = BLOQUE[STEPS[safeStep].id]
+      const bNext = BLOQUE[STEPS[target].id]
+      if (bPrev && bNext && bPrev !== bNext) {
+        setVictoria(bPrev)
+        window.setTimeout(() => setVictoria(null), 2200)
+      }
+    }
+    setStep(target)
+    window.scrollTo({ top: 0 })
+  }
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-6 pb-28">
       <div
         className="mb-3 flex items-center gap-1.5 no-print"
         role="progressbar"
-        aria-valuenow={step + 1}
+        aria-valuenow={safeStep + 1}
         aria-valuemin={1}
         aria-valuemax={STEPS.length}
         aria-label={t(`preconsulta.steps.${entry.id}`)}
       >
         {STEPS.map((s, i) => (
-          <div key={s.id} className={'h-2 flex-1 rounded-full ' + (i <= step ? 'bg-secondary' : 'bg-line')} />
+          <div key={s.id} className={'h-2 flex-1 rounded-full ' + (i <= safeStep ? 'bg-secondary' : 'bg-line')} />
         ))}
       </div>
-      <p className="mb-4 text-sm text-muted no-print">
-        {t('preconsulta.stepLabel', {
-          current: step + 1,
-          total: STEPS.length,
-          name: t(`preconsulta.steps.${entry.id}`),
-        })}
-      </p>
+      <div className="mb-4 flex items-center justify-between gap-2 no-print">
+        <p className="text-sm text-muted">
+          {restantes > 0 ? t('preconsulta.faltaPoco', { n: restantes }) : t('preconsulta.ultimoPaso')}
+        </p>
+        <button onClick={empezarDeNuevo} className="text-xs text-muted underline">
+          {t('preconsulta.empezarDeNuevo')}
+        </button>
+      </div>
+
+      {victoria && (
+        <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-verde bg-verde/10 px-3 py-1.5 text-sm text-verde-text">
+          <Sparkles size={16} />
+          {t(`preconsulta.microVictoria.${victoria}`, { defaultValue: t('preconsulta.microVictoriaGen') })}
+        </div>
+      )}
 
       {entry.inst ? <InstrumentStep id={entry.inst} /> : Current ? <Current /> : null}
 
       <div className="fixed inset-x-0 bottom-0 border-t border-line bg-bg/90 backdrop-blur no-print">
         <div className="mx-auto flex max-w-2xl items-center gap-3 px-4 py-3">
           <button
-            onClick={() => setStep((s) => Math.max(0, s - 1))}
-            disabled={step === 0}
+            onClick={() => go(safeStep - 1)}
+            disabled={safeStep === 0}
             className="inline-flex items-center gap-1 rounded-xl border border-line bg-surface px-4 py-2.5 text-ink disabled:opacity-40"
           >
             <ArrowLeft size={18} /> {t('common.prev')}
           </button>
           {!isLast ? (
             <button
-              onClick={() => setStep((s) => Math.min(STEPS.length - 1, s + 1))}
+              onClick={() => go(safeStep + 1)}
               className="ml-auto inline-flex items-center gap-1 rounded-xl bg-primary px-5 py-2.5 font-medium text-white"
             >
               {t('common.next')} <ArrowRight size={18} />

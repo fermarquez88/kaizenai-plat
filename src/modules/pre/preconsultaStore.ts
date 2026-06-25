@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 import type { FactorAnswer } from '../../scoring/lancet'
 import { DRUG_CATALOG, type DrugInfo } from '../../scoring/medications'
 import type { Demografia } from '../../data/preconsultaSummary'
@@ -11,6 +12,8 @@ interface PreconsultaState {
   factores: Factores
   meds: DrugInfo[]
   redFlags: string[]
+  /** paso actual del chequeo (guardar-y-retomar). */
+  step: number
   setDemo: (patch: Partial<Demografia>) => void
   setLancet: (id: string, a: FactorAnswer) => void
   setInstrumentItem: (instId: string, item: number, value: number) => void
@@ -18,15 +21,19 @@ interface PreconsultaState {
   addMed: (d: DrugInfo) => void
   removeMed: (id: string) => void
   toggleRedFlag: (id: string) => void
+  setStep: (n: number) => void
   seedDemo: () => void
   reset: () => void
 }
 
-const EMPTY = { demo: {}, lancet: {}, instruments: {}, factores: {}, meds: [], redFlags: [] }
+const EMPTY = { demo: {}, lancet: {}, instruments: {}, factores: {}, meds: [], redFlags: [], step: 0 }
 
-export const usePreconsulta = create<PreconsultaState>((set) => ({
-  ...EMPTY,
-  setDemo: (patch) => set((s) => ({ demo: { ...s.demo, ...patch } })),
+export const usePreconsulta = create<PreconsultaState>()(
+  persist(
+    (set) => ({
+      ...EMPTY,
+      setStep: (step) => set({ step }),
+      setDemo: (patch) => set((s) => ({ demo: { ...s.demo, ...patch } })),
   setLancet: (id, a) => set((s) => ({ lancet: { ...s.lancet, [id]: a } })),
   setInstrumentItem: (instId, item, value) =>
     set((s) => ({
@@ -90,5 +97,8 @@ export const usePreconsulta = create<PreconsultaState>((set) => ({
       redFlags: [],
     })
   },
-  reset: () => set({ ...EMPTY }),
-}))
+      reset: () => set({ ...EMPTY }),
+    }),
+    { name: 'kaizenai-preconsulta' },
+  ),
+)

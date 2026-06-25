@@ -220,6 +220,17 @@
       "medicacion": "Medicación",
       "banderas": "Señales de alarma",
       "resultado": "Resultado"
+    },
+    "faltaPoco": "Te falta poco — quedan {{n}}",
+    "ultimoPaso": "Último paso",
+    "empezarDeNuevo": "Empezar de nuevo",
+    "microVictoriaGen": "¡Bien, seguimos!",
+    "microVictoria": {
+      "vos": "¡Listo! Ya sabemos lo básico de vos.",
+      "salud": "¡Bien! Terminaste lo de tu salud.",
+      "chequeo": "¡Genial! Terminaste el chequeo.",
+      "medicacion": "¡Listo lo de tus remedios!",
+      "senales": "¡Casi terminamos!"
     }
   },
   "pre": {

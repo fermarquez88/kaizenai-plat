@@ -66,7 +66,7 @@ export function MiSaludCerebral() {
         <h1 className="font-serif text-2xl text-ink sm:text-3xl">{t('puerta.saludo')}</h1>
         <p className="mt-2 text-muted">{t('puerta.bienvenida')}</p>
         <Link
-          to={preconsultaTo}
+          to={`${preconsultaTo}?nuevo=1`}
           className="mt-6 flex items-center justify-between gap-3 rounded-2xl bg-primary px-5 py-5 text-white shadow-card"
         >
           <span className="text-lg font-medium">{t('puerta.cta.empezar')}</span>

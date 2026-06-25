@@ -15,7 +15,7 @@ interface Task {
 }
 
 const TASKS: Task[] = [
-  { key: 'persona', icon: Brain, to: '/p/paciente/preconsulta', accent: 'text-secondary' },
+  { key: 'persona', icon: Brain, to: '/p/paciente', accent: 'text-secondary' },
   { key: 'cuidador', icon: HeartHandshake, to: '/p/cuidador', accent: 'text-primary' },
   { key: 'promotor', icon: MapPin, to: '/p/agente/promotor', accent: 'text-secondary' },
 ]
