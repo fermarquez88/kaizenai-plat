@@ -997,7 +997,8 @@
       "aguda": "Urgente / reversible",
       "noVolvio": "No volvió",
       "pedidoMedicion": "Falta una medición",
-      "discordancia": "Dos miradas"
+      "discordancia": "Dos miradas",
+      "pedidoCompletar": "Pedido"
     },
     "severidad": {
       "aguda": "Urgente",
@@ -1009,7 +1010,8 @@
       "aguda": "Señal que no puede esperar — revisar en horas, no en semanas.",
       "noVolvio": "Hace {{dias}} días sin contacto.",
       "pedidoMedicion": "Nunca se midió: {{medible}}.",
-      "discordancia": "La persona y quien la cuida ven cosas distintas."
+      "discordancia": "La persona y quien la cuida ven cosas distintas.",
+      "pedidoCompletar": "Completar: {{que}}"
     },
     "medible": {
       "presionArterial": "la presión",
@@ -1033,7 +1035,8 @@
       "cerrar": "Marcar hecho",
       "protocoloInmediato": "Activar protocolo",
       "mirarJuntos": "Mirar juntos",
-      "evaluarAnimo": "Evaluar ánimo"
+      "evaluarAnimo": "Evaluar ánimo",
+      "completar": "Marcar hecho"
     },
     "diada": {
       "title": "Esto vamos a hacer juntos",
@@ -1049,15 +1052,18 @@
       "reContactar": "Retomar el contacto con tu acompañante",
       "mirarJuntos": "Una charla para mirar todo juntos",
       "evaluarAnimo": "Una charla sobre cómo te sentís",
-      "protocoloInmediato": "Hablar pronto con un profesional"
+      "protocoloInmediato": "Hablar pronto con un profesional",
+      "completar": "Completá: {{que}}"
     },
     "pasoPersonaSub": {
       "medir": "Lo coordina el equipo de salud de tu zona. Es rápido.",
       "reContactar": "Tu acompañante quiere saber cómo estás.",
       "mirarJuntos": "Con tu familia y el equipo, sin juzgar a nadie.",
       "evaluarAnimo": "A veces el ánimo pesa en la memoria. Vale la pena mirarlo.",
-      "protocoloInmediato": "Conviene no dejarlo pasar."
-    }
+      "protocoloInmediato": "Conviene no dejarlo pasar.",
+      "completar": "Te lo pidió el equipo de salud."
+    },
+    "pedirCompletar": "Pedir completar un perfil"
   },
   "voz": {
     "on": "Voz activada",
@@ -1148,5 +1154,31 @@
       "fisica": "Controlar la presión y el azúcar protege tu memoria."
     },
     "verPerfil": "Ver toda mi ficha"
+  },
+  "alcance": {
+    "minima-completa": "Evaluación mínima completa",
+    "minima-obligatoria": "Evaluación mínima obligatoria",
+    "modulo_sueno": "Cómo duerme",
+    "modulo_habitos": "Hábitos (dieta y actividad)",
+    "modulo_social": "Situación social",
+    "medir_presionArterial": "Tomar la presión",
+    "medir_hba1c": "Medir HbA1c (azúcar)",
+    "medir_ldl": "Medir colesterol (LDL)",
+    "test_bateria": "Batería neuropsicológica completa",
+    "test_ACE-III": "ACE-III",
+    "test_MMSE": "Mini-Mental (MMSE)",
+    "test_RAVLT": "RAVLT (memoria)",
+    "test_TMT": "TMT (atención)"
+  },
+  "panel": {
+    "title": "Pedir completar el perfil",
+    "intro": "Marcá lo que querés que completen para {{alias}}. Podés elegir varias cosas.",
+    "grupo": {
+      "diada": "La persona y su familia",
+      "enfermeria": "Agente / Enfermería",
+      "neuropsico": "Neuropsicología"
+    },
+    "seleccionados": "{{n}} seleccionados",
+    "crear": "Crear pedidos"
   }
 }

@@ -15,6 +15,7 @@ import { AvisoLegal } from '../modules/gov/AvisoLegal'
 import { PerfilHub } from '../modules/profile/PerfilHub'
 import { RedView } from '../modules/red/RedView'
 import { RedAlarmas } from '../modules/red/RedAlarmas'
+import { PanelPedidos } from '../modules/red/PanelPedidos'
 import { Seguimiento } from '../modules/red/Seguimiento'
 import { FichaPaciente } from '../modules/red/FichaPaciente'
 import { AgendaVisitas } from '../modules/red/AgendaVisitas'
@@ -40,6 +41,7 @@ export const router = createHashRouter([
       { path: 'p/:profileId/post/paciente', element: <PacienteGuia /> },
       { path: 'p/:profileId/red/:mode', element: <RedView /> },
       { path: 'p/:profileId/alarmas', element: <RedAlarmas /> },
+      { path: 'p/:profileId/pedir/:personId', element: <PanelPedidos /> },
       { path: 'p/:profileId/seguimiento', element: <Seguimiento /> },
       { path: 'p/:profileId/ficha/:recordId', element: <FichaPaciente /> },
       { path: 'p/:profileId/agenda', element: <AgendaVisitas /> },

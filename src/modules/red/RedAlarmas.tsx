@@ -1,12 +1,13 @@
 import { useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { Activity, ArrowLeft, Check, HeartHandshake, MessageCircle, Stethoscope, TriangleAlert } from 'lucide-react'
+import { Activity, ArrowLeft, Check, ClipboardList, HeartHandshake, MessageCircle, Stethoscope, TriangleAlert } from 'lucide-react'
 import { SEED_PERSONAS, type SeedPersona } from '../../seed/personas'
 import { alarmasDeSeed, inputFromSeed } from '../../scoring/alarmasFromSeed'
 import { colaPorRol, derivarAlarmas, type Alarma, type Rol } from '../../scoring/alarmas'
 import type { MedibleTipo, PuntoMedible } from '../../scoring/medibles'
 import { waMeLink } from '../../channel/ChannelAdapter'
+import { usePedidos } from './pedidosStore'
 
 // Perfil de la app → rol del modelo de alarmas. Persona y cuidador = díada (vista cuidado).
 const ROL_POR_PERFIL: Record<string, Rol> = {
@@ -55,6 +56,8 @@ export function RedAlarmas() {
   const [extra, setExtra] = useState<Record<string, PuntoMedible[]>>({})
   const [cerradas, setCerradas] = useState<Set<string>>(new Set())
   const [victoria, setVictoria] = useState(false)
+  const pedidosCreados = usePedidos((s) => s.pedidos)
+  const cerrarPedidoStore = usePedidos((s) => s.cerrarPedido)
 
   const personas = useMemo(() => conHuella(SEED_PERSONAS, extra), [extra])
 
@@ -68,8 +71,11 @@ export function RedAlarmas() {
   }
   const cerrar = (a: Alarma) => {
     setCerradas((s) => new Set(s).add(a.id))
+    cerrarPedidoStore(a.id) // si es un pedido creado, lo cierra en el store (no-op si es derivado)
     festejar()
   }
+  // Etiqueta legible del alcance de un pedidoCompletar.
+  const alc = (s?: string) => (s ? t(`alcance.${s.replace(':', '_')}`, { defaultValue: s }) : '')
   const festejar = () => {
     setVictoria(true)
     window.setTimeout(() => setVictoria(false), 2200)
@@ -78,7 +84,8 @@ export function RedAlarmas() {
   // ── Vista DÍADA: "Esto vamos a hacer juntos" — pasos de cuidado, sin jerga de alarma ──
   if (rol === 'diada') {
     const sujeto = personas.find((p) => p.id === 'p7') ?? personas.find((p) => p.medibles) ?? personas[0]
-    const pasos = colaPorRol(derivarAlarmas(inputFromSeed(sujeto, now)), 'diada')
+    const creadosSujeto = pedidosCreados.filter((p) => p.personId === sujeto.id && p.estado !== 'cerrada')
+    const pasos = colaPorRol([...derivarAlarmas(inputFromSeed(sujeto, now)), ...creadosSujeto], 'diada')
       // La brecha de servicio es responsabilidad del Estado: NO se muestra como tarea de la persona.
       .filter((a) => !a.brechaDeServicio && !cerradas.has(a.id))
 
@@ -97,7 +104,7 @@ export function RedAlarmas() {
           <ul className="mt-5 space-y-3">
             {pasos.map((a) => (
               <li key={a.id} className="rounded-2xl border border-line bg-surface p-4">
-                <p className="font-medium text-ink">{t(`alarmas.pasoPersona.${a.accion}`, { medible: t(`alarmas.medible.${a.detalle}`, { defaultValue: '' }) })}</p>
+                <p className="font-medium text-ink">{t(`alarmas.pasoPersona.${a.accion}`, { medible: t(`alarmas.medible.${a.detalle}`, { defaultValue: '' }), que: alc(a.alcance) })}</p>
                 <p className="mt-1 text-sm text-muted">{t(`alarmas.pasoPersonaSub.${a.accion}`, { defaultValue: t('alarmas.diada.acompana') })}</p>
                 <div className="mt-3">
                   {a.tipo === 'pedidoMedicion' ? (
@@ -120,7 +127,7 @@ export function RedAlarmas() {
   }
 
   // ── Vista PROFESIONAL/AGENTE/GESTOR: la cola única filtrada por rol ────────────────────
-  const todas = alarmasDeSeed(personas, now)
+  const todas = [...alarmasDeSeed(personas, now), ...pedidosCreados.filter((p) => p.estado !== 'cerrada')]
   const cola = colaPorRol(todas, rol).filter((a) => !cerradas.has(a.id))
   const agudas = cola.filter((a) => a.tipo === 'aguda').length
   const brechas = cola.filter((a) => a.brechaDeServicio).length
@@ -130,6 +137,13 @@ export function RedAlarmas() {
       <BackLink profileId={profileId} t={t} />
       <h1 className="font-serif text-2xl text-ink sm:text-3xl">{t('alarmas.title')}</h1>
       <p className="mt-1 text-sm text-muted">{t('alarmas.intro', { rol: t(`alarmas.rol.${rol}`) })}</p>
+
+      <Link
+        to={`/p/${profileId}/pedir/p7`}
+        className="mt-3 inline-flex items-center gap-1 rounded-xl border border-secondary bg-secondary/10 px-3 py-2 text-sm font-medium text-secondary no-print"
+      >
+        <ClipboardList size={16} /> {t('alarmas.pedirCompletar')}
+      </Link>
 
       <div className="mt-4 grid grid-cols-3 gap-3">
         <Kpi label={t('alarmas.kpi.abiertas')} value={String(cola.length)} />
@@ -156,6 +170,7 @@ export function RedAlarmas() {
                       {t(`alarmas.detalleTexto.${a.tipo}`, {
                         medible: t(`alarmas.medible.${a.detalle}`, { defaultValue: a.detalle ?? '' }),
                         dias: a.detalle,
+                        que: alc(a.alcance),
                         defaultValue: '',
                       })}
                     </p>

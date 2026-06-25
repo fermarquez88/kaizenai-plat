@@ -18,7 +18,7 @@ import { DIAS_NO_VOLVIO } from './retention'
 // Re-export: Rol es parte del vocabulario del modelo de alarmas (dueño-de-loop).
 export type { Rol } from './medibles'
 
-export type AlarmaTipo = 'aguda' | 'noVolvio' | 'pedidoMedicion' | 'discordancia'
+export type AlarmaTipo = 'aguda' | 'noVolvio' | 'pedidoMedicion' | 'discordancia' | 'pedidoCompletar'
 export type AlarmaEstado = 'abierta' | 'enCurso' | 'cerrada'
 export type Severidad = 'aguda' | 'alta' | 'media' | 'baja'
 
@@ -40,6 +40,8 @@ export interface Alarma {
    *  NUNCA se presenta como pendiente de la persona ni colorea su perfil como déficit. */
   brechaDeServicio: boolean
   detalle?: string // i18n key o texto corto de contexto
+  /** alcance del pedido (solo pedidoCompletar): 'minima-obligatoria'|'minima-completa'|'modulo:<id>'|'test:<id>'|'medir:<medible>'. */
+  alcance?: string
   createdAt: number
 }
 
@@ -59,6 +61,37 @@ export function prioridadAlarma(i: PrioridadInput): number {
   const conf = i.confiabilidad === 'gris' ? 1 : i.confiabilidad === 'amarillo' ? 0.5 : 0
   // pesos orientativos: riesgo + brecha de medición + modulador de vulnerabilidad
   return Math.round((i.riesgo * 50 + conf * 25 + i.vulnerabilidad * 5) * 10) / 10
+}
+
+// ── Pedido de completar perfil (orquestación): cualquiera puede emitir uno o varios ────
+// Generaliza el "Pedido de Medición" a un pedido de evaluación/completar perfil, ruteado a
+// un actor (dueño-de-loop) con un alcance. Mismo objeto-alarma, distinto origen.
+export interface CrearPedidoInput {
+  personId: string
+  alias: string
+  destinoRol: Rol
+  alcance: string
+  now: number
+  prioridadBase?: number
+}
+
+export function crearPedido(i: CrearPedidoInput): Alarma {
+  return {
+    id: `${i.personId}:pedidoCompletar:${i.alcance}`,
+    personId: i.personId,
+    alias: i.alias,
+    tipo: 'pedidoCompletar',
+    severidad: 'media',
+    procedencia: 'reportado',
+    duenoRol: i.destinoRol,
+    accion: 'completar',
+    estado: 'abierta',
+    prioridad: i.prioridadBase ?? 40,
+    brechaDeServicio: false,
+    detalle: i.alcance,
+    alcance: i.alcance,
+    createdAt: i.now,
+  }
 }
 
 // ── Capacidad local (catálogo de capacidades): qué se puede cerrar en el territorio ────
@@ -214,13 +247,15 @@ export function derivarAlarmas(input: DeriveAlarmasInput): Alarma[] {
 // ── Cola única filtrada por rol (vistas/proyecciones, no copias) ───────────────────────
 // Qué tipos de alarma "posee" cada rol. La díada ve sus propias alarmas (co-posesión);
 // la brecha de servicio la posee el gestor (no carga a la persona ni al agente).
+// Cada rol ve los pedidoCompletar ruteados A ÉL (por duenoRol, abajo); la díada co-posee
+// todo lo suyo; el gestor los ve por supervisión. No se listan en los demás para no sobre-compartir.
 const COLA_POR_ROL: Record<Rol, AlarmaTipo[]> = {
-  diada: ['noVolvio', 'pedidoMedicion', 'discordancia', 'aguda'],
+  diada: ['noVolvio', 'pedidoMedicion', 'discordancia', 'aguda', 'pedidoCompletar'],
   agente: ['noVolvio', 'pedidoMedicion'],
   enfermero: ['pedidoMedicion', 'aguda'],
   medico: ['aguda', 'discordancia', 'pedidoMedicion'],
   neuropsico: ['discordancia'],
-  gestor: ['noVolvio', 'pedidoMedicion', 'discordancia', 'aguda'], // ve agregados + brechas
+  gestor: ['noVolvio', 'pedidoMedicion', 'discordancia', 'aguda', 'pedidoCompletar'], // supervisión + brechas
 }
 
 export function colaPorRol(alarmas: Alarma[], rol: Rol): Alarma[] {

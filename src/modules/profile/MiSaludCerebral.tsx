@@ -7,6 +7,7 @@ import { avancePerfil } from '../../scoring/avancePerfil'
 import { colaPorRol, derivarAlarmas } from '../../scoring/alarmas'
 import { inputFromSeed } from '../../scoring/alarmasFromSeed'
 import { SEED_PERSONAS } from '../../seed/personas'
+import { usePedidos } from '../red/pedidosStore'
 import { Gate0 } from './Gate0'
 import { VozControl } from './VozControl'
 
@@ -46,12 +47,16 @@ export function MiSaludCerebral() {
     () => avancePerfil({ demo, lancet: lancet as Record<string, string | undefined>, instruments }),
     [demo, lancet, instruments],
   )
-  // Pedidos a la díada (demo): reusa el caso p7.
+  // Pedidos a la díada (demo): reusa el caso p7, incluyendo los que creó el equipo de salud.
+  const pedidosCreados = usePedidos((s) => s.pedidos)
   const pedidos = useMemo(() => {
     const sujeto = SEED_PERSONAS.find((p) => p.id === 'p7')
     if (!sujeto) return 0
-    return colaPorRol(derivarAlarmas(inputFromSeed(sujeto, Date.UTC(2026, 5, 25))), 'diada').filter((a) => !a.brechaDeServicio).length
-  }, [])
+    const creados = pedidosCreados.filter((p) => p.personId === sujeto.id && p.estado !== 'cerrada')
+    return colaPorRol([...derivarAlarmas(inputFromSeed(sujeto, Date.UTC(2026, 5, 25))), ...creados], 'diada').filter(
+      (a) => !a.brechaDeServicio,
+    ).length
+  }, [pedidosCreados])
 
   const preconsultaTo = `/p/${profileId}/preconsulta`
   const vozText = `${t('puerta.saludo')}. ${t(`puerta.nivel.${av.nivel}.sub`)}`

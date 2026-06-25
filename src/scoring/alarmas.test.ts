@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import {
   colaPorRol,
+  crearPedido,
   derivarAlarmas,
   PRIORIDAD_AGUDA,
   prioridadAlarma,
@@ -98,6 +99,22 @@ describe('derivarAlarmas — las 4 clases', () => {
       base({ discordancia: { presente: true, direccion: 'personaPeor' } }),
     ).find((x) => x.tipo === 'discordancia')
     expect(a).toMatchObject({ accion: 'evaluarAnimo', detalle: 'depresion', duenoRol: 'medico' })
+  })
+})
+
+describe('crearPedido — orquestación: pedido de completar perfil ruteado por destino', () => {
+  it('crea un pedidoCompletar con dueño = destino, acción completar e id estable por alcance', () => {
+    const p = crearPedido({ personId: 'p7', alias: 'L. F.', destinoRol: 'neuropsico', alcance: 'test:RAVLT', now: NOW })
+    expect(p).toMatchObject({ tipo: 'pedidoCompletar', duenoRol: 'neuropsico', accion: 'completar', estado: 'abierta', alcance: 'test:RAVLT' })
+    expect(p.id).toBe('p7:pedidoCompletar:test:RAVLT')
+  })
+
+  it('un pedido cae en la cola de su destino y la díada lo co-posee', () => {
+    const ped = crearPedido({ personId: 'p7', alias: 'L. F.', destinoRol: 'enfermero', alcance: 'minima-obligatoria', now: NOW })
+    expect(colaPorRol([ped], 'enfermero').some((a) => a.id === ped.id)).toBe(true)
+    expect(colaPorRol([ped], 'diada').some((a) => a.id === ped.id)).toBe(true)
+    // un rol distinto y sin ser dueño no lo ve
+    expect(colaPorRol([ped], 'agente').some((a) => a.id === ped.id)).toBe(false)
   })
 })
 
