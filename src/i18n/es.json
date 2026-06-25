@@ -614,6 +614,7 @@
   },
   "red": {
     "realNote": "{{real}} reales · {{demo}} de ejemplo (demo).",
+    "demoBanner": "Vista de demostración — incluye datos de ejemplo.",
     "demoTag": "ejemplo",
     "import": {
       "btn": "Importar persona (archivo)",

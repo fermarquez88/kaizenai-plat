@@ -110,6 +110,11 @@ export function RedView() {
     <div className="mx-auto max-w-3xl px-4 py-8">
       <h1 className="font-serif text-2xl text-ink sm:text-3xl">{t(`red.titles.${m}`)}</h1>
       <p className="mt-1 text-sm text-muted">{t('red.realNote', { real: realCount, demo: records.length - realCount })}</p>
+      {records.length > realCount && (
+        <p className="mt-2 inline-block rounded-full border border-amarillo bg-amarillo/10 px-3 py-1 text-xs text-ink">
+          {t('red.demoBanner')}
+        </p>
+      )}
 
       {(m === 'bandeja' || m === 'cola') && (
         <div className="mt-3">

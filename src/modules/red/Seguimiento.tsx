@@ -57,6 +57,11 @@ export function Seguimiento() {
         <Kpi label={t('seguimiento.kpi.diada')} value={String(conCuidador)} />
       </div>
       <p className="mt-2 text-xs text-muted">{t('red.realNote', { real: realCount, demo: total - realCount })}</p>
+      {total > realCount && (
+        <p className="mt-2 inline-block rounded-full border border-amarillo bg-amarillo/10 px-3 py-1 text-xs text-ink">
+          {t('red.demoBanner')}
+        </p>
+      )}
 
       <div className="mt-3">
         <ImportButton onDone={reload} />
