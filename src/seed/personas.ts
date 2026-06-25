@@ -2,6 +2,9 @@
 // triage, distintos perfiles, y datos de SEGUIMIENTO (retención) y DÍADA (cuidador).
 import type { TriageLevel } from '../scoring/triage'
 import type { MrcaModelBand } from '../scoring/mrcaModel'
+import type { Cerca, Vive } from '../scoring/equity'
+import type { DiscordanciaInfo } from '../scoring/alarmas'
+import type { Medible } from '../scoring/medibles'
 
 export interface SeedPersona {
   id: string
@@ -23,7 +26,21 @@ export interface SeedPersona {
   cuidador?: string
   /** discrepancia persona↔informante (señal clínica) */
   discrepancia?: boolean
+  // ── Campos del modelo de alarmas (re-arquitectura red) ──────────────────────
+  /** vulnerabilidad territorial/social (equidad) */
+  vive?: Vive
+  cerca?: Cerca
+  isolation?: boolean
+  /** señal aguda/reversible: ideación suicida, delirium, deterioro brusco, sospecha ACV */
+  agudo?: { presente: boolean; motivo?: string }
+  /** discordancia díada tipada (dirección + confusores); prevalece sobre `discrepancia` */
+  discordancia?: DiscordanciaInfo
+  /** medibles del perfil (serie con procedencia); los huecos gris originan pedidos */
+  medibles?: Medible[]
 }
+
+// Fecha fija para un dato "medido pero viejo" (>1 año → confiabilidad amarilla).
+const MEDIDO_VIEJO = Date.UTC(2024, 0, 15)
 
 export const SEED_PERSONAS: SeedPersona[] = [
   {
@@ -57,6 +74,9 @@ export const SEED_PERSONAS: SeedPersona[] = [
     note: 'Periférica, con señal de alarma (deterioro rápido).',
     lastSeenDays: 92,
     phone: '5492644000002',
+    vive: 'campo',
+    cerca: '>60',
+    agudo: { presente: true, motivo: 'deterioroRapido' },
   },
   {
     id: 'p3',
@@ -135,6 +155,18 @@ export const SEED_PERSONAS: SeedPersona[] = [
     phone: '5492644000007',
     cuidador: 'su hijo',
     discrepancia: true,
+    vive: 'campo',
+    cerca: '30-60',
+    // La persona minimiza y el hijo (que convive) reporta más deterioro → posible anosognosia.
+    discordancia: { presente: true, direccion: 'informantePeor', informanteConvive: true },
+    medibles: [
+      // Presión medida hace >1 año (amarillo): no genera pedido pero baja confiabilidad.
+      { tipo: 'presionArterial', unidad: 'mmHg', puntos: [{ valor: 152, fecha: MEDIDO_VIEJO, autorRol: 'medico', procedencia: 'medido' }] },
+      // Nunca medida (gris) → Pedido de Medición al enfermero.
+      { tipo: 'hba1c', unidad: '%', puntos: [] },
+      // Nunca medida y SIN audiometría en el territorio → BRECHA DE SERVICIO (sube a política).
+      { tipo: 'audicion', unidad: 'dB', puntos: [] },
+    ],
   },
 ]
 
