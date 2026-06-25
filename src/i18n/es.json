@@ -1075,7 +1075,19 @@
     "volver": "Volver"
   },
   "nav": {
-    "miPanel": "Mi panel"
+    "miPanel": "Mi panel",
+    "modulos": "Módulos",
+    "mod": {
+      "espacio": "Mi espacio",
+      "chequeo": "Chequeo",
+      "pedidos": "Pendientes",
+      "gente": "Mi gente",
+      "seguimiento": "Seguimiento",
+      "alarmas": "Alertas",
+      "agenda": "Agenda",
+      "panel": "Panel",
+      "metricas": "Métricas"
+    }
   },
   "puerta": {
     "saludo": "Hola. Cuidemos tu memoria.",

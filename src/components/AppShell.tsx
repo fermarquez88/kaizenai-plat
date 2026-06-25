@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { ArrowLeft, Minus, Plus, Volume2, VolumeX } from 'lucide-react'
 import { useSettings } from '../lib/store'
 import { Logo } from './Logo'
+import { ModuleNav } from './ModuleNav'
 
 export function AppShell({ children }: { children: ReactNode }) {
   const { t } = useTranslation()
@@ -18,9 +19,12 @@ export function AppShell({ children }: { children: ReactNode }) {
   // no al historial impredecible del navegador.
   const enModulo = location.pathname.match(/^\/p\/([^/]+)\/.+/)
   const panelHref = enModulo ? `/p/${enModulo[1]}` : null
+  // Nav de módulos: visible dentro de un rol, oculta en el chequeo (que tiene su propia barra).
+  const rol = location.pathname.match(/^\/p\/([^/]+)(?:\/(.*))?$/)
+  const showModuleNav = !!rol && (rol[2] ?? '').split('/')[0] !== 'preconsulta'
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className={'min-h-screen flex flex-col ' + (showModuleNav ? 'pb-16' : '')}>
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-20 focus:rounded-lg focus:bg-primary focus:px-3 focus:py-2 focus:text-white"
@@ -134,6 +138,8 @@ export function AppShell({ children }: { children: ReactNode }) {
           </Link>
         </div>
       </footer>
+
+      {showModuleNav && rol && <ModuleNav profileId={rol[1]} />}
     </div>
   )
 }
