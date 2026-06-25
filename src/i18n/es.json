@@ -1047,5 +1047,83 @@
       "evaluarAnimo": "A veces el ánimo pesa en la memoria. Vale la pena mirarlo.",
       "protocoloInmediato": "Conviene no dejarlo pasar."
     }
+  },
+  "voz": {
+    "on": "Voz activada",
+    "off": "Voz apagada",
+    "hint": "Tocá acá para apagar la voz"
+  },
+  "gate0": {
+    "pregunta": "¿De repente se le torció la cara, perdió fuerza en un brazo o se le trabó el habla?",
+    "aclaracion": "Aunque ya haya pasado. Marcá Sí si pasó hoy o hace poco.",
+    "si": "Sí",
+    "no": "No",
+    "urgenciaTitle": "Puede ser una urgencia",
+    "urgenciaBody": "El tiempo importa. Llamá ya al 107 o llevá a la persona a la guardia más cercana.",
+    "llamar": "Llamar al 107",
+    "volver": "Volver"
+  },
+  "nav": {
+    "miPanel": "Mi panel"
+  },
+  "puerta": {
+    "saludo": "Hola. Cuidemos tu memoria.",
+    "bienvenida": "Este es tu espacio. Vamos de a poco, una cosa a la vez.",
+    "empezarNota": "Son unas pocas preguntas. Podés parar y seguir cuando quieras.",
+    "avanceLabel": "Avance del perfil",
+    "proximoPaso": "Tu próximo paso",
+    "proxima": {
+      "demografia": "Contanos quién sos (edad y escuela)",
+      "lancet": "Unas preguntas sobre tu salud",
+      "cqc": "Contanos cómo anda tu memoria",
+      "gds": "Contanos cómo te sentís",
+      "tadlq": "Contanos cómo va tu día a día",
+      "seguir": "Seguí tu chequeo"
+    },
+    "cta": {
+      "empezar": "Empezá tu chequeo"
+    },
+    "listo": "Listo para tu consulta — guardá o compartí tu ficha",
+    "nivel": {
+      "empezamos": {
+        "t": "Empezamos",
+        "sub": "Tu salud cerebral ya está en marcha."
+      },
+      "vamosBien": {
+        "t": "Vamos bien",
+        "sub": "Cada paso ayuda a tu médico a cuidarte mejor."
+      },
+      "completo": {
+        "t": "Perfil completo",
+        "sub": "Tu ficha está viva: se actualiza en cada visita."
+      }
+    },
+    "pedidos": "Lo que te pidió el equipo de salud ({{n}})",
+    "pedidosSub": "Pequeñas cosas para cuidarte mejor.",
+    "seccionesTitulo": "Quién completa tu ficha",
+    "sec": {
+      "persona": {
+        "t": "Tus datos",
+        "falta": "Te falta un poco — seguí cuando puedas.",
+        "ok": "¡Listo, gracias!"
+      },
+      "vitales": {
+        "t": "Tus signos vitales",
+        "falta": "Falta que la enfermera los cargue."
+      },
+      "tests": {
+        "t": "Memoria y pensamiento",
+        "falta": "Los carga la neuropsicóloga si hace falta."
+      }
+    },
+    "otrosTemas": "Otros temas para sumar",
+    "beneficioGen": "Ayuda a cuidar tu salud cerebral.",
+    "beneficio": {
+      "sueno": "Dormir bien cuida tu memoria.",
+      "animo": "El ánimo influye en cómo pensás.",
+      "habitos": "Lo que comés y cómo te movés cuida tu cerebro.",
+      "fisica": "Controlar la presión y el azúcar protege tu memoria."
+    },
+    "verPerfil": "Ver toda mi ficha"
   }
 }

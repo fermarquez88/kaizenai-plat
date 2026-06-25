@@ -3,7 +3,7 @@ import { App } from '../App'
 import { ProfileSelect } from '../profiles/ProfileSelect'
 import { Inicio } from '../profiles/Inicio'
 import { PromotorHome } from '../profiles/PromotorHome'
-import { DashboardShell } from '../profiles/DashboardShell'
+import { RoleHome } from '../profiles/RoleHome'
 import { PreconsultaFlow } from '../modules/pre/PreconsultaFlow'
 import { MiResultado } from '../modules/pre/MiResultado'
 import { CasoEjemplo } from '../modules/pre/CasoEjemplo'
@@ -32,7 +32,7 @@ export const router = createHashRouter([
       { path: 'demo', element: <ProfileSelect /> },
       { path: 'ejemplo', element: <CasoEjemplo /> },
       { path: 'p/agente', element: <Navigate to="/p/agente/promotor" replace /> },
-      { path: 'p/:profileId', element: <DashboardShell /> },
+      { path: 'p/:profileId', element: <RoleHome /> },
       { path: 'p/:profileId/promotor', element: <PromotorHome /> },
       { path: 'p/:profileId/preconsulta', element: <PreconsultaFlow /> },
       { path: 'p/:profileId/mi-resultado', element: <MiResultado /> },

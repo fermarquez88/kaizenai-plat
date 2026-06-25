@@ -14,6 +14,10 @@ export function AppShell({ children }: { children: ReactNode }) {
   const location = useLocation()
   const navigate = useNavigate()
   const atHome = ['/', '', '/inicio'].includes(location.pathname)
+  // Back ANCLADO: dentro de un módulo de un rol, "volver" lleva a "mi panel" (/p/:rol),
+  // no al historial impredecible del navegador.
+  const enModulo = location.pathname.match(/^\/p\/([^/]+)\/.+/)
+  const panelHref = enModulo ? `/p/${enModulo[1]}` : null
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -26,14 +30,25 @@ export function AppShell({ children }: { children: ReactNode }) {
       <header className="sticky top-0 z-10 border-b border-line bg-bg/85 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between gap-3 px-4">
           <div className="flex items-center gap-2">
-            {!atHome && (
-              <button
-                onClick={() => navigate(-1)}
-                aria-label={t('common.back')}
-                className="rounded-lg p-3 text-muted hover:bg-surface"
+            {panelHref ? (
+              <Link
+                to={panelHref}
+                aria-label={t('nav.miPanel')}
+                className="inline-flex items-center gap-1 rounded-lg p-3 text-muted hover:bg-surface"
               >
                 <ArrowLeft size={20} />
-              </button>
+                <span className="hidden text-sm sm:inline">{t('nav.miPanel')}</span>
+              </Link>
+            ) : (
+              !atHome && (
+                <button
+                  onClick={() => navigate(-1)}
+                  aria-label={t('common.back')}
+                  className="rounded-lg p-3 text-muted hover:bg-surface"
+                >
+                  <ArrowLeft size={20} />
+                </button>
+              )
             )}
             <Link to="/inicio" className="flex items-center gap-2">
               <Logo className="h-8 w-8 text-secondary" />

@@ -21,11 +21,17 @@ export interface SettingsState {
   consentAt?: number
   simpleMode: boolean
   selfPersonId?: string
+  /** voz (lectura en pantalla) encendida por defecto en la puerta de la persona. */
+  voiceOn: boolean
+  /** se mostró ya la señal animada de "cómo apagar la voz". */
+  voiceHintDismissed: boolean
   setLang: (l: 'es' | 'en') => void
   incFont: () => void
   decFont: () => void
   setConsent: (v: boolean) => void
   setSimpleMode: (v: boolean) => void
+  setVoiceOn: (v: boolean) => void
+  dismissVoiceHint: () => void
   /** Devuelve (creando si hace falta) el id estable de la persona, para enlazar
    *  sus re-evaluaciones en el tiempo (vista longitudinal). */
   ensureSelfPersonId: () => string
@@ -40,7 +46,11 @@ export const useSettings = create<SettingsState>()(
       fontScale: 1,
       consentAccepted: false,
       simpleMode: false,
+      voiceOn: true,
+      voiceHintDismissed: false,
       setLang: (lang) => set({ lang }),
+      setVoiceOn: (voiceOn) => set({ voiceOn }),
+      dismissVoiceHint: () => set({ voiceHintDismissed: true }),
       incFont: () => set((s) => ({ fontScale: round1(Math.min(FONT_MAX, s.fontScale + FONT_STEP)) })),
       decFont: () => set((s) => ({ fontScale: round1(Math.max(FONT_MIN, s.fontScale - FONT_STEP)) })),
       setConsent: (consentAccepted) =>
