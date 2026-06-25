@@ -34,6 +34,9 @@ export const DIA_MS = 86_400_000
 // Un dato MEDIDO cuenta como verde mientras sea más reciente que esta ventana.
 export const RECIENTE_DIAS = 365
 
+// CodeSystem para la procedencia del dato en el seam FHIR (Provenance.meta.tag).
+export const PROCEDENCIA_SYSTEM = 'https://kaizenai.ar/fhir/CodeSystem/procedencia'
+
 export const CATALOGO_MEDIBLES: { tipo: MedibleTipo; unidad: string }[] = [
   { tipo: 'presionArterial', unidad: 'mmHg' },
   { tipo: 'hba1c', unidad: '%' },
