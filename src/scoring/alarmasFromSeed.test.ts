@@ -56,4 +56,25 @@ describe('alarmasFromSeed — el caso estrella p7 (L. F.) y la cohorte', () => {
     expect(CAPACIDAD_DEMO.puedeMedir?.audicion).toBe(false)
     expect(CAPACIDAD_DEMO.puedeMedir?.presionArterial).toBe(true)
   })
+
+  // Smoke test del LOOP ESTRELLA (lo que hace RedAlarmas.registrarMedicion): registrar una
+  // medición = agregar un punto a la serie (huella) → re-derivar → el pedido gris se cierra.
+  it('LHS: registrar la medición de HbA1c en p7 cierra ese pedido al re-derivar', () => {
+    const antes = alarmasDeSeed([p('p7')], NOW)
+    expect(antes.some((x) => x.id === 'p7:pedidoMedicion:hba1c')).toBe(true)
+
+    // huella: el dato medido se agrega SIN pisar la serie
+    const p7conHuella = {
+      ...p('p7'),
+      medibles: p('p7').medibles!.map((m) =>
+        m.tipo === 'hba1c'
+          ? { ...m, puntos: [...m.puntos, { valor: 6.4, fecha: NOW, autorRol: 'enfermero' as const, procedencia: 'medido' as const }] }
+          : m,
+      ),
+    }
+    const despues = alarmasDeSeed([p7conHuella], NOW)
+    expect(despues.some((x) => x.id === 'p7:pedidoMedicion:hba1c')).toBe(false) // pedido cerrado
+    // la brecha de audición sigue abierta (el territorio aún no puede medirla)
+    expect(despues.some((x) => x.id === 'p7:pedidoMedicion:audicion')).toBe(true)
+  })
 })

@@ -53,6 +53,13 @@ export function Seguimiento() {
       <h1 className="font-serif text-2xl text-ink sm:text-3xl">{t('seguimiento.title')}</h1>
       <p className="mt-1 text-sm text-muted">{t('seguimiento.intro')}</p>
 
+      <Link
+        to={`/p/${profileId}/alarmas`}
+        className="mt-3 inline-flex items-center gap-1 rounded-xl border border-secondary bg-secondary/10 px-3 py-2 text-sm font-medium text-secondary no-print"
+      >
+        {t('alarmas.title')} →
+      </Link>
+
       <label className="mt-3 inline-flex items-center gap-2 text-sm text-muted no-print">
         {t('seguimiento.ventana')}
         <select

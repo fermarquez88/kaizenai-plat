@@ -15,6 +15,9 @@ import type { Confiabilidad, Medible, MedibleTipo, Procedencia, Rol } from './me
 import { confiabilidad as confiabilidadMedible } from './medibles'
 import { DIAS_NO_VOLVIO } from './retention'
 
+// Re-export: Rol es parte del vocabulario del modelo de alarmas (dueño-de-loop).
+export type { Rol } from './medibles'
+
 export type AlarmaTipo = 'aguda' | 'noVolvio' | 'pedidoMedicion' | 'discordancia'
 export type AlarmaEstado = 'abierta' | 'enCurso' | 'cerrada'
 export type Severidad = 'aguda' | 'alta' | 'media' | 'baja'

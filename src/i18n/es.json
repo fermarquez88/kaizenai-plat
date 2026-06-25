@@ -1,5 +1,8 @@
 {
-  "app": { "name": "KaizenAI", "tagline": "Red centrada en la persona" },
+  "app": {
+    "name": "KaizenAI",
+    "tagline": "Red centrada en la persona"
+  },
   "common": {
     "disclaimer": "No diagnostica · No reemplaza al profesional.",
     "back": "Volver",
@@ -36,9 +39,18 @@
     "subtitle": "Salud cerebral cerca tuyo, antes y después del diagnóstico. Entrá por lo que necesitás.",
     "invitedBanner": "Te invitaron a acompañar a alguien. Entrá por «Acompaño a alguien».",
     "tasks": {
-      "persona": { "t": "Quiero cuidar mi memoria", "d": "Una evaluación breve y clara, y qué hacer después." },
-      "cuidador": { "t": "Acompaño a alguien", "d": "Cuidarte vos, manejar situaciones difíciles y evaluar a quien cuidás." },
-      "promotor": { "t": "Soy promotor/a de salud", "d": "Tu gente, a quién visitar y cribado en terreno." }
+      "persona": {
+        "t": "Quiero cuidar mi memoria",
+        "d": "Una evaluación breve y clara, y qué hacer después."
+      },
+      "cuidador": {
+        "t": "Acompaño a alguien",
+        "d": "Cuidarte vos, manejar situaciones difíciles y evaluar a quien cuidás."
+      },
+      "promotor": {
+        "t": "Soy promotor/a de salud",
+        "d": "Tu gente, a quién visitar y cribado en terreno."
+      }
     },
     "pro": "Soy profesional de la Unidad de Memoria",
     "demo": "Ver el recorrido de la red (demostración)",
@@ -57,12 +69,30 @@
     "real": "Hacer un cribado real"
   },
   "profiles": {
-    "paciente": { "title": "Persona", "desc": "Autoevaluación y educación en lenguaje claro." },
-    "cuidador": { "title": "Cuidador/a", "desc": "Acompañamiento, manejo de síntomas y cuidarte vos." },
-    "agente": { "title": "Agente sanitario", "desc": "Cribado en el territorio, alertas y derivaciones." },
-    "gestor": { "title": "Gestor de salud", "desc": "Tablero poblacional, derivaciones y métricas." },
-    "unidad": { "title": "Profesional / Unidad", "desc": "Bandeja de preconsulta con resumen y prioridad." },
-    "comunidad": { "title": "Comunidad", "desc": "Gobernanza de la red: qué pedimos y qué cambiamos." }
+    "paciente": {
+      "title": "Persona",
+      "desc": "Autoevaluación y educación en lenguaje claro."
+    },
+    "cuidador": {
+      "title": "Cuidador/a",
+      "desc": "Acompañamiento, manejo de síntomas y cuidarte vos."
+    },
+    "agente": {
+      "title": "Agente sanitario",
+      "desc": "Cribado en el territorio, alertas y derivaciones."
+    },
+    "gestor": {
+      "title": "Gestor de salud",
+      "desc": "Tablero poblacional, derivaciones y métricas."
+    },
+    "unidad": {
+      "title": "Profesional / Unidad",
+      "desc": "Bandeja de preconsulta con resumen y prioridad."
+    },
+    "comunidad": {
+      "title": "Comunidad",
+      "desc": "Gobernanza de la red: qué pedimos y qué cambiamos."
+    }
   },
   "dashboard": {
     "modules": "Módulos",
@@ -70,38 +100,104 @@
   },
   "modules": {
     "paciente": {
-      "0": { "t": "Mi autoevaluación", "d": "Cribado breve en lenguaje claro." },
-      "1": { "t": "Mi resultado", "d": "Qué significa y qué hacer ahora." },
-      "2": { "t": "Después del diagnóstico", "d": "Guía para vivir mejor, paso a paso." }
+      "0": {
+        "t": "Mi autoevaluación",
+        "d": "Cribado breve en lenguaje claro."
+      },
+      "1": {
+        "t": "Mi resultado",
+        "d": "Qué significa y qué hacer ahora."
+      },
+      "2": {
+        "t": "Después del diagnóstico",
+        "d": "Guía para vivir mejor, paso a paso."
+      }
     },
     "cuidador": {
-      "0": { "t": "¿Cómo venís vos?", "d": "Índice de estrés del cuidador (Zarit, ánimo)." },
-      "1": { "t": "Qué hago en cada situación", "d": "Manejo no farmacológico — método DICE." },
-      "2": { "t": "Guía para cuidadores", "d": "Material práctico, también sin conexión." },
-      "3": { "t": "Necesito ayuda ahora", "d": "Recursos inmediatos y contacto." },
-      "4": { "t": "Cribar a quien cuido", "d": "Evaluá a tu familiar desde lo que vos notás." }
+      "0": {
+        "t": "¿Cómo venís vos?",
+        "d": "Índice de estrés del cuidador (Zarit, ánimo)."
+      },
+      "1": {
+        "t": "Qué hago en cada situación",
+        "d": "Manejo no farmacológico — método DICE."
+      },
+      "2": {
+        "t": "Guía para cuidadores",
+        "d": "Material práctico, también sin conexión."
+      },
+      "3": {
+        "t": "Necesito ayuda ahora",
+        "d": "Recursos inmediatos y contacto."
+      },
+      "4": {
+        "t": "Cribar a quien cuido",
+        "d": "Evaluá a tu familiar desde lo que vos notás."
+      }
     },
     "agente": {
-      "0": { "t": "Mi gente", "d": "Personas en seguimiento en el territorio." },
-      "1": { "t": "Cribado asistido", "d": "Preconsulta en terreno, funciona offline." },
-      "2": { "t": "Alertas y derivaciones", "d": "Prioridades y banderas rojas." },
-      "3": { "t": "Agenda de visitas", "d": "Seguimiento domiciliario." }
+      "0": {
+        "t": "Mi gente",
+        "d": "Personas en seguimiento en el territorio."
+      },
+      "1": {
+        "t": "Cribado asistido",
+        "d": "Preconsulta en terreno, funciona offline."
+      },
+      "2": {
+        "t": "Alertas y derivaciones",
+        "d": "Prioridades y banderas rojas."
+      },
+      "3": {
+        "t": "Agenda de visitas",
+        "d": "Seguimiento domiciliario."
+      }
     },
     "gestor": {
-      "0": { "t": "Tablero poblacional", "d": "Indicadores agregados y anónimos." },
-      "1": { "t": "Cola de derivaciones", "d": "Ordenada por prioridad clínica." },
-      "2": { "t": "Cobertura y tiempos", "d": "Métricas de la red." }
+      "0": {
+        "t": "Tablero poblacional",
+        "d": "Indicadores agregados y anónimos."
+      },
+      "1": {
+        "t": "Cola de derivaciones",
+        "d": "Ordenada por prioridad clínica."
+      },
+      "2": {
+        "t": "Cobertura y tiempos",
+        "d": "Métricas de la red."
+      }
     },
     "unidad": {
-      "0": { "t": "Bandeja de preconsulta", "d": "Resumen + nivel de prioridad por persona." },
-      "1": { "t": "Resumen clínico", "d": "Riesgo modificable, MRCA y medicación marcada." },
-      "2": { "t": "Equipo", "d": "Medicina · Enfermería · Neuropsicología." }
+      "0": {
+        "t": "Bandeja de preconsulta",
+        "d": "Resumen + nivel de prioridad por persona."
+      },
+      "1": {
+        "t": "Resumen clínico",
+        "d": "Riesgo modificable, MRCA y medicación marcada."
+      },
+      "2": {
+        "t": "Equipo",
+        "d": "Medicina · Enfermería · Neuropsicología."
+      }
     },
     "comunidad": {
-      "0": { "t": "Qué pide la comunidad", "d": "Sugerencias priorizadas por la red." },
-      "1": { "t": "Qué cambiamos", "d": "Registro de mejoras: pedido → hecho." },
-      "2": { "t": "Representantes", "d": "Personas, cuidadores y agentes que co-deciden." },
-      "3": { "t": "Soberanía de datos", "d": "Cómo se cuidan y de quién son los datos." }
+      "0": {
+        "t": "Qué pide la comunidad",
+        "d": "Sugerencias priorizadas por la red."
+      },
+      "1": {
+        "t": "Qué cambiamos",
+        "d": "Registro de mejoras: pedido → hecho."
+      },
+      "2": {
+        "t": "Representantes",
+        "d": "Personas, cuidadores y agentes que co-deciden."
+      },
+      "3": {
+        "t": "Soberanía de datos",
+        "d": "Cómo se cuidan y de quién son los datos."
+      }
     }
   },
   "preconsulta": {
@@ -133,13 +229,21 @@
       "persona": "Soy la persona",
       "cuidador": "Soy familiar / cuidador/a (informante)",
       "agente": "Soy agente o promotor/a de salud",
-      "short": { "persona": "la persona", "cuidador": "un familiar/cuidador", "agente": "un agente de salud" }
+      "short": {
+        "persona": "la persona",
+        "cuidador": "un familiar/cuidador",
+        "agente": "un agente de salud"
+      }
     },
     "prevencion": {
       "title": "Prevención — factores que podés cuidar",
       "intro": "Respondé con sinceridad. Esto es una estimación, no un diagnóstico: te muestra qué factores podés trabajar para cuidar tu salud cerebral.",
       "whatToDo": "¿Qué puedo hacer?",
-      "answer": { "si": "Sí", "no": "No", "nose": "No sé" }
+      "answer": {
+        "si": "Sí",
+        "no": "No",
+        "nose": "No sé"
+      }
     },
     "factores": {
       "title": "Unas preguntas más sobre tus hábitos",
@@ -182,7 +286,11 @@
       "modelNoteLay": "Estimación de primer nivel para orientar, no un diagnóstico.",
       "modelNote": "Estimación del modelo Kaizen-MRCA (AUC ~0,80 en desarrollo / ~0,63 en validación). Cribado de primer nivel, no diagnóstico.",
       "preliminary": "estimación preliminar",
-      "band": { "bajo": "bajo", "moderado": "moderado", "alto": "alto" },
+      "band": {
+        "bajo": "bajo",
+        "moderado": "moderado",
+        "alto": "alto"
+      },
       "items": {
         "recent": "¿Te olvidás de conversaciones o cosas recientes más que antes?",
         "repeat": "¿Repetís preguntas o comentarios sin darte cuenta?",
@@ -414,12 +522,30 @@
   "aviso": {
     "title": "Aviso legal y privacidad",
     "intro": "Cómo se tratan tus datos en KaizenAI. Esta app no diagnostica ni reemplaza al profesional.",
-    "responsable": { "t": "Responsable del tratamiento", "d": "[A definir: responsable del tratamiento de datos]." },
-    "baseLegal": { "t": "Base legal", "d": "Ley 25.326 de Protección de Datos Personales (Argentina). Los datos de salud son categoría sensible y requieren consentimiento." },
-    "datos": { "t": "Qué datos", "d": "Datos de salud cerebral (factores de riesgo, ánimo, memoria autorreportada, medicación) y de contacto. Se piden los mínimos necesarios." },
-    "derechos": { "t": "Tus derechos", "d": "Podés acceder, rectificar y suprimir tus datos (habeas data) desde 'Mis datos': ver, exportar o borrar." },
-    "onDevice": { "t": "Dónde viven tus datos", "d": "En este dispositivo (local-first). No hay servidor central en esta versión; vos controlás qué compartís." },
-    "noDx": { "t": "No es diagnóstico", "d": "Los resultados son estimaciones orientativas para acompañar la consulta, no un diagnóstico ni un dispositivo médico." },
+    "responsable": {
+      "t": "Responsable del tratamiento",
+      "d": "[A definir: responsable del tratamiento de datos]."
+    },
+    "baseLegal": {
+      "t": "Base legal",
+      "d": "Ley 25.326 de Protección de Datos Personales (Argentina). Los datos de salud son categoría sensible y requieren consentimiento."
+    },
+    "datos": {
+      "t": "Qué datos",
+      "d": "Datos de salud cerebral (factores de riesgo, ánimo, memoria autorreportada, medicación) y de contacto. Se piden los mínimos necesarios."
+    },
+    "derechos": {
+      "t": "Tus derechos",
+      "d": "Podés acceder, rectificar y suprimir tus datos (habeas data) desde 'Mis datos': ver, exportar o borrar."
+    },
+    "onDevice": {
+      "t": "Dónde viven tus datos",
+      "d": "En este dispositivo (local-first). No hay servidor central en esta versión; vos controlás qué compartís."
+    },
+    "noDx": {
+      "t": "No es diagnóstico",
+      "d": "Los resultados son estimaciones orientativas para acompañar la consulta, no un diagnóstico ni un dispositivo médico."
+    },
     "nota": "Versión de demostración. El responsable del tratamiento y la política definitiva se completan para el piloto."
   },
   "completitud": {
@@ -482,7 +608,11 @@
     "dias": "días/sem",
     "min": "min/día",
     "resultado": "Estimación: {{met}} MET-min/semana —",
-    "categoria": { "baja": "actividad baja", "moderada": "actividad moderada", "alta": "actividad alta" }
+    "categoria": {
+      "baja": "actividad baja",
+      "moderada": "actividad moderada",
+      "alta": "actividad alta"
+    }
   },
   "pro": {
     "title": "Para el profesional · modelo y comparadores",
@@ -518,7 +648,13 @@
   "zarit": {
     "title": "¿Cómo venís vos? (sobrecarga del cuidador)",
     "intro": "Este test es PRIVADO, solo para vos: no se reporta a nadie y queda en este dispositivo. Son 12 preguntas breves sobre cómo te sentís cuidando.",
-    "options": { "0": "Nunca", "1": "Rara vez", "2": "A veces", "3": "Bastante", "4": "Casi siempre" },
+    "options": {
+      "0": "Nunca",
+      "1": "Rara vez",
+      "2": "A veces",
+      "3": "Bastante",
+      "4": "Casi siempre"
+    },
     "bands": {
       "poca": "sobrecarga baja",
       "moderada": "sobrecarga moderada",
@@ -551,23 +687,58 @@
       "intro": "Un diagnóstico no define quién sos. Se puede vivir bien, con apoyos y planificación.",
       "note": "Información orientativa. Tu equipo de salud te acompaña en cada paso.",
       "cards": {
-        "0": { "t": "Qué esperar", "b": "La demencia avanza distinto en cada persona. Hay etapas, y cada una tiene sus apoyos." },
-        "1": { "t": "Hábitos que protegen", "b": "Actividad física, vínculos, buen sueño, controlar presión y azúcar, y mantener la mente activa." },
-        "2": { "t": "Planificar a tiempo", "b": "Decisiones sobre salud, finanzas y deseos mientras podés expresarlos. Da tranquilidad." },
-        "3": { "t": "Tus derechos", "b": "Tenés derecho a información clara, a participar de las decisiones y a un trato digno (Ley 26.529)." },
-        "4": { "t": "No estás solo/a", "b": "Buscá grupos, asociaciones y a tu equipo de salud. Pedir ayuda es parte del cuidado." }
+        "0": {
+          "t": "Qué esperar",
+          "b": "La demencia avanza distinto en cada persona. Hay etapas, y cada una tiene sus apoyos."
+        },
+        "1": {
+          "t": "Hábitos que protegen",
+          "b": "Actividad física, vínculos, buen sueño, controlar presión y azúcar, y mantener la mente activa."
+        },
+        "2": {
+          "t": "Planificar a tiempo",
+          "b": "Decisiones sobre salud, finanzas y deseos mientras podés expresarlos. Da tranquilidad."
+        },
+        "3": {
+          "t": "Tus derechos",
+          "b": "Tenés derecho a información clara, a participar de las decisiones y a un trato digno (Ley 26.529)."
+        },
+        "4": {
+          "t": "No estás solo/a",
+          "b": "Buscá grupos, asociaciones y a tu equipo de salud. Pedir ayuda es parte del cuidado."
+        }
       }
     },
     "cuidador": {
       "title": "Guía del cuidador",
-      "tabs": { "zarit": "¿Cómo venís vos?", "dice": "Conductas difíciles", "ayuda": "Necesito ayuda" },
+      "tabs": {
+        "zarit": "¿Cómo venís vos?",
+        "dice": "Conductas difíciles",
+        "ayuda": "Necesito ayuda"
+      },
       "dice": {
         "title": "Método DICE — para conductas difíciles",
         "intro": "Las conductas son comunicación. DICE ayuda a entender y responder sin pelear.",
-        "d": { "t": "Describir", "b": "¿Qué pasó exactamente? Cuándo, dónde y quién estaba.", "ej": "Ej.: «A las 18 h, en la cocina, se puso a buscar la llave y se enojó.»" },
-        "i": { "t": "Investigar", "b": "¿Qué pudo causarlo? Dolor, hambre, miedo, ruido, medicación, aburrimiento.", "ej": "Ej.: ¿tenía hambre o dolor? ¿estaba cansado/a? ¿había mucho ruido?" },
-        "c": { "t": "Crear", "b": "Probá un plan: ajustar el entorno, la rutina o la forma de comunicar.", "ej": "Ej.: bajar la radio, ofrecer un mate y dejar la llave siempre en el mismo lugar." },
-        "e": { "t": "Evaluar", "b": "¿Funcionó? Si no, volvé a investigar y probá otra cosa.", "ej": "Ej.: probá una semana; si se repite, cambiá una sola cosa por vez." }
+        "d": {
+          "t": "Describir",
+          "b": "¿Qué pasó exactamente? Cuándo, dónde y quién estaba.",
+          "ej": "Ej.: «A las 18 h, en la cocina, se puso a buscar la llave y se enojó.»"
+        },
+        "i": {
+          "t": "Investigar",
+          "b": "¿Qué pudo causarlo? Dolor, hambre, miedo, ruido, medicación, aburrimiento.",
+          "ej": "Ej.: ¿tenía hambre o dolor? ¿estaba cansado/a? ¿había mucho ruido?"
+        },
+        "c": {
+          "t": "Crear",
+          "b": "Probá un plan: ajustar el entorno, la rutina o la forma de comunicar.",
+          "ej": "Ej.: bajar la radio, ofrecer un mate y dejar la llave siempre en el mismo lugar."
+        },
+        "e": {
+          "t": "Evaluar",
+          "b": "¿Funcionó? Si no, volvé a investigar y probá otra cosa.",
+          "ej": "Ej.: probá una semana; si se repite, cambiá una sola cosa por vez."
+        }
       },
       "conductas": {
         "title": "Conductas frecuentes (DICE aplicado)",
@@ -625,7 +796,11 @@
       "suggestTitle": "Qué pide la comunidad",
       "suggestPlaceholder": "Sugerí una mejora…",
       "suggestBtn": "Enviar sugerencia",
-      "status": { "abierta": "Abierta", "aceptada": "Aceptada", "hecha": "Hecha" },
+      "status": {
+        "abierta": "Abierta",
+        "aceptada": "Aceptada",
+        "hecha": "Hecha"
+      },
       "markAccepted": "Marcar aceptada",
       "markDone": "Marcar hecha",
       "pidieron": "Pidieron: {{x}}",
@@ -637,15 +812,33 @@
       },
       "changelogTitle": "Qué cambiamos",
       "changelog": {
-        "0": { "req": "Pidieron: letras más grandes.", "done": "Hecho: control A− / A+ en toda la app." },
-        "1": { "req": "Pidieron: que funcione sin internet.", "done": "Hecho: la app abre offline." },
-        "2": { "req": "Pidieron: que no diagnostique, solo oriente.", "done": "Hecho: aviso visible en cada resultado." }
+        "0": {
+          "req": "Pidieron: letras más grandes.",
+          "done": "Hecho: control A− / A+ en toda la app."
+        },
+        "1": {
+          "req": "Pidieron: que funcione sin internet.",
+          "done": "Hecho: la app abre offline."
+        },
+        "2": {
+          "req": "Pidieron: que no diagnostique, solo oriente.",
+          "done": "Hecho: aviso visible en cada resultado."
+        }
       },
       "repsTitle": "Representantes",
       "reps": {
-        "0": { "role": "Persona con diagnóstico", "desc": "Aporta la mirada de quien lo vive." },
-        "1": { "role": "Cuidador/a familiar", "desc": "Lleva la voz del cuidado cotidiano." },
-        "2": { "role": "Agente sanitario", "desc": "Representa al territorio." }
+        "0": {
+          "role": "Persona con diagnóstico",
+          "desc": "Aporta la mirada de quien lo vive."
+        },
+        "1": {
+          "role": "Cuidador/a familiar",
+          "desc": "Lleva la voz del cuidado cotidiano."
+        },
+        "2": {
+          "role": "Agente sanitario",
+          "desc": "Representa al territorio."
+        }
       }
     }
   },
@@ -663,7 +856,11 @@
     "hace": "Último contacto: hace {{n}} días",
     "cuidador": "informante: {{c}}",
     "discrepancia": "Discrepancia persona↔informante (revisar)",
-    "estado": { "aldia": "Al día", "porvencer": "Por vencer", "novolvio": "No volvió" },
+    "estado": {
+      "aldia": "Al día",
+      "porvencer": "Por vencer",
+      "novolvio": "No volvió"
+    },
     "recontact": "Re-contactar",
     "registrar": "Registrar contacto",
     "contactCuidador": "Cuidador",
@@ -722,7 +919,11 @@
       "primera": "Primera visita domiciliaria",
       "seguimiento": "Seguimiento"
     },
-    "day": { "hoy": "Hoy", "manana": "Mañana", "semana": "Esta semana" }
+    "day": {
+      "hoy": "Hoy",
+      "manana": "Mañana",
+      "semana": "Esta semana"
+    }
   },
   "metricas": {
     "title": "Cobertura y tiempos",
@@ -737,7 +938,11 @@
   "equipo": {
     "title": "Equipo de la Unidad",
     "intro": "Vistas internas para la preconsulta. En el MVP es un perfil unificado; se separan más adelante.",
-    "tabs": { "medicina": "Medicina", "enfermeria": "Enfermería", "neuropsico": "Neuropsicología" },
+    "tabs": {
+      "medicina": "Medicina",
+      "enfermeria": "Enfermería",
+      "neuropsico": "Neuropsicología"
+    },
     "medicina": {
       "0": "Revisar la medicación marcada (anticolinérgicos, BZD, Beers).",
       "1": "Confirmar banderas rojas y descartar causas reversibles (B12, TSH, depresión).",
@@ -755,6 +960,92 @@
       "1": "Elegir la norma según escolaridad (criterio Bruno).",
       "2": "Explorar queja subjetiva e informante.",
       "3": "Integrar resultados al informe de la Unidad."
+    }
+  },
+  "alarmas": {
+    "title": "Red de alarmas",
+    "intro": "La cola compartida que te toca como {{rol}}. Cada señal tiene un responsable y una acción que la cierra; al cerrarse, deja un dato.",
+    "vacia": "No hay alarmas abiertas. La red está al día.",
+    "dueno": "Responsable",
+    "prioridad": "prioridad",
+    "microVictoria": "Un dato más, un hueco menos. Así se construye la red.",
+    "kpi": {
+      "abiertas": "Abiertas",
+      "agudas": "Urgentes",
+      "brechas": "Brechas de servicio"
+    },
+    "rol": {
+      "diada": "vos y tu familia",
+      "agente": "agente sanitario",
+      "enfermero": "enfermería",
+      "medico": "médico/a",
+      "neuropsico": "neuropsicología",
+      "gestor": "gestión"
+    },
+    "tipo": {
+      "aguda": "Urgente / reversible",
+      "noVolvio": "No volvió",
+      "pedidoMedicion": "Falta una medición",
+      "discordancia": "Dos miradas"
+    },
+    "severidad": {
+      "aguda": "Urgente",
+      "alta": "Alta",
+      "media": "Media",
+      "baja": "Baja"
+    },
+    "detalleTexto": {
+      "aguda": "Señal que no puede esperar — revisar en horas, no en semanas.",
+      "noVolvio": "Hace {{dias}} días sin contacto.",
+      "pedidoMedicion": "Nunca se midió: {{medible}}.",
+      "discordancia": "La persona y quien la cuida ven cosas distintas."
+    },
+    "medible": {
+      "presionArterial": "la presión",
+      "hba1c": "el azúcar (HbA1c)",
+      "ldl": "el colesterol (LDL)",
+      "imc": "el peso",
+      "audicion": "la audición",
+      "vision": "la visión",
+      "anosognosia": "la mirada de la familia",
+      "depresion": "el ánimo",
+      "revisar": "las dos miradas"
+    },
+    "brecha": {
+      "badge": "Brecha de servicio",
+      "note": "El territorio no tiene cómo medirlo hoy. No es tarea de la persona ni del agente: sube al registro provincial como pedido de recursos.",
+      "accion": "Sube al registro como brecha — no se le pide a la persona."
+    },
+    "btn": {
+      "medir": "Registrar medición",
+      "contacto": "Re-contactar",
+      "cerrar": "Marcar hecho",
+      "protocoloInmediato": "Activar protocolo",
+      "mirarJuntos": "Mirar juntos",
+      "evaluarAnimo": "Evaluar ánimo"
+    },
+    "diada": {
+      "title": "Esto vamos a hacer juntos",
+      "intro": "Tus próximos pasos, {{alias}}. De a uno, sin apuro.",
+      "alDia": "Estás al día. No hay nada pendiente por ahora.",
+      "acompana": "Te acompañamos en esto.",
+      "hecho": "Ya está hecho",
+      "listo": "Listo",
+      "derechos": "Vos decidís: podés ver, descargar o borrar tus datos, y pausar el acompañamiento cuando quieras."
+    },
+    "pasoPersona": {
+      "medir": "Medir {{medible}}",
+      "reContactar": "Retomar el contacto con tu acompañante",
+      "mirarJuntos": "Una charla para mirar todo juntos",
+      "evaluarAnimo": "Una charla sobre cómo te sentís",
+      "protocoloInmediato": "Hablar pronto con un profesional"
+    },
+    "pasoPersonaSub": {
+      "medir": "Lo coordina el equipo de salud de tu zona. Es rápido.",
+      "reContactar": "Tu acompañante quiere saber cómo estás.",
+      "mirarJuntos": "Con tu familia y el equipo, sin juzgar a nadie.",
+      "evaluarAnimo": "A veces el ánimo pesa en la memoria. Vale la pena mirarlo.",
+      "protocoloInmediato": "Conviene no dejarlo pasar."
     }
   }
 }
