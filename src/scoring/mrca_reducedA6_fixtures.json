@@ -1,0 +1,41 @@
+[
+  {
+    "in": {
+      "edad": 72,
+      "sexo": 1,
+      "edu_anios": 4,
+      "hipoacusia": 1,
+      "fumador": 1,
+      "vive_solo": 1
+    },
+    "ace": 60.2203,
+    "prob": 0.8163,
+    "decision": "derivar"
+  },
+  {
+    "in": {
+      "edad": 60,
+      "sexo": 0,
+      "edu_anios": 16,
+      "hipoacusia": 0,
+      "fumador": 0,
+      "vive_solo": 0
+    },
+    "ace": 83.9465,
+    "prob": 0.5,
+    "decision": "derivar"
+  },
+  {
+    "in": {
+      "edad": 80,
+      "sexo": 1,
+      "edu_anios": 7,
+      "hipoacusia": 1,
+      "fumador": 0,
+      "vive_solo": 1
+    },
+    "ace": 64.7619,
+    "prob": 0.6806,
+    "decision": "derivar"
+  }
+]

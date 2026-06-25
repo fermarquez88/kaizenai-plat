@@ -12,8 +12,7 @@ Una **PWA mobile-first, offline-first** que es la **puerta de entrada territoria
 historia clínica oficial un resumen estructurado bajo consentimiento.
 
 - **NO es un EHR.** La persona ya tiene HCE en salud pública → no duplicar.
-- **Interopera vía FHIR** (`QuestionnaireResponse` / `RiskAssessment` / `Observation`).
-  v1 standalone con **seam FHIR listo**; conecta en el piloto.
+- **Seam FHIR** (`QuestionnaireResponse` / `RiskAssessment` / `Observation`): v1 produce **export con FORMA FHIR R4**, **pendiente de validación y perfilado** contra el validador oficial y los perfiles de HSI/Andes. NO se afirma interoperabilidad lista hasta validar; conecta en el piloto.
 - **Encuadre de equidad (no negociable):** descarta de forma equitativa y deriva mejor
   donde no hay especialista. **No diagnostica · No reemplaza al profesional.** Normas
   locales ajustadas por educación (criterio Bruno), no cortes importados.
@@ -67,6 +66,9 @@ Tipos: **Fraunces** (títulos, serif humanista) + **Atkinson Hyperlegible** (cue
 Logo: **persona-nodo**. Accesibilidad WCAG AA; control de tamaño de letra; lenguaje claro.
 
 ## 7. Roadmap por fases (cada una demostrable)
+
+> **Estado real (2026-06-24):** el scaffold + módulos **PRE** (prevención/14 Lancet, polifarmacia ACB/Beers/BZD, escalas, **MRCA**, **triage**, recomendaciones, **export JSON/FHIR-forma/PDF**), **POST** cuidador, **red/seguimiento** (Mi gente, bandeja, ficha por paciente) y **gobernanza** (consentimiento, mis-datos, co-diseño) están **implementados a nivel demo** (no "F0"). Lo PENDIENTE es el **endurecimiento para piloto**: cifrado en reposo, identidad estable + dedupe, control de acceso por rol cableado, FHIR validado/perfilado, base legal (Ley 25.326). Ver `06_producto_agente/AUDITORIA_PANEL_v1.md`.
+> **Honestidad de capacidades:** "rol = vista" / soberanía por capa está **diseñado pero aún NO aplicado en runtime** (no es control de acceso funcional todavía).
 
 - **F0** ✅ scaffold + tokens + logo + selección de perfil + 6 dashboards shell.
 - **F1** PRE Prevención (14 factores Lancet) + índice modificable (PAF).

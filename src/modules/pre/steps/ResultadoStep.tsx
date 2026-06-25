@@ -120,8 +120,12 @@ export function ResultadoStep() {
   }, [summary, demo, ensureSelfPersonId])
 
   const level = summary.triageLevel
-  // La persona ve por defecto la versión simple (sin el detalle profesional).
-  const simple = simpleMode || summary.modo === 'persona'
+  // Audiencia del informe: "persona" (Tu chequeo, lego) | "clinico" (Hoja clínica).
+  // Todos acceden al MISMO informe; el toggle cambia el formato. Reemplaza el binario `simple`.
+  const [audience, setAudience] = useState<'persona' | 'clinico'>(
+    simpleMode || summary.modo === 'persona' ? 'persona' : 'clinico',
+  )
+  const simple = audience === 'persona'
   const shareText = [
     `KaizenAI — cribado de salud cerebral${demo.alias ? ` · ${demo.alias}` : ''}`,
     `Prioridad sugerida: ${t(`triage.level.${level}`)}`,
@@ -160,6 +164,26 @@ export function ResultadoStep() {
           <p className="text-xs uppercase tracking-wide opacity-80">{t('triage.levelLabel')}</p>
           <p className="font-serif text-2xl">{t(`triage.level.${level}`)}</p>
         </div>
+      </div>
+
+      {/* Toggle de audiencia: todos acceden, distinto formato */}
+      <div className="mt-3 inline-flex rounded-xl border border-line bg-surface p-1 text-sm no-print" role="group" aria-label={t('informe.verComo')}>
+        <button
+          type="button"
+          onClick={() => setAudience('persona')}
+          aria-pressed={audience === 'persona'}
+          className={`rounded-lg px-3 py-1.5 ${audience === 'persona' ? 'bg-primary text-white' : 'text-muted'}`}
+        >
+          {t('informe.persona')}
+        </button>
+        <button
+          type="button"
+          onClick={() => setAudience('clinico')}
+          aria-pressed={audience === 'clinico'}
+          className={`rounded-lg px-3 py-1.5 ${audience === 'clinico' ? 'bg-primary text-white' : 'text-muted'}`}
+        >
+          {t('informe.profesional')}
+        </button>
       </div>
 
       {/* 2 · Qué significa (lenguaje claro) */}
@@ -250,9 +274,13 @@ export function ResultadoStep() {
             <p className="text-sm font-medium text-ink">{t('triage.stats.risk')}</p>
             <p className="font-serif text-xl text-ink">{t('triage.stats.riskValue', { n: nFactores })}</p>
           </div>
-          <div className="mt-2 h-2 overflow-hidden rounded-full bg-line" aria-hidden>
-            <div className="h-full rounded-full bg-secondary/60" style={{ width: `${(nFactores / 14) * 100}%` }} />
-          </div>
+          {simple ? (
+            <IconArray14 n={nFactores} />
+          ) : (
+            <div className="mt-2 h-2 overflow-hidden rounded-full bg-line" aria-hidden>
+              <div className="h-full rounded-full bg-secondary/60" style={{ width: `${(nFactores / 14) * 100}%` }} />
+            </div>
+          )}
           <p className="mt-2 text-sm text-ink">
             {nFactores > 0 ? t('triage.factorsExplain', { n: nFactores, ejemplos }) : t('triage.factorsExplainNone')}
           </p>
@@ -297,7 +325,7 @@ export function ResultadoStep() {
 
       {/* 9 · Para el profesional (oculto en lectura fácil / para la persona) */}
       {!simple && (
-      <details className="mt-6 rounded-2xl border border-line bg-surface p-4">
+      <details open className="mt-6 rounded-2xl border border-line bg-surface p-4">
         <summary className="flex cursor-pointer items-center justify-between gap-2 font-semibold text-ink">
           {t('pro.title')}
           <ChevronDown size={18} className="text-muted" aria-hidden />
@@ -450,6 +478,18 @@ function Stat({ label, value }: { label: string; value: string }) {
     <div className="rounded-xl border border-line bg-surface p-3">
       <p className="text-xs text-muted">{label}</p>
       <p className="mt-0.5 font-medium text-ink">{value}</p>
+    </div>
+  )
+}
+
+// Icon array (frecuencia natural): 14 factores, los presentes resaltados. Comunica
+// "X de 14 que podés mejorar" de forma visual/intuitiva (vista persona).
+function IconArray14({ n }: { n: number }) {
+  return (
+    <div className="mt-2 flex flex-wrap gap-1.5" aria-hidden>
+      {Array.from({ length: 14 }, (_, i) => (
+        <span key={i} className={`h-4 w-4 rounded-sm ${i < n ? 'bg-secondary' : 'bg-line'}`} />
+      ))}
     </div>
   )
 }

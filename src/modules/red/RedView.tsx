@@ -1,4 +1,4 @@
-import { Navigate, useParams } from 'react-router-dom'
+import { Link, Navigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { dexieRepo } from '../../data/dexieRepo'
 import type { DerivationStatus, TriageLevel } from '../../data/types'
@@ -94,7 +94,7 @@ function Tablero({ records }: { records: RedRecord[] }) {
 }
 
 export function RedView() {
-  const { mode } = useParams()
+  const { profileId, mode } = useParams()
   const { t } = useTranslation()
   const { records, realCount, reload } = useRedRecords()
 
@@ -143,6 +143,12 @@ export function RedView() {
                 </div>
                 <LevelChip level={p.level} />
               </div>
+              <Link
+                to={`/p/${profileId}/ficha/${p.id}`}
+                className="mt-2 inline-flex items-center gap-1 text-sm font-medium text-secondary-text hover:underline"
+              >
+                {t('ficha.verInforme')}
+              </Link>
               {p.note && <p className="mt-2 text-sm text-muted">{p.note}</p>}
               {(m === 'bandeja' || m === 'cola') && (
                 <>

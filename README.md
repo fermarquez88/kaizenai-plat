@@ -2,8 +2,9 @@
 
 PWA de **salud cerebral comunitaria**: capa de **captura / triage / acompañamiento**
 en el territorio, **antes y después** del diagnóstico de demencia. No es una historia
-clínica: interopera con la HCE oficial (seam FHIR). Datos **sostenidos por la persona**
-(local-first). **No diagnostica · No reemplaza al profesional.**
+clínica: tiene un **seam FHIR** (export con forma R4, *pendiente de validación/perfilado*;
+no afirma interoperabilidad lista). Datos **sostenidos por la persona** (local-first).
+**No diagnostica · No reemplaza al profesional.**
 
 > Fuente de verdad del proyecto: [`SPEC.md`](./SPEC.md) · convenciones para agentes: [`CLAUDE.md`](./CLAUDE.md)
 
@@ -47,4 +48,11 @@ public/icon.svg
 
 ## Estado
 
-**F0** (scaffold + identidad + selección de perfil + 6 dashboards shell). Roadmap completo en `SPEC.md`.
+**Demo funcional (2026-06).** Implementados a nivel demo: PRE (prevención/14 Lancet, polifarmacia,
+escalas, MRCA, triage, recomendaciones, export JSON/FHIR-forma/PDF), POST cuidador, red/seguimiento
+(Mi gente, bandeja, ficha por paciente) y gobernanza (consentimiento, mis-datos, co-diseño).
+**Pendiente para piloto** (datos reales): cifrado en reposo, identidad estable + dedupe, control de
+acceso por rol cableado, FHIR validado/perfilado, base legal (Ley 25.326). Ver `SPEC.md` y la
+auditoría externa en `KaizenAI-plat/06_producto_agente/AUDITORIA_PANEL_v1.md`.
+
+> ⚠️ Demo ≠ producto: sin PII real (alias/iniciales); no prometer lo no implementado.

@@ -26,7 +26,7 @@ export function InstrumentStep({ id }: { id: string }) {
               {i + 1}. {it}
             </p>
             <div className="mt-3 flex flex-wrap gap-1.5" role="group" aria-label={it}>
-              {inst.options.map((o) => {
+              {(inst.itemOptions?.[i] ?? inst.options).map((o) => {
                 const sel = answers[i] === o.value
                 return (
                   <button

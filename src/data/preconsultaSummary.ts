@@ -171,7 +171,7 @@ export function buildSummary(inp: PreconsultaInputs, createdAtISO: string): Prec
     medConcern: medFlags.anyConcern,
     equityScore: equity.score,
   })
-  const instrumentScores = ['cqc', 'gds', 'tadlq', 'ad8', 'iqcode', 'faq', 'gad', 'ucla']
+  const instrumentScores = ['cqc', 'gds', 'tadlq', 'isi', 'mind', 'ad8', 'iqcode', 'faq', 'gad', 'ucla']
     .map((id) => {
       const inst = INSTRUMENTS[id]
       if (!inst) return null
@@ -195,7 +195,10 @@ export function buildSummary(inp: PreconsultaInputs, createdAtISO: string): Prec
     mrcaBand: mrca.band,
     mrcaProb: mrca.prob,
     mrcaDecision: mrca.decision,
-    mrcaPreliminary: mrca.preliminary,
+    // Honestidad (auditoría): si faltan edad/sexo/educación se usan defaults (65/Mujer/7) →
+    // el resultado es PRELIMINAR aunque el modelo no tenga features NaN. No se asume en silencio.
+    mrcaPreliminary:
+      mrca.preliminary || inp.demo.edad == null || inp.demo.sexo == null || inp.demo.edu_anios == null,
     mrcaAceEst: mrca.aceEst,
     mrcaCut: mrca.cut,
     mrcaThreshold: mrca.threshold,

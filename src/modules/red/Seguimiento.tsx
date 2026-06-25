@@ -1,3 +1,4 @@
+import { Link, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Check, MessageCircle, TriangleAlert, Users } from 'lucide-react'
 import { PRIORITY } from '../../seed/personas'
@@ -30,6 +31,7 @@ function Kpi({ label, value, cls }: { label: string; value: string; cls?: string
 
 export function Seguimiento() {
   const { t } = useTranslation()
+  const { profileId } = useParams()
   const { records, realCount, reload } = useRedRecords()
 
   const people = [...records].sort(
@@ -94,6 +96,12 @@ export function Seguimiento() {
               </span>
             </div>
             <div className="mt-3 flex flex-wrap gap-2">
+              <Link
+                to={`/p/${profileId}/ficha/${p.id}`}
+                className="inline-flex items-center gap-1 rounded-xl bg-primary px-3 py-2 text-sm font-medium text-white"
+              >
+                {t('ficha.verInforme')}
+              </Link>
               {p.phone && (
                 <a
                   href={waMeLink(p.phone, t('seguimiento.msg', { alias: p.alias }))}

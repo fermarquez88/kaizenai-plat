@@ -16,6 +16,9 @@ export interface Instrument {
   name: string
   why: string
   options: InstrumentOption[]
+  /** opciones POR ÍTEM (override de `options`) para instrumentos heterogéneos (p.ej. MIND:
+   * cada alimento tiene su propio umbral de frecuencia → 0 / 0,5 / 1). */
+  itemOptions?: InstrumentOption[][]
   items: string[]
   /** índices (0-based) con puntaje invertido (binario): 1↔0 */
   invert?: number[]
@@ -239,6 +242,89 @@ export const INSTRUMENTS: Record<string, Instrument> = {
       'Quedarse solo/a en casa de forma segura',
     ],
     interpret: (s) => `${s}/30 — ${s >= 9 ? '≥9: sugiere deterioro funcional' : 'sin indicios'}`,
+  },
+  // Sueño (M11). ISI-7 = Insomnia Severity Index (Morin/Bastien): 7 ítems 0-4, total 0-28.
+  // Cortes estándar: 0-7 sin insomnio · 8-14 subclínico · 15-21 moderado · 22-28 grave.
+  isi: {
+    id: 'isi',
+    name: 'Insomnio (ISI-7)',
+    why: 'El sueño afecta y empeora la memoria y el ánimo; el insomnio es modificable y tratable.',
+    options: [
+      { label: 'Ninguno', value: 0 },
+      { label: 'Leve', value: 1 },
+      { label: 'Moderado', value: 2 },
+      { label: 'Grave', value: 3 },
+      { label: 'Muy grave', value: 4 },
+    ],
+    max: 28,
+    items: [
+      'Dificultad para quedarse dormido/a',
+      'Dificultad para mantenerse dormido/a (se despierta durante la noche)',
+      'Despertarse demasiado temprano',
+      'Insatisfacción con su sueño actual',
+      'Cuánto interfiere su sueño con su vida diaria (energía, ánimo, tareas)',
+      'Cuánto nota un deterioro en su calidad de vida por el sueño',
+      'Cuánta preocupación le genera su problema de sueño',
+    ],
+    interpret: (s) =>
+      s >= 22
+        ? `${s}/28 — insomnio grave`
+        : s >= 15
+          ? `${s}/28 — insomnio moderado`
+          : s >= 8
+            ? `${s}/28 — insomnio subclínico`
+            : `${s}/28 — sin insomnio clínico`,
+  },
+
+  // Dieta MIND (Morris 2015) — 15 componentes, 0 / 0,5 / 1 → total 0-15. Mayor = más protector.
+  // Umbrales de frecuencia estándar de la fuente; opciones POR ÍTEM (cada alimento su corte).
+  // ⚠️ Umbrales a VALIDAR contra la fuente antes de uso clínico (SPEC: scoring = placeholder).
+  mind: {
+    id: 'mind',
+    name: 'Alimentación (MIND)',
+    why: 'El patrón de alimentación MIND se asocia a mejor salud cerebral; es modificable.',
+    options: [],
+    items: [
+      'Verduras de hoja verde (espinaca, acelga, lechuga)',
+      'Otras verduras',
+      'Frutos rojos (arándanos, frutillas)',
+      'Frutos secos (nueces, almendras)',
+      'Aceite de oliva como aceite principal',
+      'Cereales integrales',
+      'Pescado (no frito)',
+      'Legumbres (porotos, lentejas, garbanzos)',
+      'Aves (pollo, pavo)',
+      'Vino',
+      'Carnes rojas y embutidos',
+      'Manteca / margarina',
+      'Quesos',
+      'Frituras / comida rápida',
+      'Dulces y pasteles',
+    ],
+    itemOptions: [
+      [{ label: '≤2 por semana', value: 0 }, { label: '3-5 por semana', value: 0.5 }, { label: '≥6 por semana', value: 1 }],
+      [{ label: '<5 por semana', value: 0 }, { label: '5-6 por semana', value: 0.5 }, { label: '≥1 por día', value: 1 }],
+      [{ label: '<1 por semana', value: 0 }, { label: '1 por semana', value: 0.5 }, { label: '≥2 por semana', value: 1 }],
+      [{ label: '<1 por mes', value: 0 }, { label: '1/mes a 4/semana', value: 0.5 }, { label: '≥5 por semana', value: 1 }],
+      [{ label: 'No', value: 0 }, { label: 'Sí, es el principal', value: 1 }],
+      [{ label: '<1 por día', value: 0 }, { label: '1-2 por día', value: 0.5 }, { label: '≥3 por día', value: 1 }],
+      [{ label: 'Casi nunca', value: 0 }, { label: '1-3 por mes', value: 0.5 }, { label: '≥1 por semana', value: 1 }],
+      [{ label: '<1 por semana', value: 0 }, { label: '1-3 por semana', value: 0.5 }, { label: '>3 por semana', value: 1 }],
+      [{ label: '<1 por semana', value: 0 }, { label: '1 por semana', value: 0.5 }, { label: '≥2 por semana', value: 1 }],
+      [{ label: 'Nada o más de 1 copa/día', value: 0 }, { label: '1 copa por día', value: 1 }],
+      [{ label: '≥7 por semana', value: 0 }, { label: '4-6 por semana', value: 0.5 }, { label: '<4 por semana', value: 1 }],
+      [{ label: '>2 cdas por día', value: 0 }, { label: '1-2 cdas por día', value: 0.5 }, { label: '<1 cda por día', value: 1 }],
+      [{ label: '≥7 por semana', value: 0 }, { label: '1-6 por semana', value: 0.5 }, { label: '<1 por semana', value: 1 }],
+      [{ label: '≥4 por semana', value: 0 }, { label: '1-3 por semana', value: 0.5 }, { label: '<1 por semana', value: 1 }],
+      [{ label: '≥7 por semana', value: 0 }, { label: '5-6 por semana', value: 0.5 }, { label: '<5 por semana', value: 1 }],
+    ],
+    max: 15,
+    interpret: (s) =>
+      s >= 9
+        ? `${s}/15 — patrón MIND alto (protector)`
+        : s >= 6.5
+          ? `${s}/15 — patrón MIND intermedio`
+          : `${s}/15 — patrón MIND bajo (a mejorar)`,
   },
 }
 

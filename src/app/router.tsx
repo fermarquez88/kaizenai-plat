@@ -11,8 +11,10 @@ import { CuidadorGuia } from '../modules/post/CuidadorGuia'
 import { PacienteGuia } from '../modules/post/PacienteGuia'
 import { Comunidad } from '../modules/gov/Comunidad'
 import { MisDatos } from '../modules/gov/MisDatos'
+import { AvisoLegal } from '../modules/gov/AvisoLegal'
 import { RedView } from '../modules/red/RedView'
 import { Seguimiento } from '../modules/red/Seguimiento'
+import { FichaPaciente } from '../modules/red/FichaPaciente'
 import { AgendaVisitas } from '../modules/red/AgendaVisitas'
 import { CoberturaTiempos } from '../modules/red/CoberturaTiempos'
 import { EquipoUnidad } from '../modules/red/EquipoUnidad'
@@ -23,8 +25,9 @@ export const router = createHashRouter([
     path: '/',
     element: <App />,
     children: [
-      { index: true, element: <ProfileSelect /> },
+      { index: true, element: <Inicio /> },
       { path: 'inicio', element: <Inicio /> },
+      { path: 'demo', element: <ProfileSelect /> },
       { path: 'ejemplo', element: <CasoEjemplo /> },
       { path: 'p/agente', element: <Navigate to="/p/agente/promotor" replace /> },
       { path: 'p/:profileId', element: <DashboardShell /> },
@@ -35,11 +38,13 @@ export const router = createHashRouter([
       { path: 'p/:profileId/post/paciente', element: <PacienteGuia /> },
       { path: 'p/:profileId/red/:mode', element: <RedView /> },
       { path: 'p/:profileId/seguimiento', element: <Seguimiento /> },
+      { path: 'p/:profileId/ficha/:recordId', element: <FichaPaciente /> },
       { path: 'p/:profileId/agenda', element: <AgendaVisitas /> },
       { path: 'p/:profileId/metricas', element: <CoberturaTiempos /> },
       { path: 'p/:profileId/equipo', element: <EquipoUnidad /> },
       { path: 'gobernanza', element: <Comunidad /> },
       { path: 'datos', element: <MisDatos /> },
+      { path: 'aviso-legal', element: <AvisoLegal /> },
     ],
   },
 ])

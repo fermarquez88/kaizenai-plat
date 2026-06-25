@@ -61,14 +61,17 @@ export function Inicio() {
         <Link to="/p/unidad/red/bandeja" className="inline-flex items-center gap-2 text-secondary-text hover:underline">
           <Stethoscope size={16} aria-hidden /> {t('inicio.pro')}
         </Link>
-        <Link to="/" className="inline-flex items-center gap-2 text-muted hover:underline">
+        <Link to="/demo" className="inline-flex items-center gap-2 text-muted hover:underline">
           <Compass size={16} aria-hidden /> {t('inicio.demo')}
         </Link>
       </div>
 
-      <p className="mt-8 flex items-center justify-center gap-2 text-sm text-secondary-text">
+      <Link
+        to="/aviso-legal"
+        className="mt-8 flex items-center justify-center gap-2 text-sm text-secondary-text hover:underline"
+      >
         <ShieldCheck size={18} aria-hidden /> {t('inicio.privacy')}
-      </p>
+      </Link>
     </div>
   )
 }

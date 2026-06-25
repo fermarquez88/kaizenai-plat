@@ -21,7 +21,7 @@ interface Step {
 }
 
 // La persona y el agente usan instrumentos AUTORREPORTADOS; el cuidador, de INFORMANTE.
-const SELF = ['cqc', 'gds', 'tadlq']
+const SELF = ['cqc', 'gds', 'tadlq', 'isi', 'mind']
 const INFORMANT = ['ad8', 'iqcode', 'faq']
 
 // El PERFIL ya dijo quién es: derivamos el modo y NO lo volvemos a preguntar.

@@ -119,6 +119,23 @@ export const SEED_PERSONAS: SeedPersona[] = [
     lastSeenDays: 49,
     phone: '5492644000006',
   },
+  {
+    id: 'p7',
+    alias: 'L. F.',
+    age: 78,
+    edu: 6,
+    level: 'rojo',
+    riskPct: 35,
+    mrca: 6,
+    mrcaBand: 'alto',
+    meds: 8,
+    redFlags: 2,
+    note: 'Cambios de conducta + caídas; discordancia con la familia (ella minimiza). Polifarmacia anticolinérgica.',
+    lastSeenDays: 110,
+    phone: '5492644000007',
+    cuidador: 'su hijo',
+    discrepancia: true,
+  },
 ]
 
 export const PRIORITY: Record<TriageLevel, number> = { rojo: 0, amarillo: 1, verde: 2 }

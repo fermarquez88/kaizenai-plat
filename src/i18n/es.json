@@ -114,8 +114,10 @@
       "cqc": "Memoria",
       "gds": "Ánimo",
       "tadlq": "Funcionalidad",
-      "ad8": "Cambios (AD8)",
-      "iqcode": "Memoria (informante)",
+      "isi": "Sueño",
+      "mind": "Alimentación",
+      "ad8": "¿Notaste cambios en tu memoria?",
+      "iqcode": "Memoria (según un familiar)",
       "faq": "Funcionalidad (informante)",
       "medicacion": "Medicación",
       "banderas": "Señales de alarma",
@@ -311,6 +313,8 @@
       "cqc": "Memoria (cómo la sentís vos)",
       "gds": "Estado de ánimo",
       "tadlq": "Tareas del día a día",
+      "isi": "Sueño (cómo dormís)",
+      "mind": "Alimentación (MIND)",
       "ad8": "Cambios notados",
       "iqcode": "Memoria (según un familiar)",
       "faq": "Funcionalidad (según un familiar)",
@@ -384,6 +388,30 @@
     },
     "disclaimerShort": "Estimación orientativa. No es un diagnóstico — consultá con tu equipo de salud.",
     "disclaimer": "Resultado orientativo (estimación con valores a validar). No diagnostica ni reemplaza al profesional. Tus datos quedan en este dispositivo."
+  },
+  "informe": {
+    "verComo": "Ver como",
+    "persona": "Persona",
+    "profesional": "Profesional",
+    "factoresMejorables": "Cosas que podés mejorar"
+  },
+  "ficha": {
+    "verInforme": "Ver informe",
+    "volver": "Volver",
+    "noEncontrado": "No encontramos el informe de esta persona.",
+    "subtitulo": "Hoja clínica · resumen",
+    "estadoLabel": "Seguimiento"
+  },
+  "aviso": {
+    "title": "Aviso legal y privacidad",
+    "intro": "Cómo se tratan tus datos en KaizenAI. Esta app no diagnostica ni reemplaza al profesional.",
+    "responsable": { "t": "Responsable del tratamiento", "d": "[A definir: responsable del tratamiento de datos]." },
+    "baseLegal": { "t": "Base legal", "d": "Ley 25.326 de Protección de Datos Personales (Argentina). Los datos de salud son categoría sensible y requieren consentimiento." },
+    "datos": { "t": "Qué datos", "d": "Datos de salud cerebral (factores de riesgo, ánimo, memoria autorreportada, medicación) y de contacto. Se piden los mínimos necesarios." },
+    "derechos": { "t": "Tus derechos", "d": "Podés acceder, rectificar y suprimir tus datos (habeas data) desde 'Mis datos': ver, exportar o borrar." },
+    "onDevice": { "t": "Dónde viven tus datos", "d": "En este dispositivo (local-first). No hay servidor central en esta versión; vos controlás qué compartís." },
+    "noDx": { "t": "No es diagnóstico", "d": "Los resultados son estimaciones orientativas para acompañar la consulta, no un diagnóstico ni un dispositivo médico." },
+    "nota": "Versión de demostración. El responsable del tratamiento y la política definitiva se completan para el piloto."
   },
   "pro": {
     "title": "Para el profesional · modelo y comparadores",

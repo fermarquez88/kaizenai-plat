@@ -44,6 +44,45 @@ function validSuggestion(s: unknown): s is Suggestion {
   return !!o && isStr(o.id) && isStr(o.text) && isNum(o.createdAt) && isNum(o.votes) && inSet(SUGG, o.status)
 }
 
+// Hardening del import: sin prototype pollution, con topes de cantidad y longitud.
+const DANGER_KEYS = new Set(['__proto__', 'constructor', 'prototype'])
+const MAX_RECORDS = 10_000
+const MAX_STR = 4000
+function sanitize<T extends object>(o: T): T {
+  const out: Record<string, unknown> = {}
+  for (const [k, v] of Object.entries(o)) {
+    if (DANGER_KEYS.has(k)) continue
+    out[k] = typeof v === 'string' && v.length > MAX_STR ? v.slice(0, MAX_STR) : v
+  }
+  return out as T
+}
+
+export interface PreparedImport {
+  people: Person[]
+  assessments: PreAssessmentSummary[]
+  suggestions: Suggestion[]
+}
+
+/** Parse + valida + sanitiza un sobre KaizenAI (pura y testeable, sin IndexedDB).
+ * Filtra registros mal formados, descarta claves peligrosas (__proto__/constructor/prototype),
+ * acota longitud de strings y cantidad de registros. Lanza si el sobre es ilegible/no reconocido/futuro. */
+export function prepareImport(json: string): PreparedImport {
+  let raw: Partial<KaizenBundle>
+  try {
+    raw = JSON.parse(json)
+  } catch {
+    throw new Error('Archivo ilegible.')
+  }
+  if (raw.kind !== 'kaizenai-bundle') throw new Error('Archivo no reconocido (no es un sobre KaizenAI).')
+  if (raw.version != null && raw.version > BUNDLE_VERSION) {
+    throw new Error(`El sobre es de una versión más nueva (${raw.version}). Actualizá la app.`)
+  }
+  const people = (raw.people ?? []).slice(0, MAX_RECORDS).filter(validPerson).map(sanitize)
+  const assessments = (raw.preAssessments ?? []).slice(0, MAX_RECORDS).filter(validAssessment).map(sanitize)
+  const suggestions = (raw.suggestions ?? []).slice(0, MAX_RECORDS).filter(validSuggestion).map(sanitize)
+  return { people, assessments, suggestions }
+}
+
 // Consentimiento PORTABLE: vive en el store persistido (localStorage); lo leemos
 // para que viaje en el sobre (sin que dexieRepo dependa de la UI).
 function readConsent(): ConsentRecord | undefined {
@@ -121,20 +160,8 @@ export const dexieRepo: DataRepository = {
     return JSON.stringify(bundle, null, 2)
   },
   importJSON: async (json: string) => {
-    let raw: Partial<KaizenBundle>
-    try {
-      raw = JSON.parse(json)
-    } catch {
-      throw new Error('Archivo ilegible.')
-    }
-    if (raw.kind !== 'kaizenai-bundle') throw new Error('Archivo no reconocido (no es un sobre KaizenAI).')
-    if (raw.version != null && raw.version > BUNDLE_VERSION) {
-      throw new Error(`El sobre es de una versión más nueva (${raw.version}). Actualizá la app.`)
-    }
-    // Sólo registros bien formados (el sobre puede venir editado).
-    const people = (raw.people ?? []).filter(validPerson)
-    const assessments = (raw.preAssessments ?? []).filter(validAssessment)
-    const suggestions = (raw.suggestions ?? []).filter(validSuggestion)
+    // Parse + validación + sanitización endurecida (función pura, testeada).
+    const { people, assessments, suggestions } = prepareImport(json)
     // Insert-only: nunca pisar registros locales (preserva contactos/derivación propios).
     const [pp, aa, ss] = await Promise.all([
       db.people.toArray(),
