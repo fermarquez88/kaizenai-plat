@@ -117,6 +117,7 @@
       "tadlq": "Funcionalidad",
       "isi": "Sueño",
       "mind": "Alimentación",
+      "ipaq": "Actividad física",
       "ad8": "¿Notaste cambios en tu memoria?",
       "iqcode": "Memoria (según un familiar)",
       "faq": "Funcionalidad (informante)",
@@ -316,6 +317,7 @@
       "tadlq": "Tareas del día a día",
       "isi": "Sueño (cómo dormís)",
       "mind": "Alimentación (MIND)",
+      "ipaq": "Actividad física (IPAQ)",
       "ad8": "Cambios notados",
       "iqcode": "Memoria (según un familiar)",
       "faq": "Funcionalidad (según un familiar)",
@@ -469,6 +471,18 @@
       "cuidador": "Cuidador",
       "sintesis": "Diagnóstico y plan"
     }
+  },
+  "ipaq": {
+    "title": "Actividad física (última semana)",
+    "intro": "Contanos cuántos días por semana y minutos por día hiciste cada tipo de actividad.",
+    "vigorosa": "Actividad intensa (correr, cargar peso, deporte fuerte)",
+    "moderada": "Actividad moderada (bici suave, tareas que cansan un poco)",
+    "caminar": "Caminar (al menos 10 minutos seguidos)",
+    "sentado": "Tiempo sentado/a en un día típico",
+    "dias": "días/sem",
+    "min": "min/día",
+    "resultado": "Estimación: {{met}} MET-min/semana —",
+    "categoria": { "baja": "actividad baja", "moderada": "actividad moderada", "alta": "actividad alta" }
   },
   "pro": {
     "title": "Para el profesional · modelo y comparadores",

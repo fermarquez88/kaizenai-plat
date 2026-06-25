@@ -5,6 +5,7 @@ import { computeModifiableRisk, type FactorAnswer } from '../scoring/lancet'
 import { INSTRUMENTS, scoreInstrument } from '../scoring/instruments'
 import { type MrcaModelBand, type MrcaRawInputs } from '../scoring/mrcaModel'
 import { predictMrcaReduced } from '../scoring/mrcaReducedModel'
+import { scoreIpaq } from '../scoring/ipaq'
 import { computeMedFlags, type DrugInfo, type MedFlags } from '../scoring/medications'
 import { computeTriage, type TriageLevel } from '../scoring/triage'
 import { computeEquity, type Cerca, type Vive } from '../scoring/equity'
@@ -192,6 +193,20 @@ export function buildSummary(inp: PreconsultaInputs, createdAtISO: string): Prec
       return s.answered ? { id, name: inst.name, text: s.text } : null
     })
     .filter((x): x is { id: string; name: string; text: string } => x !== null)
+
+  // IPAQ (actividad física): scoring custom (MET), no encaja en el loop de instrumentos por opción.
+  const ipaqA = inp.instruments.ipaq ?? {}
+  const ipaqR = scoreIpaq({
+    vigDays: ipaqA[0], vigMin: ipaqA[1], modDays: ipaqA[2], modMin: ipaqA[3],
+    walkDays: ipaqA[4], walkMin: ipaqA[5], sitMin: ipaqA[6],
+  })
+  if (ipaqR.answered) {
+    instrumentScores.push({
+      id: 'ipaq',
+      name: 'Actividad física (IPAQ)',
+      text: `${ipaqR.metMin} MET-min/sem — actividad ${ipaqR.categoria}`,
+    })
+  }
 
   return {
     createdAt: createdAtISO,

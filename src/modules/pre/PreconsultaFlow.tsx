@@ -12,6 +12,7 @@ import { FactoresStep } from './steps/FactoresStep'
 import { InstrumentStep } from './steps/InstrumentStep'
 import { MedicacionStep } from './steps/MedicacionStep'
 import { BanderasRojasStep } from './steps/BanderasRojasStep'
+import { IpaqStep } from './steps/IpaqStep'
 import { ResultadoStep } from './steps/ResultadoStep'
 
 interface Step {
@@ -41,6 +42,8 @@ function buildSteps(modo: string | undefined, askModo: boolean): Step[] {
     { id: 'prevencion', Component: PrevencionStep },
     { id: 'factores', Component: FactoresStep },
     ...inst.map((id) => ({ id, inst: id })),
+    // Actividad física (IPAQ): autorreporte numérico, no informante.
+    ...(modo !== 'cuidador' ? [{ id: 'ipaq', Component: IpaqStep }] : []),
     { id: 'medicacion', Component: MedicacionStep },
     { id: 'banderas', Component: BanderasRojasStep },
     { id: 'resultado', Component: ResultadoStep },

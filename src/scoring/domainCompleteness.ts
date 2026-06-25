@@ -33,7 +33,7 @@ const DOMAINS: DomainDef[] = [
   { id: 'animo', core: ['gds'], optional: ['gad', 'ucla'] },
   { id: 'funcional', core: ['tadlq'], optional: ['faq'] },
   { id: 'sueno', optional: ['isi'] },
-  { id: 'habitos', optional: ['mind'] },
+  { id: 'habitos', optional: ['mind', 'ipaq'] },
   { id: 'fisica', lancet: true },
 ]
 
@@ -58,7 +58,9 @@ export interface CompletenessResult {
 const demoHas = (inp: DomainInputs, f: DemoField): boolean => inp.demo[f] != null
 const instAnswered = (inp: DomainInputs, id: string): number =>
   Object.values(inp.instruments[id] ?? {}).filter((v) => v != null).length
-const instItems = (id: string): number => INSTRUMENTS[id]?.items.length ?? 0
+// Instrumentos con scoring propio (no en INSTRUMENTS): nº de campos para la completitud.
+const CUSTOM_ITEMS: Record<string, number> = { ipaq: 7 }
+const instItems = (id: string): number => INSTRUMENTS[id]?.items.length ?? CUSTOM_ITEMS[id] ?? 0
 const lancetAnswered = (inp: DomainInputs, k: string): boolean => inp.lancet[k] != null
 
 function domainCounts(inp: DomainInputs, d: DomainDef): { answered: number; total: number } {
