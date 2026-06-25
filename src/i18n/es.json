@@ -367,6 +367,12 @@
       "moderado": "No es una urgencia, pero conviene que un profesional lo revise para quedarte tranquilo/a.",
       "alto": "Conviene buscar una evaluación pronto. Es una estimación, no un diagnóstico."
     },
+    "mrcaActionTitle": "Tu memoria hoy",
+    "mrcaAction": {
+      "bajo": "Sin señales ahora",
+      "moderado": "Seguimiento preventivo",
+      "alto": "Conviene una consulta"
+    },
     "export": {
       "title": "Compartir con el equipo de salud",
       "whatsapp": "Compartir por WhatsApp",

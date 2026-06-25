@@ -135,7 +135,7 @@ export function ResultadoStep() {
   const shareText = [
     `KaizenAI — cribado de salud cerebral${demo.alias ? ` · ${demo.alias}` : ''}`,
     `Prioridad sugerida: ${t(`triage.level.${level}`)}`,
-    `Riesgo estimado de memoria: ${t(`pre.mrca.band.${summary.mrcaBand}`)}`,
+    `Memoria: ${t(`triage.mrcaAction.${summary.mrcaBand}`)}`,
     `Factores para mejorar: ${summary.presentFactors.length} de 14`,
     `(Estimación orientativa, no diagnóstico — KaizenAI.)`,
   ].join('\n')
@@ -295,8 +295,12 @@ export function ResultadoStep() {
         {/* Riesgo estimado de memoria (palabra, no porcentaje) */}
         <div className="rounded-2xl border border-line bg-surface p-4">
           <div className="flex items-baseline justify-between gap-2">
-            <p className="text-sm font-medium text-ink">{t('triage.stats.mrca')}</p>
-            <p className="font-serif text-xl capitalize text-ink">{t(`pre.mrca.band.${summary.mrcaBand}`)}</p>
+            <p className="text-sm font-medium text-ink">
+              {simple ? t('triage.mrcaActionTitle') : t('triage.stats.mrca')}
+            </p>
+            <p className={'font-serif text-xl text-ink' + (simple ? '' : ' capitalize')}>
+              {simple ? t(`triage.mrcaAction.${summary.mrcaBand}`) : t(`pre.mrca.band.${summary.mrcaBand}`)}
+            </p>
           </div>
           <p className="mt-2 text-sm text-ink">{t(`triage.mrcaBandExplain.${summary.mrcaBand}`)}</p>
         </div>

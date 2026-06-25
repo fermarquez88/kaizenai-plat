@@ -3,7 +3,8 @@
 
 import { computeModifiableRisk, type FactorAnswer } from '../scoring/lancet'
 import { INSTRUMENTS, scoreInstrument } from '../scoring/instruments'
-import { predictMrca, type MrcaModelBand, type MrcaRawInputs } from '../scoring/mrcaModel'
+import { type MrcaModelBand, type MrcaRawInputs } from '../scoring/mrcaModel'
+import { predictMrcaReduced } from '../scoring/mrcaReducedModel'
 import { computeMedFlags, type DrugInfo, type MedFlags } from '../scoring/medications'
 import { computeTriage, type TriageLevel } from '../scoring/triage'
 import { computeEquity, type Cerca, type Vive } from '../scoring/equity'
@@ -148,7 +149,19 @@ function buildRiskInputs(inp: PreconsultaInputs): RiskInputs {
 
 export function buildSummary(inp: PreconsultaInputs, createdAtISO: string): PreconsultaSummary {
   const risk = computeModifiableRisk(inp.lancet)
-  const mrca = predictMrca(buildMrcaInputs(inp))
+  // Modelo MOSTRADO: Kaizen-MRCA reducido de 7 preguntas (decisión clínica 2026-06-24).
+  // Inputs que la app capta: edad·sexo·educación + audición·tabaquismo·vive_solo (Lancet).
+  // Faltantes → NaN → 'preliminar' (no se asume). sexo: Mujer=1/Hombre=0 (convención FE_SAP).
+  // El modelo COMPLETO (predictMrca/buildMrcaInputs) queda disponible y testeado, no wireado.
+  const yesL = (k: string) => inp.lancet[k] === 'si'
+  const mrca = predictMrcaReduced({
+    edad: inp.demo.edad ?? NaN,
+    sexo: inp.demo.sexo === 'Mujer' ? 1 : inp.demo.sexo === 'Hombre' ? 0 : NaN,
+    edu_anios: inp.demo.edu_anios ?? NaN,
+    hipoacusia: yesL('hearing') ? 1 : 0,
+    fumador: yesL('smoking') ? 1 : 0,
+    vive_solo: yesL('isolation') ? 1 : 0,
+  })
   const riskScores = computeRiskScores(buildRiskInputs(inp))
   const mrcaContribs = mrca.contribs.slice(0, 6).map((c) => ({
     feature: c.feature,

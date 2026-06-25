@@ -39,6 +39,7 @@ export interface MrcaReducedPrediction {
   threshold: number
   decision: 'derivar' | 'descartar'
   band: MrcaModelBand
+  contribs: { feature: string; value: number }[]
   preliminary: boolean
 }
 
@@ -69,14 +70,18 @@ export function predictMrcaReduced(r: MrcaReducedInputs): MrcaReducedPrediction 
   }
   let ace = M.intercept
   let preliminary = false
+  const contribs: { feature: string; value: number }[] = []
   M.features.forEach((name, i) => {
     const x = fmap[name]
     if (x == null || Number.isNaN(x)) {
       preliminary = true
       return
     }
-    ace += M.coef[i] * ((x - M.mean[i]) / M.scale[i])
+    const c = M.coef[i] * ((x - M.mean[i]) / M.scale[i])
+    ace += c
+    if (c !== 0) contribs.push({ feature: name, value: Math.round(c * 1000) / 1000 })
   })
+  contribs.sort((a, b) => Math.abs(b.value) - Math.abs(a.value))
   const cut = r.edu_anios >= 12 ? M.cut.edu_ge_12 : M.cut.edu_lt_12
   const risk = cut - ace
   const prob = Math.min(1, Math.max(0, interp(M.isotonic_x, M.isotonic_y, risk)))
@@ -91,6 +96,7 @@ export function predictMrcaReduced(r: MrcaReducedInputs): MrcaReducedPrediction 
     threshold: Math.round(thr * 1000) / 1000,
     decision,
     band,
+    contribs,
     preliminary,
   }
 }
