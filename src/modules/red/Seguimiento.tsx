@@ -1,8 +1,9 @@
+import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Check, MessageCircle, TriangleAlert, Users } from 'lucide-react'
 import { PRIORITY } from '../../seed/personas'
-import { ESTADO_ORDEN, type SeguimientoEstado } from '../../scoring/retention'
+import { ESTADO_ORDEN, estadoSeguimiento, VENTANAS_NO_VOLVIO, type SeguimientoEstado } from '../../scoring/retention'
 import { waMeLink } from '../../channel/ChannelAdapter'
 import { dexieRepo } from '../../data/dexieRepo'
 import type { TriageLevel } from '../../data/types'
@@ -33,10 +34,12 @@ export function Seguimiento() {
   const { t } = useTranslation()
   const { profileId } = useParams()
   const { records, realCount, reload } = useRedRecords()
+  const [ventana, setVentana] = useState<number>(60)
 
-  const people = [...records].sort(
-    (a, b) => ESTADO_ORDEN[a.estado] - ESTADO_ORDEN[b.estado] || PRIORITY[a.level] - PRIORITY[b.level],
-  )
+  // Recalcula el estado según la ventana elegida (perilla de re-contacto del panel).
+  const people = [...records]
+    .map((p) => ({ ...p, estado: estadoSeguimiento(p.daysSinceContact, ventana) }))
+    .sort((a, b) => ESTADO_ORDEN[a.estado] - ESTADO_ORDEN[b.estado] || PRIORITY[a.level] - PRIORITY[b.level])
   const total = people.length
   const novolvio = people.filter((p) => p.estado === 'novolvio').length
   const pctSeguimiento = total ? Math.round(((total - novolvio) / total) * 100) : 0
@@ -49,6 +52,21 @@ export function Seguimiento() {
     <div className="mx-auto max-w-3xl px-4 py-8">
       <h1 className="font-serif text-2xl text-ink sm:text-3xl">{t('seguimiento.title')}</h1>
       <p className="mt-1 text-sm text-muted">{t('seguimiento.intro')}</p>
+
+      <label className="mt-3 inline-flex items-center gap-2 text-sm text-muted no-print">
+        {t('seguimiento.ventana')}
+        <select
+          value={ventana}
+          onChange={(e) => setVentana(Number(e.target.value))}
+          className="rounded-lg border border-line bg-bg px-2 py-1 text-ink focus:border-secondary"
+        >
+          {VENTANAS_NO_VOLVIO.map((v) => (
+            <option key={v} value={v}>
+              {t('seguimiento.dias', { n: v })}
+            </option>
+          ))}
+        </select>
+      </label>
 
       <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
         <Kpi label={t('seguimiento.kpi.total')} value={String(total)} />

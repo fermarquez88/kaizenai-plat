@@ -602,6 +602,8 @@
   "seguimiento": {
     "title": "Seguimiento (mi gente)",
     "intro": "Quién está al día y quién no volvió. El re-contacto temprano evita el abandono.",
+    "ventana": "Considerar \"no volvió\" tras:",
+    "dias": "{{n}} días",
     "kpi": {
       "total": "Personas",
       "seguimiento": "En seguimiento",
