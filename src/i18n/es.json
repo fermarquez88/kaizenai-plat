@@ -991,7 +991,8 @@
       "enfermero": "enfermería",
       "medico": "médico/a",
       "neuropsico": "neuropsicología",
-      "gestor": "gestión"
+      "gestor": "gestión",
+      "trabajadorSocial": "trabajo social"
     },
     "tipo": {
       "aguda": "Urgente / reversible",
@@ -1153,7 +1154,8 @@
       "habitos": "Lo que comés y cómo te movés cuida tu cerebro.",
       "fisica": "Controlar la presión y el azúcar protege tu memoria."
     },
-    "verPerfil": "Ver toda mi ficha"
+    "verPerfil": "Ver toda mi ficha",
+    "elegir": "Elegir qué completar"
   },
   "alcance": {
     "minima-completa": "Evaluación mínima completa",

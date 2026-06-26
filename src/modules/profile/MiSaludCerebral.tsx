@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { ArrowRight, Check, ClipboardList, HeartPulse, Sparkles, Stethoscope, User } from 'lucide-react'
 import { usePreconsulta } from '../pre/preconsultaStore'
 import { avancePerfil } from '../../scoring/avancePerfil'
+import { prioridadDominio } from '../../scoring/catalogoModulos'
 import { colaPorRol, derivarAlarmas } from '../../scoring/alarmas'
 import { inputFromSeed } from '../../scoring/alarmasFromSeed'
 import { SEED_PERSONAS } from '../../seed/personas'
@@ -83,7 +84,11 @@ export function MiSaludCerebral() {
   }
 
   // ── ESPACIO (con avance): nivel cálido + próxima acción única + secciones ────────────
-  const deseables = av.dominios.filter((d) => d.pct < 1).slice(0, 3)
+  // "Otros temas" ordenados de MÁS a MENOS deseable según la clasificación base.
+  const deseables = av.dominios
+    .filter((d) => d.pct < 1)
+    .sort((a, b) => prioridadDominio(b.id) - prioridadDominio(a.id))
+    .slice(0, 3)
   return (
     <div className="mx-auto max-w-2xl px-4 py-8" id="puerta">
       <div className="mb-4 flex items-center justify-between gap-3">
@@ -160,8 +165,12 @@ export function MiSaludCerebral() {
         </section>
       )}
 
-      <Link to="/perfil" className="mt-6 inline-flex items-center gap-1 text-sm text-secondary">
-        {t('puerta.verPerfil')} <ArrowRight size={14} />
+      <Link
+        to="/perfil"
+        className="mt-6 flex items-center justify-between gap-2 rounded-xl border border-line bg-surface px-4 py-3 text-sm text-ink"
+      >
+        <span>{t('puerta.elegir')}</span>
+        <ArrowRight size={16} className="text-secondary" />
       </Link>
     </div>
   )

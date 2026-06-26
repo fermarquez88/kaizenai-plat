@@ -256,6 +256,7 @@ const COLA_POR_ROL: Record<Rol, AlarmaTipo[]> = {
   medico: ['aguda', 'discordancia', 'pedidoMedicion'],
   neuropsico: ['discordancia'],
   gestor: ['noVolvio', 'pedidoMedicion', 'discordancia', 'aguda', 'pedidoCompletar'], // supervisión + brechas
+  trabajadorSocial: ['pedidoCompletar'], // determinantes sociales + certificado de discapacidad
 }
 
 export function colaPorRol(alarmas: Alarma[], rol: Rol): Alarma[] {

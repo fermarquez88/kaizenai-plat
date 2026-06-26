@@ -9,7 +9,7 @@ export type Procedencia = 'medido' | 'reportado' | 'desconocido'
 export type Confiabilidad = 'verde' | 'amarillo' | 'gris'
 
 // Roles que pueden originar un dato o ser dueños de un loop (dueño-de-alarma).
-export type Rol = 'diada' | 'agente' | 'enfermero' | 'medico' | 'neuropsico' | 'gestor'
+export type Rol = 'diada' | 'agente' | 'enfermero' | 'medico' | 'neuropsico' | 'gestor' | 'trabajadorSocial'
 
 // Medibles que el perfil de salud cerebral espera (Lancet/ICOPE + metabólico modificable).
 export type MedibleTipo = 'presionArterial' | 'hba1c' | 'ldl' | 'imc' | 'audicion' | 'vision'
