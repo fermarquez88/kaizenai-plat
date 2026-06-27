@@ -10,11 +10,12 @@ describe('lentes — matriz declarativa', () => {
     expect(lenteDe('desconocido').id).toBe('agente') // default seguro
   })
 
-  it('hay 9 lentes y cada una tiene nav ≤4 y un rol válido', () => {
+  it('hay 9 lentes; el HILO (díada) no tiene barra, el CUADERNO (equipo) tiene 1-4', () => {
     expect(Object.keys(LENTES)).toHaveLength(9)
     for (const l of Object.values(LENTES)) {
       expect(l.nav.length).toBeLessThanOrEqual(4)
-      expect(l.nav.length).toBeGreaterThan(0)
+      if (l.modo === 'hilo') expect(l.nav.length).toBe(0)
+      else expect(l.nav.length).toBeGreaterThan(0)
     }
   })
 

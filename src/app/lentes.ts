@@ -10,6 +10,10 @@ export type LenteId =
 export type FichaAccion = 'pedir' | 'neuropsico' | 'informe' | 'medir' | 'contacto' | 'social'
 export type HomeKind = 'persona' | 'gente' | 'cola' | 'tablero'
 export type RedTab = 'gente' | 'cola' | 'bandeja' | 'tablero'
+/** PIEL de la lente (decisión de rediseño 2026-06-27): la díada vive un HILO conversacional
+ *  cálido; el equipo, un CUADERNO de tareas con deep-link. La matriz ya no pinta barras a mano. */
+export type Modo = 'hilo' | 'cuaderno'
+export type Voz = 'calida' | 'tecnica'
 
 export interface NavItem {
   key: string
@@ -20,24 +24,26 @@ export interface NavItem {
 export interface Lente {
   id: LenteId
   rol: Rol
+  modo: Modo
+  voz: Voz
   homeKind: HomeKind
   /** segmento del home relativo a /p/:id ('' = RoleHome). */
   homeSeg: string
   tabsDefault?: RedTab
-  nav: NavItem[] // barra inferior, ≤4
+  nav: NavItem[] // barra inferior (solo modo 'cuaderno'); el hilo no tiene barra
   acciones: FichaAccion[] // acciones disponibles sobre una ficha desde esta lente
 }
 
 export const LENTES: Record<LenteId, Lente> = {
-  paciente: { id: 'paciente', rol: 'diada', homeKind: 'persona', homeSeg: '', nav: [{ key: 'espacio', seg: '' }, { key: 'chequeo', seg: 'preconsulta' }, { key: 'pedidos', seg: 'alarmas' }], acciones: [] },
-  cuidador: { id: 'cuidador', rol: 'diada', homeKind: 'persona', homeSeg: '', nav: [{ key: 'espacio', seg: '' }, { key: 'chequeo', seg: 'preconsulta' }, { key: 'pedidos', seg: 'alarmas' }], acciones: [] },
-  agente: { id: 'agente', rol: 'agente', homeKind: 'gente', homeSeg: 'promotor', nav: [{ key: 'gente', seg: 'promotor' }, { key: 'seguimiento', seg: 'seguimiento' }, { key: 'alarmas', seg: 'alarmas' }, { key: 'agenda', seg: 'agenda' }], acciones: ['contacto', 'pedir'] },
-  enfermeria: { id: 'enfermeria', rol: 'enfermero', homeKind: 'cola', homeSeg: 'alarmas', nav: [{ key: 'cola', seg: 'alarmas' }, { key: 'gente', seg: 'promotor' }, { key: 'agenda', seg: 'agenda' }], acciones: ['medir', 'pedir'] },
-  unidad: { id: 'unidad', rol: 'medico', homeKind: 'cola', homeSeg: 'alarmas', tabsDefault: 'bandeja', nav: [{ key: 'cola', seg: 'alarmas' }, { key: 'bandeja', seg: 'red/bandeja' }, { key: 'agenda', seg: 'agenda' }], acciones: ['informe', 'pedir', 'neuropsico'] },
-  neuropsico: { id: 'neuropsico', rol: 'neuropsico', homeKind: 'cola', homeSeg: 'alarmas', nav: [{ key: 'cola', seg: 'alarmas' }, { key: 'gente', seg: 'promotor' }], acciones: ['neuropsico', 'informe'] },
-  social: { id: 'social', rol: 'trabajadorSocial', homeKind: 'cola', homeSeg: 'alarmas', nav: [{ key: 'cola', seg: 'alarmas' }, { key: 'gente', seg: 'promotor' }], acciones: ['social', 'informe', 'pedir'] },
-  gestor: { id: 'gestor', rol: 'gestor', homeKind: 'tablero', homeSeg: '', tabsDefault: 'tablero', nav: [{ key: 'panel', seg: '' }, { key: 'alarmas', seg: 'alarmas' }, { key: 'metricas', seg: 'metricas' }], acciones: [] },
-  comunidad: { id: 'comunidad', rol: 'gestor', homeKind: 'tablero', homeSeg: '', tabsDefault: 'tablero', nav: [{ key: 'panel', seg: '' }, { key: 'gobernanza', seg: '/gobernanza' }], acciones: [] },
+  paciente: { id: 'paciente', rol: 'diada', modo: 'hilo', voz: 'calida', homeKind: 'persona', homeSeg: '', nav: [], acciones: [] },
+  cuidador: { id: 'cuidador', rol: 'diada', modo: 'hilo', voz: 'calida', homeKind: 'persona', homeSeg: '', nav: [], acciones: [] },
+  agente: { id: 'agente', rol: 'agente', modo: 'cuaderno', voz: 'tecnica', homeKind: 'gente', homeSeg: 'promotor', nav: [{ key: 'gente', seg: 'promotor' }, { key: 'seguimiento', seg: 'seguimiento' }, { key: 'alarmas', seg: 'alarmas' }, { key: 'agenda', seg: 'agenda' }], acciones: ['contacto', 'pedir'] },
+  enfermeria: { id: 'enfermeria', rol: 'enfermero', modo: 'cuaderno', voz: 'tecnica', homeKind: 'cola', homeSeg: 'alarmas', nav: [{ key: 'cola', seg: 'alarmas' }, { key: 'gente', seg: 'promotor' }, { key: 'agenda', seg: 'agenda' }], acciones: ['medir', 'pedir'] },
+  unidad: { id: 'unidad', rol: 'medico', modo: 'cuaderno', voz: 'tecnica', homeKind: 'cola', homeSeg: 'alarmas', tabsDefault: 'bandeja', nav: [{ key: 'cola', seg: 'alarmas' }, { key: 'bandeja', seg: 'red/bandeja' }, { key: 'agenda', seg: 'agenda' }], acciones: ['informe', 'pedir', 'neuropsico'] },
+  neuropsico: { id: 'neuropsico', rol: 'neuropsico', modo: 'cuaderno', voz: 'tecnica', homeKind: 'cola', homeSeg: 'alarmas', nav: [{ key: 'cola', seg: 'alarmas' }, { key: 'gente', seg: 'promotor' }], acciones: ['neuropsico', 'informe'] },
+  social: { id: 'social', rol: 'trabajadorSocial', modo: 'cuaderno', voz: 'tecnica', homeKind: 'cola', homeSeg: 'alarmas', nav: [{ key: 'cola', seg: 'alarmas' }, { key: 'gente', seg: 'promotor' }], acciones: ['social', 'informe', 'pedir'] },
+  gestor: { id: 'gestor', rol: 'gestor', modo: 'cuaderno', voz: 'tecnica', homeKind: 'tablero', homeSeg: '', tabsDefault: 'tablero', nav: [{ key: 'panel', seg: '' }, { key: 'alarmas', seg: 'alarmas' }, { key: 'metricas', seg: 'metricas' }], acciones: [] },
+  comunidad: { id: 'comunidad', rol: 'gestor', modo: 'cuaderno', voz: 'tecnica', homeKind: 'tablero', homeSeg: '', tabsDefault: 'tablero', nav: [{ key: 'panel', seg: '' }, { key: 'gobernanza', seg: '/gobernanza' }], acciones: [] },
 }
 
 export const LENTE_IDS = Object.keys(LENTES) as LenteId[]

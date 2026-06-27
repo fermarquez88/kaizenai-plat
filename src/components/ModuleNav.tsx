@@ -25,6 +25,7 @@ export function ModuleNav({ profileId }: { profileId: string }) {
   const { t } = useTranslation()
   const { pathname } = useLocation()
   const items = lenteDe(profileId).nav.map((n) => ({ key: n.key, to: rutaDe(profileId, n.seg) }))
+  if (items.length === 0) return null // el HILO (díada) no tiene barra inferior
   const home = `/p/${profileId}`
   const isActive = (to: string) => (to === home ? pathname === home : pathname === to || pathname.startsWith(to + '/'))
 
