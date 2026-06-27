@@ -23,6 +23,9 @@ export type Modo = 'persona' | 'cuidador' | 'agente'
 export interface Demografia {
   modo?: Modo
   alias?: string
+  /** DNI: clave estable para VINCULAR registros entre actores y re-evaluaciones. PII →
+   *  vive on-device (local-first); nunca al repo/deploy público. */
+  dni?: string
   phone?: string
   cuidadorAlias?: string
   edad?: number

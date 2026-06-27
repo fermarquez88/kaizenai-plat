@@ -85,8 +85,11 @@ export function ResultadoStep() {
     if (saved.current) return
     saved.current = true
     const now = Date.now()
-    // Persona = id estable (re-evaluaciones enlazadas); agente/cuidador = nuevo registro.
-    const personId = summary.modo === 'persona' ? ensureSelfPersonId() : crypto.randomUUID()
+    // DNI = clave estable que VINCULA registros entre actores y re-evaluaciones (resuelve el
+    // aislamiento por persona: el agente que criba a varios no conflaga el self del dispositivo).
+    // Sin DNI: persona = self del dispositivo; agente/cuidador = nuevo registro.
+    const dni = demo.dni?.trim()
+    const personId = dni ? `dni-${dni}` : summary.modo === 'persona' ? ensureSelfPersonId() : crypto.randomUUID()
     // Lazo de derivación: si es rojo / hay banderas / el modelo deriva, se EMITE.
     const derivar =
       summary.triageLevel === 'rojo' || summary.mrcaDecision === 'derivar' || summary.redFlags.length > 0
@@ -95,6 +98,7 @@ export function ResultadoStep() {
       .upsertPerson({
         id: personId,
         alias: demo.alias ?? '—',
+        dni,
         ageYears: demo.edad,
         educationYears: demo.edu_anios,
         depto: summary.depto,

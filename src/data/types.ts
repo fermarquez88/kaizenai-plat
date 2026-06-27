@@ -20,6 +20,8 @@ export interface ContactEvent {
 export interface Person {
   id: string
   alias: string
+  /** DNI: clave de vinculación entre actores y en el tiempo. PII → on-device. */
+  dni?: string
   ageYears?: number
   educationYears?: number
   depto?: string

@@ -45,6 +45,22 @@ export function DemografiaStep() {
           <p className="mt-1 text-sm text-muted">{t('pre.demografia.aliasHint')}</p>
         </div>
 
+        <div>
+          <label className="block text-sm font-medium text-ink" htmlFor="dni">
+            DNI <span className="text-muted">{t('common.optional')}</span>
+          </label>
+          <input
+            id="dni"
+            type="text"
+            inputMode="numeric"
+            value={demo.dni ?? ''}
+            onChange={(e) => setDemo({ dni: e.target.value.replace(/\D/g, '') || undefined })}
+            placeholder="Sin puntos"
+            className="mt-1 w-full rounded-xl border border-line bg-surface px-4 py-3 text-ink focus:border-secondary"
+          />
+          <p className="mt-1 text-sm text-muted">Permite vincular sus registros entre la enfermera, el médico y la neuropsicóloga, y comparar en el tiempo. Queda en este dispositivo.</p>
+        </div>
+
         {demo.modo !== 'persona' && (
           <>
             <div>
