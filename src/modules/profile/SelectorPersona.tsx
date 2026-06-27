@@ -1,13 +1,17 @@
 import { useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { ArrowLeft, Plus, User } from 'lucide-react'
 import { useSettings } from '../../lib/store'
 
 // "Mi gente": el cuidador/promotor elige a CUÁL de sus personas le completa, o agrega otra.
-// Cada persona tiene su ficha aislada (no se pisan datos).
+// Cada persona tiene su ficha aislada (no se pisan datos). Con ?ir=<seg> va directo ahí
+// tras elegir (p. ej. preconsulta o mi-resultado).
 export function SelectorPersona() {
   const { profileId } = useParams()
   const navigate = useNavigate()
+  const [params] = useSearchParams()
+  const ir = params.get('ir')
+  const destino = ir ? `/p/${profileId}/${ir}` : `/p/${profileId}`
   const cuidados = useSettings((s) => s.cuidados)
   const personas = useSettings((s) => s.personas)
   const setActivePerson = useSettings((s) => s.setActivePerson)
@@ -18,12 +22,12 @@ export function SelectorPersona() {
 
   const elegir = (id: string) => {
     setActivePerson(id)
-    navigate(`/p/${profileId}`)
+    navigate(destino)
   }
   const crear = () => {
     if (!alias.trim()) return
     addPersona(alias.trim(), relacion) // crea y activa
-    navigate(`/p/${profileId}`)
+    navigate(destino)
   }
 
   return (

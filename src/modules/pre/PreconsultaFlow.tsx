@@ -111,6 +111,17 @@ export function PreconsultaFlow() {
   const consent = useSettings((s) => s.consentAccepted)
   const setConsent = useSettings((s) => s.setConsent)
   const [victoria, setVictoria] = useState<string | null>(null)
+  // Hub: al entrar mostramos un MENÚ de qué completar + ver informe (no caemos en el
+  // "vómito" del resultado). En captura nueva (?nuevo=1) vamos derecho al paso.
+  const [vista, setVista] = useState<'menu' | 'paso'>(() => (params.get('nuevo') === '1' ? 'paso' : 'menu'))
+  const dDemo = usePreconsulta((s) => s.demo)
+  const dLancet = usePreconsulta((s) => s.lancet)
+  const dInst = usePreconsulta((s) => s.instruments)
+  const dSdoh = usePreconsulta((s) => s.sdoh)
+  const dCud = usePreconsulta((s) => s.cud)
+  const dEstudios = usePreconsulta((s) => s.estudios)
+  const dMeds = usePreconsulta((s) => s.meds)
+  const dFactores = usePreconsulta((s) => s.factores)
 
   // Guardar-y-retomar: SOLO reseteamos si se pidió empezar de nuevo (?nuevo=1).
   // Si no, retomamos donde quedó (el store está persistido).
@@ -164,6 +175,56 @@ export function PreconsultaFlow() {
     setStep(target)
     window.scrollTo({ top: 0 })
   }
+  const irAPaso = (i: number) => { setStep(i); setVista('paso'); window.scrollTo({ top: 0 }) }
+
+  // ── MENÚ (hub): qué completar + ver informe ──────────────────────────────────────────
+  const hecho = (s: Step): boolean => {
+    if (s.inst) return !!dInst[s.inst] && Object.keys(dInst[s.inst]).length > 0
+    switch (s.id) {
+      case 'demografia': return dDemo.edad != null
+      case 'prevencion': return Object.keys(dLancet).length > 0
+      case 'determinantes': return Object.keys(dSdoh).length > 0 || Object.keys(dCud).length > 0
+      case 'estudios': return Object.keys(dEstudios).length > 0
+      case 'medicacion': return dMeds.length > 0
+      case 'factores': return Object.keys(dFactores).length > 0
+      default: return false
+    }
+  }
+  if (vista === 'menu') {
+    const secciones = STEPS.map((s, i) => ({ s, i })).filter(({ s }) => s.id !== 'modo' && s.id !== 'resultado')
+    const tieneAlgo = secciones.some(({ s }) => hecho(s))
+    return (
+      <div className="mx-auto max-w-2xl px-4 py-8">
+        <button onClick={finalizar} className="mb-3 inline-flex items-center gap-1 text-sm text-muted hover:text-ink"><ArrowLeft size={16} /> {t('common.back')}</button>
+        <h1 className="font-serif text-2xl text-ink sm:text-3xl">¿Qué querés completar{dDemo.alias ? ` de ${dDemo.alias}` : ''}?</h1>
+        <p className="mt-1 text-muted">Tocá lo que quieras cargar. No hace falta todo de una.</p>
+
+        {tieneAlgo && resultadoIdx >= 0 && (
+          <button onClick={() => irAPaso(resultadoIdx)} className="mt-5 flex w-full items-center justify-between gap-3 rounded-2xl bg-primary px-5 py-4 text-white">
+            <span className="font-medium">Ver informe / resultado</span> <ArrowRight size={20} />
+          </button>
+        )}
+
+        <ul className="mt-4 space-y-2">
+          {secciones.map(({ s, i }) => {
+            const ok = hecho(s)
+            return (
+              <li key={s.id}>
+                <button onClick={() => irAPaso(i)} className="flex w-full items-center justify-between gap-3 rounded-xl border border-line bg-surface p-3.5 text-left hover:border-secondary">
+                  <span className="text-ink">{t(`preconsulta.steps.${s.id}`, { defaultValue: s.inst ?? s.id })}</span>
+                  <span className={'shrink-0 rounded-full px-2.5 py-1 text-xs font-medium ' + (ok ? 'border border-verde bg-verde/10 text-verde-text' : 'bg-secondary/10 text-secondary')}>
+                    {ok ? '✓ Cargado' : 'Sumar'}
+                  </span>
+                </button>
+              </li>
+            )
+          })}
+        </ul>
+
+        <button onClick={empezarDeNuevo} className="mt-5 text-sm text-muted underline">{t('preconsulta.empezarDeNuevo')}</button>
+      </div>
+    )
+  }
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-6 pb-28">
@@ -201,11 +262,10 @@ export function PreconsultaFlow() {
       <div className="fixed inset-x-0 bottom-0 border-t border-line bg-bg/90 backdrop-blur no-print">
         <div className="mx-auto flex max-w-2xl items-center gap-3 px-4 py-3">
           <button
-            onClick={() => go(safeStep - 1)}
-            disabled={safeStep === 0}
-            className="inline-flex items-center gap-1 rounded-xl border border-line bg-surface px-4 py-2.5 text-ink disabled:opacity-40"
+            onClick={() => { setVista('menu'); window.scrollTo({ top: 0 }) }}
+            className="inline-flex items-center gap-1 rounded-xl border border-line bg-surface px-4 py-2.5 text-ink"
           >
-            <ArrowLeft size={18} /> {t('common.prev')}
+            <ArrowLeft size={18} /> Menú
           </button>
           <div className="ml-auto flex items-center gap-2">
             {!isLast && (

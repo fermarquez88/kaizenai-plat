@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowLeft, BookOpen, Brain, ClipboardCheck, HandHeart, HeartPulse, Lightbulb, LifeBuoy, Users } from 'lucide-react'
+import { ArrowLeft, BookOpen, Brain, ClipboardCheck, FileText, HandHeart, HeartPulse, Lightbulb, LifeBuoy, Users } from 'lucide-react'
 import { useSettings } from '../../lib/store'
 import { INSTRUMENTS } from '../../scoring/instruments'
 import { Onboarding } from '../profile/Onboarding'
@@ -34,6 +34,7 @@ export function CuidadorEspacio() {
   const setUsuarioRol = useSettings((s) => s.setUsuarioRol)
   const activePersonId = useSettings((s) => s.activePersonId)
   const personas = useSettings((s) => s.personas)
+  const cuidados = useSettings((s) => s.cuidados)
   const ensureSelf = useSettings((s) => s.ensureSelfPersonId)
   const porPersona = useEscalas((s) => s.porPersona)
   const [vista, setVista] = useState<'home' | 'cuidarse'>('home')
@@ -92,10 +93,22 @@ export function CuidadorEspacio() {
       <p className="mt-1 text-muted">¿Qué necesita hoy?</p>
 
       <div className="mt-5 space-y-2.5">
-        <Rama icon={ClipboardCheck} titulo={`Completar lo de ${alias}`} sub="Responder sus formularios (lo que usted observa)" to="/p/cuidador/preconsulta" />
+        {/* 1º Completar */}
+        {cuidados.length > 1 ? (
+          <Rama icon={ClipboardCheck} titulo="Completar info de mis personas cuidadas" sub={`Acompañás a ${cuidados.length} — elegí a quién`} to="/p/cuidador/personas?ir=preconsulta" />
+        ) : (
+          <Rama icon={ClipboardCheck} titulo={`Completar lo de ${alias}`} sub="Responder sus formularios (lo que usted observa)" to="/p/cuidador/preconsulta" />
+        )}
+        {/* 2º Resolver una situación AHORA (urgente, a mano) */}
+        <Rama icon={Lightbulb} titulo="Necesito resolver una situación ahora" sub="Conductas difíciles, paso a paso (método DICE)" to="/p/cuidador/guia/dice" />
+        {/* 3º Ver informe */}
+        {cuidados.length > 1 ? (
+          <Rama icon={FileText} titulo="Ver informes de mis personas cuidadas" sub="Elegí de quién ver el resultado" to="/p/cuidador/personas?ir=mi-resultado" />
+        ) : (
+          <Rama icon={FileText} titulo={`Ver informe de ${alias}`} sub="Resultado del chequeo" to="/p/cuidador/mi-resultado" />
+        )}
         <Rama icon={HeartPulse} titulo="Cuidarse" sub="¿Cómo está usted? + su propio cerebro" onClick={() => setVista('cuidarse')} />
         <Rama icon={BookOpen} titulo="Entender la enfermedad" sub="Qué pasa y por qué" to="/p/cuidador/guia/entender" />
-        <Rama icon={Lightbulb} titulo="Necesito resolver una situación ahora" sub="Conductas difíciles, paso a paso (método DICE)" to="/p/cuidador/guia/dice" />
         <Rama icon={BookOpen} titulo="Recursos y materiales" sub="Ejercicios, planillas, materiales oficiales" to="/p/cuidador/guia/recursos" />
         <Rama icon={LifeBuoy} titulo="Dónde pedir ayuda" sub="San Juan: turnos, asociaciones, contactos" to="/p/cuidador/guia/ayuda" />
         <Rama icon={Users} titulo={`Conectar a ${alias} con la comunidad`} sub="Lo que sabe y puede aportar → vínculos con propósito" to="/p/cuidador/conectar" />
