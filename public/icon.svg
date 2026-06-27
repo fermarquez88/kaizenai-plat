@@ -1,16 +1,18 @@
 <svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="KaizenAI">
   <rect width="512" height="512" rx="112" fill="#F7F3EC"/>
-  <g stroke="#2E7D74" stroke-width="17" stroke-linecap="round" opacity="0.9">
-    <line x1="256" y1="206" x2="70" y2="330"/>
-    <line x1="256" y1="206" x2="105" y2="415"/>
-    <line x1="256" y1="206" x2="160" y2="462"/>
-    <line x1="256" y1="206" x2="210" y2="488"/>
-    <line x1="256" y1="206" x2="256" y2="498"/>
-    <line x1="256" y1="206" x2="302" y2="488"/>
-    <line x1="256" y1="206" x2="352" y2="462"/>
-    <line x1="256" y1="206" x2="407" y2="415"/>
-    <line x1="256" y1="206" x2="442" y2="330"/>
+  <g stroke="#2E7D74" stroke-width="17" stroke-linecap="round" opacity="0.92">
+    <line x1="256" y1="181" x2="484" y2="360"/>
+    <line x1="256" y1="181" x2="449" y2="398"/>
+    <line x1="256" y1="181" x2="406" y2="429"/>
+    <line x1="256" y1="181" x2="359" y2="452"/>
+    <line x1="256" y1="181" x2="309" y2="466"/>
+    <line x1="256" y1="181" x2="256" y2="471"/>
+    <line x1="256" y1="181" x2="203" y2="466"/>
+    <line x1="256" y1="181" x2="153" y2="452"/>
+    <line x1="256" y1="181" x2="106" y2="429"/>
+    <line x1="256" y1="181" x2="63" y2="398"/>
+    <line x1="256" y1="181" x2="28" y2="360"/>
   </g>
-  <path d="M43 205 C 85 146, 128 162, 165 183 C 197 199, 213 135, 256 146 C 299 157, 320 194, 357 173 C 395 151, 427 173, 470 199"
-        stroke="#B5552E" stroke-width="27" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M64 181 Q 102 122 141 171 Q 179 122 218 171 Q 256 117 294 171 Q 333 122 371 171 Q 410 122 448 181"
+        stroke="#B5552E" stroke-width="25" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
