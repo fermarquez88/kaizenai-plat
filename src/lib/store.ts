@@ -19,6 +19,8 @@ export interface Persona {
   id: string
   alias: string
   relacion?: string // 'yo' | 'familiar' | 'vecino' | 'otro'
+  /** quién responde por esta persona (demencia): 'persona' | 'cuidador' | 'mixto'. */
+  respondente?: 'persona' | 'cuidador' | 'mixto'
   creadaAt: number
 }
 
@@ -45,7 +47,7 @@ export interface SettingsState {
   setUsuarioRol: (r: UsuarioRol) => void
   setActivePerson: (id: string) => void
   /** crea una persona acompañada (cuidador/promotor) y la activa; devuelve su id. */
-  addPersona: (alias: string, relacion?: string) => string
+  addPersona: (alias: string, relacion?: string, respondente?: Persona['respondente']) => string
   /** define el alias de "yo" (persona), crea/activa su ficha. */
   setSelfAlias: (alias: string) => void
   setLang: (l: 'es' | 'en') => void
@@ -78,10 +80,10 @@ export const useSettings = create<SettingsState>()(
       dismissVoiceHint: () => set({ voiceHintDismissed: true }),
       setUsuarioRol: (usuarioRol) => set({ usuarioRol }),
       setActivePerson: (activePersonId) => set({ activePersonId }),
-      addPersona: (alias, relacion) => {
+      addPersona: (alias, relacion, respondente) => {
         const id = uid()
         set((s) => ({
-          personas: { ...s.personas, [id]: { id, alias, relacion, creadaAt: Date.now() } },
+          personas: { ...s.personas, [id]: { id, alias, relacion, respondente, creadaAt: Date.now() } },
           cuidados: [id, ...s.cuidados.filter((x) => x !== id)],
           activePersonId: id,
         }))

@@ -14,13 +14,14 @@ export function Onboarding() {
   const setUsuarioRol = useSettings((s) => s.setUsuarioRol)
   const [alias, setAlias] = useState('') // persona: yo · cuidador: a quién acompaño
   const [relacion, setRelacion] = useState('familiar')
+  const [respondente, setRespondente] = useState<'persona' | 'cuidador' | 'mixto'>('mixto')
 
   const valido = alias.trim().length > 0
   const continuar = () => {
     if (!valido) return
     if (esCuidador) {
       setUsuarioRol('cuidador')
-      addPersona(alias.trim(), relacion) // crea su ficha y la activa
+      addPersona(alias.trim(), relacion, respondente) // crea su ficha y la activa
     } else {
       setSelfAlias(alias.trim()) // crea/activa "yo"
     }
@@ -63,6 +64,22 @@ export function Onboarding() {
                 onClick={() => setRelacion(v)}
                 aria-pressed={relacion === v}
                 className={'rounded-xl border px-4 py-2 text-sm ' + (relacion === v ? 'border-secondary bg-secondary/10 text-secondary-text' : 'border-line bg-surface text-ink')}
+              >
+                {l}
+              </button>
+            ))}
+          </div>
+
+          <label className="mt-4 block text-sm font-medium text-ink">¿Quién va a responder las preguntas?</label>
+          <p className="text-xs text-muted">Si la memoria está muy afectada, podés responder vos. Se puede cambiar después.</p>
+          <div className="mt-1 flex flex-col gap-2">
+            {([['persona', `${alias.trim() || 'La persona'} puede responder`], ['cuidador', 'Respondo yo por ella'], ['mixto', 'Un poco cada uno']] as const).map(([v, l]) => (
+              <button
+                key={v}
+                type="button"
+                onClick={() => setRespondente(v)}
+                aria-pressed={respondente === v}
+                className={'rounded-xl border px-4 py-2.5 text-left text-sm ' + (respondente === v ? 'border-secondary bg-secondary/10 text-secondary-text' : 'border-line bg-surface text-ink')}
               >
                 {l}
               </button>
