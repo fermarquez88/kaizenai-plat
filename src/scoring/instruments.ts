@@ -326,6 +326,73 @@ export const INSTRUMENTS: Record<string, Instrument> = {
           ? `${s}/15 — patrón MIND intermedio`
           : `${s}/15 — patrón MIND bajo (a mejorar)`,
   },
+
+  // Alcohol — AUDIT-C (3 ítems, 0-12). Opciones por ítem. Corte de riesgo ≥4 (≥3 en mujeres).
+  // Factor modificable Lancet 2024; en San Juan rural el consumo es culturalmente alto.
+  auditc: {
+    id: 'auditc',
+    name: 'Consumo de alcohol (AUDIT-C)',
+    why: 'El alcohol es un factor de riesgo modificable de deterioro; detectarlo cambia el consejo.',
+    options: [],
+    items: [
+      '¿Con qué frecuencia tomás alguna bebida con alcohol?',
+      'Un día típico que tomás, ¿cuántos tragos tomás?',
+      '¿Con qué frecuencia tomás 6 o más tragos en una misma ocasión?',
+    ],
+    itemOptions: [
+      [{ label: 'Nunca', value: 0 }, { label: 'Una vez al mes o menos', value: 1 }, { label: '2-4 veces al mes', value: 2 }, { label: '2-3 veces por semana', value: 3 }, { label: '4 o más por semana', value: 4 }],
+      [{ label: '1 o 2', value: 0 }, { label: '3 o 4', value: 1 }, { label: '5 o 6', value: 2 }, { label: '7 a 9', value: 3 }, { label: '10 o más', value: 4 }],
+      [{ label: 'Nunca', value: 0 }, { label: 'Menos de 1 vez al mes', value: 1 }, { label: 'Mensualmente', value: 2 }, { label: 'Semanalmente', value: 3 }, { label: 'A diario o casi', value: 4 }],
+    ],
+    max: 12,
+    interpret: (s) => (s >= 4 ? `${s}/12 — consumo de riesgo` : `${s}/12 — bajo riesgo`),
+  },
+
+  // Fragilidad — FRAIL (Morley, 5 ítems sí/no, 0-5). ≥3 fragilidad · 1-2 prefragilidad.
+  frail: {
+    id: 'frail',
+    name: 'Fragilidad (FRAIL)',
+    why: 'La fragilidad predice caídas, hospitalización y deterioro; es prevenible y reversible.',
+    options: [
+      { label: 'Sí', value: 1 },
+      { label: 'No', value: 0 },
+    ],
+    max: 5,
+    items: [
+      '¿Se siente cansado/a la mayor parte del tiempo?',
+      '¿Le cuesta subir un piso por escalera?',
+      '¿Le cuesta caminar una cuadra?',
+      '¿Tiene más de 5 enfermedades?',
+      '¿Perdió peso sin querer (más del 5%) en el último año?',
+    ],
+    interpret: (s) => (s >= 3 ? `${s}/5 — fragilidad` : s >= 1 ? `${s}/5 — prefragilidad` : `${s}/5 — robusto/a`),
+  },
+
+  // Nutrición — MNA-SF (6 ítems, 0-14). ≥12 normal · 8-11 riesgo · ≤7 malnutrición. Opciones por ítem.
+  mnasf: {
+    id: 'mnasf',
+    name: 'Estado nutricional (MNA-SF)',
+    why: 'La desnutrición acelera el deterioro y es frecuente y tratable en personas mayores.',
+    options: [],
+    items: [
+      'En los últimos 3 meses, ¿comió menos por falta de apetito, problemas para masticar o tragar?',
+      '¿Perdió peso en los últimos 3 meses?',
+      '¿Cómo es su movilidad?',
+      '¿Tuvo estrés fuerte o una enfermedad aguda en los últimos 3 meses?',
+      '¿Tiene problemas de memoria o de ánimo?',
+      'Su contextura / peso para la altura es…',
+    ],
+    itemOptions: [
+      [{ label: 'Comió mucho menos', value: 0 }, { label: 'Comió algo menos', value: 1 }, { label: 'Sin cambios', value: 2 }],
+      [{ label: 'Más de 3 kg', value: 0 }, { label: 'No sabe', value: 1 }, { label: 'Entre 1 y 3 kg', value: 2 }, { label: 'Sin pérdida', value: 3 }],
+      [{ label: 'En cama o silla', value: 0 }, { label: 'Se levanta pero no sale', value: 1 }, { label: 'Sale normalmente', value: 2 }],
+      [{ label: 'Sí', value: 0 }, { label: 'No', value: 2 }],
+      [{ label: 'Problemas importantes', value: 0 }, { label: 'Problemas leves', value: 1 }, { label: 'Sin problemas', value: 2 }],
+      [{ label: 'Muy delgado/a', value: 0 }, { label: 'Algo delgado/a', value: 1 }, { label: 'Normal', value: 2 }, { label: 'Contextura grande', value: 3 }],
+    ],
+    max: 14,
+    interpret: (s) => (s >= 12 ? `${s}/14 — estado normal` : s >= 8 ? `${s}/14 — riesgo nutricional` : `${s}/14 — malnutrición`),
+  },
 }
 
 export interface InstrumentScore {

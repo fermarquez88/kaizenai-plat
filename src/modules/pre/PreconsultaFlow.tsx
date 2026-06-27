@@ -23,7 +23,7 @@ interface Step {
 }
 
 // La persona y el agente usan instrumentos AUTORREPORTADOS; el cuidador, de INFORMANTE.
-const SELF = ['cqc', 'gds', 'tadlq', 'isi', 'mind']
+const SELF = ['cqc', 'gds', 'tadlq', 'isi', 'mind', 'auditc', 'frail', 'mnasf']
 const INFORMANT = ['ad8', 'iqcode', 'faq']
 
 // Bloques del chequeo, para micro-logros y progreso cálido.
@@ -42,6 +42,9 @@ const BLOQUE: Record<string, string> = {
   iqcode: 'chequeo',
   faq: 'chequeo',
   ipaq: 'chequeo',
+  auditc: 'chequeo',
+  frail: 'chequeo',
+  mnasf: 'chequeo',
   medicacion: 'medicacion',
   banderas: 'senales',
   resultado: 'resultado',

@@ -33,8 +33,8 @@ const DOMAINS: DomainDef[] = [
   { id: 'animo', core: ['gds'], optional: ['gad', 'ucla'] },
   { id: 'funcional', core: ['tadlq'], optional: ['faq'] },
   { id: 'sueno', optional: ['isi'] },
-  { id: 'habitos', optional: ['mind', 'ipaq'] },
-  { id: 'fisica', lancet: true },
+  { id: 'habitos', optional: ['mind', 'ipaq', 'auditc', 'mnasf'] },
+  { id: 'fisica', lancet: true, optional: ['frail'] },
 ]
 
 // Obligatorios del modelo MRCA reducido (7 preguntas): edad·sexo·educación + audición·tabaco·vive_solo.

@@ -32,4 +32,24 @@ describe('instrumentos validados', () => {
     expect(INSTRUMENTS.ad8.items).toHaveLength(8)
     expect(scoreInstrument(INSTRUMENTS.ad8, { 0: 1, 1: 1 }).text).toContain('≥2')
   })
+
+  it('AUDIT-C: 3 ítems, máx 12, corte de riesgo ≥4', () => {
+    expect(INSTRUMENTS.auditc.items).toHaveLength(3)
+    expect(INSTRUMENTS.auditc.itemOptions).toHaveLength(3)
+    expect(scoreInstrument(INSTRUMENTS.auditc, { 0: 2, 1: 1, 2: 1 }).text).toContain('riesgo')
+    expect(scoreInstrument(INSTRUMENTS.auditc, { 0: 1, 1: 0, 2: 0 }).text).toContain('bajo riesgo')
+  })
+
+  it('FRAIL: 5 ítems sí/no, ≥3 fragilidad', () => {
+    expect(INSTRUMENTS.frail.items).toHaveLength(5)
+    expect(scoreInstrument(INSTRUMENTS.frail, { 0: 1, 1: 1, 2: 1 }).text).toContain('fragilidad')
+    expect(scoreInstrument(INSTRUMENTS.frail, { 0: 0, 1: 0 }).text).toContain('robusto')
+  })
+
+  it('MNA-SF: 6 ítems, máx 14, ≤7 malnutrición', () => {
+    expect(INSTRUMENTS.mnasf.items).toHaveLength(6)
+    expect(INSTRUMENTS.mnasf.itemOptions).toHaveLength(6)
+    const todoMin = Object.fromEntries(INSTRUMENTS.mnasf.items.map((_, i) => [i, 0]))
+    expect(scoreInstrument(INSTRUMENTS.mnasf, todoMin).text).toContain('malnutrición')
+  })
 })
