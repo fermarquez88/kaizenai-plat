@@ -1,49 +1,92 @@
+import { useMemo } from 'react'
+import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { MODULES, type Dominio, type ModuleTier, type Role } from './moduleRegistry'
+import { Check, ChevronRight } from 'lucide-react'
+import { usePreconsulta } from '../pre/preconsultaStore'
+import { MODULES, type ModuleTier } from './moduleRegistry'
+import { computeModuleStatus, resumenObligatorios, type ModuloEstado } from './moduleStatus'
 
-// HUB del perfil modular: mapa de lo que cubre el perfil de salud cerebral, organizado por
-// DOMINIO OMS. Muestra cada módulo con su tier (obligatorio/deseable/posterior) y quién lo
-// completa (rol = vista). Vista estructural (no requiere datos de una persona).
-const TIER_STYLE: Record<ModuleTier, string> = {
-  obligatorio: 'border-primary bg-primary/10 text-primary-text',
-  deseable: 'border-secondary bg-secondary/10 text-secondary-text',
-  posterior: 'border-line bg-bg text-muted',
-  aparte: 'border-line bg-bg text-muted',
+// HUB del perfil modular VIVO: el chooser "elegir qué completar". Agrupa los módulos por
+// tier (de obligatorio a deseable a capa clínica), muestra el ESTADO de cada uno y ofrece
+// completarlo. Lee el store de preconsulta para el estado real.
+const TIERS: ModuleTier[] = ['obligatorio', 'deseable', 'posterior', 'aparte']
+const ESTADO_CHIP: Record<ModuloEstado, string> = {
+  hecho: 'border-verde bg-verde/10 text-verde-text',
+  empezado: 'border-amarillo bg-amarillo/10 text-ink',
+  pendiente: 'border-line bg-bg text-muted',
+  otraCapa: 'border-line bg-bg text-muted',
 }
 
-// Orden de dominios para la vista (esqueleto OMS + capas).
-const ORDEN: Dominio[] = [
-  'identidad', 'gate', 'cognitivo', 'socioemocional', 'conductual', 'sensorial', 'motor',
-  'saludFisica', 'habitos', 'sueno', 'determinantesSociales', 'medico', 'cuidador', 'sintesis',
-]
+function Bar({ pct }: { pct: number }) {
+  return (
+    <div className="h-2.5 overflow-hidden rounded-full bg-line" aria-hidden>
+      <div className="h-full rounded-full bg-secondary" style={{ width: `${Math.round(pct * 100)}%` }} />
+    </div>
+  )
+}
 
 export function PerfilHub() {
   const { t } = useTranslation()
-  const grupos = ORDEN.map((dom) => ({ dom, mods: MODULES.filter((m) => m.dominio === dom) })).filter(
-    (g) => g.mods.length > 0,
+  const demo = usePreconsulta((s) => s.demo)
+  const lancet = usePreconsulta((s) => s.lancet)
+  const instruments = usePreconsulta((s) => s.instruments)
+  const status = useMemo(
+    () => computeModuleStatus({ demo, lancet: lancet as Record<string, string | undefined>, instruments }),
+    [demo, lancet, instruments],
   )
+  const resumen = resumenObligatorios(status)
+
+  const grupos = TIERS.map((tier) => ({
+    tier,
+    mods: MODULES.filter((m) => m.tier === tier).sort((a, b) => b.weight - a.weight),
+  })).filter((g) => g.mods.length > 0)
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8">
+    <div className="mx-auto max-w-2xl px-4 py-8">
       <h1 className="font-serif text-2xl text-ink sm:text-3xl">{t('perfil.title')}</h1>
       <p className="mt-1 text-muted">{t('perfil.intro')}</p>
 
+      <section className="mt-4 rounded-2xl border border-line bg-surface p-4">
+        <p className="text-sm text-ink">{t('perfil.resumen', { h: resumen.hechos, total: resumen.total })}</p>
+        <div className="mt-2">
+          <Bar pct={resumen.total ? resumen.hechos / resumen.total : 0} />
+        </div>
+      </section>
+
       <div className="mt-6 space-y-6">
-        {grupos.map(({ dom, mods }) => (
-          <section key={dom}>
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">{t(`perfil.dominio.${dom}`)}</h2>
+        {grupos.map(({ tier, mods }) => (
+          <section key={tier}>
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">{t(`perfil.tier.${tier}`)}</h2>
             <ul className="mt-2 space-y-2">
-              {mods.map((m) => (
-                <li key={m.id} className="rounded-xl border border-line bg-surface p-3">
-                  <div className="flex items-start justify-between gap-3">
-                    <p className="text-ink">{m.nombre}</p>
-                    <span className={`shrink-0 rounded-full border px-2 py-0.5 text-[11px] ${TIER_STYLE[m.tier]}`}>
-                      {t(`perfil.tier.${m.tier}`)}
-                    </span>
-                  </div>
-                  <p className="mt-1 text-xs text-muted">{t('perfil.completa', { rol: t(`perfil.rol.${m.ownerRole as Role}`) })}</p>
-                </li>
-              ))}
+              {mods.map((m) => {
+                const st = status[m.id]
+                const self = m.ownerRole === 'persona'
+                const completable = self && (st.estado === 'pendiente' || st.estado === 'empezado')
+                return (
+                  <li key={m.id} className="rounded-xl border border-line bg-surface p-3">
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="min-w-0">
+                        <p className="text-ink">{m.nombre}</p>
+                        <p className="mt-0.5 text-xs text-muted">
+                          {self ? t('perfil.completaVos') : t('perfil.loCarga', { rol: t(`perfil.rol.${m.ownerRole}`) })}
+                        </p>
+                      </div>
+                      <span className={`inline-flex shrink-0 items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] ${ESTADO_CHIP[st.estado]}`}>
+                        {st.estado === 'hecho' && <Check size={12} />}
+                        {t(`perfil.estado.${st.estado}`)}
+                      </span>
+                    </div>
+                    {completable && (
+                      <Link
+                        to="/p/paciente/preconsulta"
+                        className="mt-2 inline-flex items-center gap-1 text-sm font-medium text-secondary"
+                      >
+                        {t('perfil.completar')} <ChevronRight size={15} />
+                      </Link>
+                    )}
+                  </li>
+                )
+              })}
             </ul>
           </section>
         ))}

@@ -607,7 +607,17 @@
       "medico": "Antecedentes y medicación",
       "cuidador": "Cuidador",
       "sintesis": "Diagnóstico y plan"
-    }
+    },
+    "resumen": "Lo necesario: {{h}} de {{total}} listos",
+    "estado": {
+      "hecho": "Hecho",
+      "empezado": "Empezado",
+      "pendiente": "Falta",
+      "otraCapa": "Capa clínica"
+    },
+    "completar": "Completar",
+    "completaVos": "Lo completás vos",
+    "loCarga": "Lo carga: {{rol}}"
   },
   "ipaq": {
     "title": "Actividad física (última semana)",
