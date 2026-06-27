@@ -3,7 +3,10 @@ import { Link, useParams } from 'react-router-dom'
 import { ArrowLeft, FileText, Pencil, Plus, Printer, Save } from 'lucide-react'
 import { BATERIA_NPS, DOMINIOS_NPS, puntuarBateria, type ResultadoBateria } from '../../scoring/bateriaNps'
 import type { Sexo } from '../../scoring/cognitiveNorms'
+import { PROTOCOLOS } from '../../scoring/protocolos'
 import { personaSeed } from '../../seed/personas'
+import { AdminInteractiva } from './AdminInteractiva'
+import { ZProfile } from './ZProfile'
 import { useNeuro, type NeuroResultado } from './neuroStore'
 import { usePedidos } from './pedidosStore'
 
@@ -33,6 +36,7 @@ export function NeuropsicEvalStep() {
   const [mmse, setMmse] = useState('')
   const [raws, setRaws] = useState<Record<string, string>>({})
   const [verBateria, setVerBateria] = useState(false)
+  const [admin, setAdmin] = useState<string | null>(null) // bateriaId en administración interactiva
   const [modo, setModo] = useState<'cargar' | 'informe'>('cargar')
 
   const demo = useMemo(() => ({ edad: persona?.age, eduAnios: persona?.edu, sexo: (sexo || undefined) as Sexo | undefined }), [persona, sexo])
@@ -121,6 +125,13 @@ export function NeuropsicEvalStep() {
             </section>
           )}
 
+          {resultados.some((r) => r.outcome.ok) && (
+            <section className="mt-4 break-inside-avoid">
+              <h2 className="text-sm font-semibold uppercase tracking-wide text-ink">Perfil de puntajes (z)</h2>
+              <ZProfile resultados={resultados} />
+            </section>
+          )}
+
           <section className="mt-4">
             <h2 className="text-sm font-semibold uppercase tracking-wide text-ink">Síntesis</h2>
             <p className="mt-1 text-sm text-ink">
@@ -198,8 +209,13 @@ export function NeuropsicEvalStep() {
                     return (
                       <div key={t.id} className="rounded-xl border border-line bg-surface p-3">
                         <label className="text-sm font-medium text-ink">{t.label}{t.ayuda ? <span className="text-xs text-muted"> · {t.ayuda}</span> : null}</label>
-                        <div className="mt-1 flex items-center gap-3">
-                          <input type="number" inputMode="numeric" value={raws[t.id] ?? ''} onChange={(e) => setRaw(t.id, e.target.value)} className="w-28 rounded-lg border border-line bg-bg px-2 py-1.5 text-ink" />
+                        <div className="mt-1 flex flex-wrap items-center gap-3">
+                          <input type="number" inputMode="numeric" value={raws[t.id] ?? ''} onChange={(e) => setRaw(t.id, e.target.value)} className="w-24 rounded-lg border border-line bg-bg px-2 py-1.5 text-ink" />
+                          {PROTOCOLOS[t.id] && (
+                            <button onClick={() => setAdmin(t.id)} className="inline-flex items-center gap-1 rounded-lg border border-secondary bg-secondary/10 px-3 py-1.5 text-sm font-medium text-secondary">
+                              <Plus size={15} /> Administrar
+                            </button>
+                          )}
                           {txt && <span className={'text-sm ' + (txt.alterada ? 'text-rojo-text' : 'text-muted')}>z {txt.z} · {txt.band}</span>}
                         </div>
                       </div>
@@ -211,6 +227,14 @@ export function NeuropsicEvalStep() {
           })}
           <div className="pt-1">{AgregarBtn}</div>
         </section>
+      )}
+
+      {admin && PROTOCOLOS[admin] && (
+        <AdminInteractiva
+          protocolo={PROTOCOLOS[admin]}
+          onCerrar={() => setAdmin(null)}
+          onListo={(bruto) => { setRaw(admin, String(bruto)); setAdmin(null) }}
+        />
       )}
 
       <div className="fixed inset-x-0 bottom-0 border-t border-line bg-bg/90 backdrop-blur no-print">
