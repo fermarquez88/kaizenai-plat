@@ -393,6 +393,121 @@ export const INSTRUMENTS: Record<string, Instrument> = {
     max: 14,
     interpret: (s) => (s >= 12 ? `${s}/14 — estado normal` : s >= 8 ? `${s}/14 — riesgo nutricional` : `${s}/14 — malnutrición`),
   },
+
+  // ── Escalas del CUIDADOR (portadas fielmente de kaizen-cuidadores / guia-cuidadores-web) ──
+  // Ánimo del cuidador — PHQ-9 (9 ítems, 0-3, máx 27). Cortes 5/10/15/20.
+  phq9: {
+    id: 'phq9',
+    name: 'Ánimo del cuidador (PHQ-9)',
+    why: 'La depresión del cuidador es frecuente, imita el agotamiento y es tratable; detectarla cambia el cuidado.',
+    options: [
+      { label: 'Ningún día', value: 0 },
+      { label: 'Varios días', value: 1 },
+      { label: 'Más de la mitad', value: 2 },
+      { label: 'Casi todos los días', value: 3 },
+    ],
+    max: 27,
+    items: [
+      'Poco interés o placer en hacer cosas',
+      'Se ha sentido decaído/a, deprimido/a o sin esperanzas',
+      'Dificultad para dormir, o ha dormido demasiado',
+      'Se ha sentido cansado/a o con poca energía',
+      'Sin apetito o ha comido en exceso',
+      'Se ha sentido mal con usted mismo/a (un fracaso o que ha quedado mal con su familia)',
+      'Dificultad para concentrarse (leer, ver televisión)',
+      'Se ha movido o hablado muy lento, o al revés, muy inquieto/a',
+      'Pensamientos de que estaría mejor muerto/a o de lastimarse de alguna manera',
+    ],
+    interpret: (s) =>
+      s >= 20 ? `${s}/27 — depresión grave` : s >= 15 ? `${s}/27 — moderada-grave` : s >= 10 ? `${s}/27 — moderada` : s >= 5 ? `${s}/27 — leve` : `${s}/27 — mínima`,
+  },
+
+  // Autoeficacia del cuidador (10 ítems, 0/25/50/75/100). Mayor = más confianza → menos sobrecarga.
+  autoeficacia: {
+    id: 'autoeficacia',
+    name: 'Autoeficacia del cuidador',
+    why: 'La confianza para pedir ayuda y manejar la situación predice (y protege de) la sobrecarga.',
+    options: [
+      { label: 'Nada', value: 0 },
+      { label: 'Poco', value: 25 },
+      { label: 'Más o menos', value: 50 },
+      { label: 'Bastante', value: 75 },
+      { label: 'Seguro/a', value: 100 },
+    ],
+    max: 1000,
+    items: [
+      'Pedir a alguien que se quede con su familiar mientras usted descansa',
+      'Pedir a alguien que le haga un trámite o mandado',
+      'Pedir a alguien que se quede todo un día con su familiar',
+      'Pedir ayuda para tomarse una semana para usted',
+      'Responder a una pregunta repetida sin levantar la voz',
+      'Calmarse cuando su familiar repite lo mismo una y otra vez',
+      'Responder a las quejas sin discutir',
+      'Controlar el pensamiento de tristeza por el cuidado',
+      'Controlar el pensamiento de que la situación es injusta',
+      'Controlar la preocupación por el futuro',
+    ],
+    interpret: (s) => {
+      const m = Math.round(s / 10)
+      return m >= 75 ? `${m}/100 — autoeficacia alta` : m >= 50 ? `${m}/100 — media` : `${m}/100 — baja (más riesgo de sobrecarga)`
+    },
+  },
+
+  // Apoyo social percibido — Duke-UNC (11 ítems, 1-5, máx 55). <32 = apoyo bajo.
+  apoyoSocial: {
+    id: 'apoyoSocial',
+    name: 'Apoyo social del cuidador (Duke-UNC)',
+    why: 'El aislamiento del cuidador aumenta la sobrecarga; el apoyo social protege.',
+    options: [
+      { label: 'Mucho menos de lo que deseo', value: 1 },
+      { label: 'Menos de lo que deseo', value: 2 },
+      { label: 'Ni mucho ni poco', value: 3 },
+      { label: 'Casi como deseo', value: 4 },
+      { label: 'Tanto como deseo', value: 5 },
+    ],
+    max: 55,
+    items: [
+      'Recibo visitas de mis amigos y familiares',
+      'Recibo ayuda en asuntos relacionados con mi casa',
+      'Recibo elogios y reconocimientos cuando hago bien las cosas',
+      'Cuento con personas que se preocupan de lo que me sucede',
+      'Recibo amor y afecto',
+      'Puedo hablar con alguien de mis problemas del trabajo o de la casa',
+      'Puedo hablar con alguien de mis problemas personales y familiares',
+      'Puedo hablar con alguien de mis problemas económicos',
+      'Recibo invitaciones para distraerme y salir',
+      'Recibo consejos útiles cuando me pasa algo importante',
+      'Recibo ayuda cuando estoy enfermo/a en la cama',
+    ],
+    interpret: (s) => (s < 32 ? `${s}/55 — apoyo social bajo` : `${s}/55 — apoyo social adecuado`),
+  },
+
+  // Aspectos positivos del cuidar — PAC (9 ítems, 1-5, máx 45). Mayor = más sentido/protección.
+  pac: {
+    id: 'pac',
+    name: 'Aspectos positivos del cuidar (PAC)',
+    why: 'Reconocer lo que el cuidar también aporta protege frente a la sobrecarga y la depresión.',
+    options: [
+      { label: 'Muy en desacuerdo', value: 1 },
+      { label: 'Algo en desacuerdo', value: 2 },
+      { label: 'Ni de acuerdo ni en desacuerdo', value: 3 },
+      { label: 'Algo de acuerdo', value: 4 },
+      { label: 'Muy de acuerdo', value: 5 },
+    ],
+    max: 45,
+    items: [
+      'Cuidar a mi familiar me ha hecho sentir más útil',
+      'Cuidar a mi familiar me ha hecho sentir bien conmigo mismo/a',
+      'Cuidar a mi familiar me ha hecho sentir necesitado/a',
+      'Cuidar a mi familiar me ha hecho sentir valorado/a',
+      'Cuidar a mi familiar me ha hecho sentir importante',
+      'Cuidar a mi familiar me ha hecho sentir fuerte y con confianza',
+      'Cuidar a mi familiar me ha permitido apreciar más la vida',
+      'Cuidar a mi familiar me ha permitido tener una actitud más positiva ante la vida',
+      'Cuidar a mi familiar ha fortalecido mi relación con otras personas',
+    ],
+    interpret: (s) => `${s}/45 (a más puntaje, más aspectos positivos del cuidar)`,
+  },
 }
 
 export interface InstrumentScore {

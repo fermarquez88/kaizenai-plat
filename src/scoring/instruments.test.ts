@@ -52,4 +52,14 @@ describe('instrumentos validados', () => {
     const todoMin = Object.fromEntries(INSTRUMENTS.mnasf.items.map((_, i) => [i, 0]))
     expect(scoreInstrument(INSTRUMENTS.mnasf, todoMin).text).toContain('malnutrición')
   })
+
+  it('escalas del cuidador (kaizen-cuidadores): PHQ-9, autoeficacia, Duke, PAC', () => {
+    expect(INSTRUMENTS.phq9.items).toHaveLength(9)
+    expect(scoreInstrument(INSTRUMENTS.phq9, { 0: 3, 1: 3, 2: 3, 3: 3, 4: 3, 5: 3, 6: 3 }).text).toContain('grave')
+    expect(INSTRUMENTS.autoeficacia.items).toHaveLength(10)
+    expect(scoreInstrument(INSTRUMENTS.autoeficacia, Object.fromEntries(INSTRUMENTS.autoeficacia.items.map((_, i) => [i, 100]))).text).toContain('alta')
+    expect(INSTRUMENTS.apoyoSocial.items).toHaveLength(11)
+    expect(scoreInstrument(INSTRUMENTS.apoyoSocial, { 0: 1, 1: 1, 2: 1 }).text).toContain('bajo')
+    expect(INSTRUMENTS.pac.items).toHaveLength(9)
+  })
 })
