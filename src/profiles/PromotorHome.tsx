@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { Link, useParams } from 'react-router-dom'
-import { Check, ClipboardCheck, ListChecks, MessageCircle, Users } from 'lucide-react'
+import { Check, ClipboardCheck, ListChecks, MessageCircle, Sparkles, Users } from 'lucide-react'
 import { useRedRecords } from '../modules/red/redRecords'
 import { dexieRepo } from '../data/dexieRepo'
 import { waMeLink } from '../channel/ChannelAdapter'
@@ -126,6 +126,9 @@ export function PromotorHome() {
         </Link>
         <Link to={`/p/${pid}/red/cola`} className="inline-flex items-center gap-2 text-secondary-text hover:underline">
           <ListChecks size={16} aria-hidden /> {t('promotor.cola')}
+        </Link>
+        <Link to={`/p/${pid}/tejer`} className="inline-flex items-center gap-2 text-secondary-text hover:underline">
+          <Sparkles size={16} aria-hidden /> Tejer comunidad
         </Link>
       </div>
     </div>
