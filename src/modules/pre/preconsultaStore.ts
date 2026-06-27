@@ -12,9 +12,14 @@ interface PreconsultaState {
   factores: Factores
   meds: DrugInfo[]
   redFlags: string[]
+  /** determinantes sociales (SDOH / M12) + certificado de discapacidad (CUD). */
+  sdoh: Record<string, string>
+  cud: Record<string, string>
   /** paso actual del chequeo (guardar-y-retomar). */
   step: number
   setDemo: (patch: Partial<Demografia>) => void
+  setSdoh: (id: string, value: string) => void
+  setCud: (id: string, value: string) => void
   setLancet: (id: string, a: FactorAnswer) => void
   setInstrumentItem: (instId: string, item: number, value: number) => void
   setFactor: (id: keyof Factores, value: unknown) => void
@@ -26,7 +31,7 @@ interface PreconsultaState {
   reset: () => void
 }
 
-const EMPTY = { demo: {}, lancet: {}, instruments: {}, factores: {}, meds: [], redFlags: [], step: 0 }
+const EMPTY = { demo: {}, lancet: {}, instruments: {}, factores: {}, meds: [], redFlags: [], sdoh: {}, cud: {}, step: 0 }
 
 export const usePreconsulta = create<PreconsultaState>()(
   persist(
@@ -34,6 +39,8 @@ export const usePreconsulta = create<PreconsultaState>()(
       ...EMPTY,
       setStep: (step) => set({ step }),
       setDemo: (patch) => set((s) => ({ demo: { ...s.demo, ...patch } })),
+      setSdoh: (id, value) => set((s) => ({ sdoh: { ...s.sdoh, [id]: value } })),
+      setCud: (id, value) => set((s) => ({ cud: { ...s.cud, [id]: value } })),
   setLancet: (id, a) => set((s) => ({ lancet: { ...s.lancet, [id]: a } })),
   setInstrumentItem: (instId, item, value) =>
     set((s) => ({

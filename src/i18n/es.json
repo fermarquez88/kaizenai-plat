@@ -219,7 +219,8 @@
       "faq": "Funcionalidad (informante)",
       "medicacion": "Medicación",
       "banderas": "Señales de alarma",
-      "resultado": "Resultado"
+      "resultado": "Resultado",
+      "determinantes": "Tu casa y tu entorno"
     },
     "faltaPoco": "Te falta poco — quedan {{n}}",
     "ultimoPaso": "Último paso",
@@ -230,7 +231,8 @@
       "salud": "¡Bien! Terminaste lo de tu salud.",
       "chequeo": "¡Genial! Terminaste el chequeo.",
       "medicacion": "¡Listo lo de tus remedios!",
-      "senales": "¡Casi terminamos!"
+      "senales": "¡Casi terminamos!",
+      "entorno": "¡Listo lo de tu casa y entorno!"
     }
   },
   "pre": {

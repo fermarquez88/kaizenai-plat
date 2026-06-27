@@ -9,6 +9,7 @@ import { ModoStep } from './steps/ModoStep'
 import { DemografiaStep } from './steps/DemografiaStep'
 import { PrevencionStep } from './steps/PrevencionStep'
 import { FactoresStep } from './steps/FactoresStep'
+import { DeterminantesStep } from './steps/DeterminantesStep'
 import { InstrumentStep } from './steps/InstrumentStep'
 import { MedicacionStep } from './steps/MedicacionStep'
 import { BanderasRojasStep } from './steps/BanderasRojasStep'
@@ -31,6 +32,7 @@ const BLOQUE: Record<string, string> = {
   demografia: 'vos',
   prevencion: 'salud',
   factores: 'salud',
+  determinantes: 'entorno',
   cqc: 'chequeo',
   gds: 'chequeo',
   tadlq: 'chequeo',
@@ -60,6 +62,7 @@ function buildSteps(modo: string | undefined, askModo: boolean): Step[] {
     { id: 'demografia', Component: DemografiaStep },
     { id: 'prevencion', Component: PrevencionStep },
     { id: 'factores', Component: FactoresStep },
+    { id: 'determinantes', Component: DeterminantesStep },
     ...inst.map((id) => ({ id, inst: id })),
     // Actividad física (IPAQ): autorreporte numérico, no informante.
     ...(modo !== 'cuidador' ? [{ id: 'ipaq', Component: IpaqStep }] : []),

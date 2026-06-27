@@ -9,6 +9,12 @@ import { MODULES, type ModuleDef } from './moduleRegistry'
 
 export type ModuloEstado = 'hecho' | 'empezado' | 'pendiente' | 'otraCapa'
 
+// El estado de los módulos se calcula desde el store ampliado (incluye SDOH/CUD).
+export type ModuleInputs = DomainInputs & {
+  sdoh?: Record<string, string>
+  cud?: Record<string, string>
+}
+
 interface Cuenta {
   answered: number
   total: number
@@ -32,9 +38,18 @@ const lancetCount = (inp: DomainInputs): Cuenta => ({
   total: LANCET_FACTORS.length,
 })
 
+// SDOH (NBI mínimo) + CUD de la persona → completitud del M12 "Tu casa y tu entorno".
+const SDOH_KEYS = ['agua', 'bano', 'piso', 'viveSolo', 'ingreso', 'comida']
+const sdohCount = (i: ModuleInputs): Cuenta => {
+  const sd = i.sdoh ?? {}
+  const cu = i.cud ?? {}
+  const answered = SDOH_KEYS.filter((k) => sd[k] != null).length + (cu.persona != null ? 1 : 0)
+  return { answered, total: SDOH_KEYS.length + 1 }
+}
+
 // Cómo se mide la completitud de cada módulo desde el store. Los módulos sin fuente
 // (capa clínica o forms aún no construidos) quedan en total 0 → 'pendiente'/'otraCapa'.
-const SOURCE: Record<string, (inp: DomainInputs) => Cuenta> = {
+const SOURCE: Record<string, (inp: ModuleInputs) => Cuenta> = {
   M1: (i) => demoCount(i, ['edad', 'sexo', 'edu_anios']),
   M3: (i) => instCount(i, ['cqc']),
   'M3-inf': (i) => instCount(i, ['ad8', 'iqcode']),
@@ -42,9 +57,11 @@ const SOURCE: Record<string, (inp: DomainInputs) => Cuenta> = {
   'M5-extra': (i) => instCount(i, ['gad', 'ucla']),
   M6: (i) => instCount(i, ['tadlq']),
   'M6-inf': (i) => instCount(i, ['faq']),
+  M8: (i) => instCount(i, ['frail']),
   M9: (i) => lancetCount(i),
-  M10: (i) => instCount(i, ['mind']),
+  M10: (i) => instCount(i, ['mind', 'auditc', 'mnasf']),
   M11: (i) => instCount(i, ['isi']),
+  M12: (i) => sdohCount(i),
   M14: (i) => instCount(i, ['zarit']),
 }
 
@@ -61,7 +78,7 @@ export interface ModuloStatus {
   total: number
 }
 
-export function computeModuleStatus(inp: DomainInputs): Record<string, ModuloStatus> {
+export function computeModuleStatus(inp: ModuleInputs): Record<string, ModuloStatus> {
   const out: Record<string, ModuloStatus> = {}
   for (const m of MODULES) {
     const c = SOURCE[m.id] ? SOURCE[m.id](inp) : { answered: 0, total: 0 }

@@ -30,9 +30,11 @@ export function PerfilHub() {
   const demo = usePreconsulta((s) => s.demo)
   const lancet = usePreconsulta((s) => s.lancet)
   const instruments = usePreconsulta((s) => s.instruments)
+  const sdoh = usePreconsulta((s) => s.sdoh)
+  const cud = usePreconsulta((s) => s.cud)
   const status = useMemo(
-    () => computeModuleStatus({ demo, lancet: lancet as Record<string, string | undefined>, instruments }),
-    [demo, lancet, instruments],
+    () => computeModuleStatus({ demo, lancet: lancet as Record<string, string | undefined>, instruments, sdoh, cud }),
+    [demo, lancet, instruments, sdoh, cud],
   )
   const resumen = resumenObligatorios(status)
 

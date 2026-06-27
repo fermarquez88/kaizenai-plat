@@ -31,6 +31,13 @@ describe('moduleStatus — estado vivo de la estructura modular', () => {
     expect(computeModuleStatus({ ...empty, lancet }).M9.estado).toBe('hecho')
   })
 
+  it('M12 (determinantes/SDOH+CUD) refleja lo cargado en sdoh y cud', () => {
+    expect(computeModuleStatus(empty).M12.estado).toBe('pendiente')
+    const s = computeModuleStatus({ ...empty, sdoh: { agua: 'si', bano: 'si', piso: 'si' }, cud: { persona: 'no' } })
+    expect(s.M12.estado).toBe('empezado')
+    expect(s.M12.answered).toBe(4)
+  })
+
   it('resumenObligatorios cuenta los obligatorios hechos', () => {
     const r0 = resumenObligatorios(computeModuleStatus(empty))
     expect(r0.hechos).toBe(0)
