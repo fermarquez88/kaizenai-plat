@@ -61,10 +61,15 @@ function ScoreBar({ min, max, value }: { min: number; max: number; value: number
 export function ResultadoStep() {
   const { t } = useTranslation()
   const { demo, lancet, instruments, factores, meds, redFlags } = usePreconsulta()
+  const reset = usePreconsulta((s) => s.reset)
+  const setStep = usePreconsulta((s) => s.setStep)
 
   const ensureSelfPersonId = useSettings((s) => s.ensureSelfPersonId)
   const simpleMode = useSettings((s) => s.simpleMode)
   const [copied, setCopied] = useState(false)
+  // Tomas longitudinales de ESTA persona (re-chequeos en el tiempo).
+  const [tomas, setTomas] = useState<Awaited<ReturnType<typeof dexieRepo.listPersonAssessments>>>([])
+  const nuevaToma = () => { reset(); setStep(0); window.scrollTo({ top: 0 }) }
 
   const summary = useMemo<PreconsultaSummary>(
     () => buildSummary({ demo, lancet, instruments, factores, meds, redFlags }, new Date().toISOString()),
@@ -121,6 +126,9 @@ export function ResultadoStep() {
         cuidadorAlias: demo.cuidadorAlias,
         derivationStatus: derivar ? 'emitida' : undefined,
         derivationUpdatedAt: derivar ? now : undefined,
+      })
+      .then(() => {
+        if (summary.modo === 'persona') return dexieRepo.listPersonAssessments(personId).then(setTomas)
       })
       .catch(() => {})
   }, [summary, demo, ensureSelfPersonId])
@@ -472,6 +480,27 @@ export function ResultadoStep() {
           <p className="mt-2 text-xs text-muted">{t('triage.export.privacyNote')}</p>
         </details>
       </section>
+
+      {/* 11 · Tomas en el tiempo (longitudinal) — repetir cuando se pueda, no importa cuándo */}
+      {summary.modo === 'persona' && tomas.length > 0 && (
+        <section className="mt-6 rounded-2xl border border-line bg-surface p-4 no-print">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">Tus chequeos en el tiempo</h2>
+          <ul className="mt-2 space-y-1.5">
+            {tomas.map((tm) => (
+              <li key={tm.id} className="flex items-center justify-between gap-3 border-b border-line/60 pb-1 text-sm">
+                <span className="text-muted">{new Date(tm.createdAt).toLocaleDateString('es-AR')}</span>
+                <span className="text-ink">
+                  {t(`triage.level.${tm.triage ?? 'verde'}`).split(' — ')[0]} · {t(`pre.mrca.band.${tm.mrcaBand ?? 'bajo'}`)}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <button onClick={nuevaToma} className="mt-3 inline-flex items-center gap-2 rounded-xl border border-secondary bg-secondary/10 px-4 py-2 text-sm font-medium text-secondary">
+            <CalendarCheck size={16} /> Hacer una nueva toma
+          </button>
+          <p className="mt-2 text-xs text-muted">Repetí el chequeo cuando quieras —en casa o en la sala de espera—. Se guarda con fecha para ver la evolución.</p>
+        </section>
+      )}
 
       {summary.modo && (
         <p className="mt-5 text-xs text-muted">
