@@ -1076,7 +1076,8 @@
       "protocoloInmediato": "Conviene no dejarlo pasar.",
       "completar": "Te lo pidió el equipo de salud."
     },
-    "pedirCompletar": "Pedir completar un perfil"
+    "pedirCompletar": "Pedir completar un perfil",
+    "cargarBateria": "Cargar batería neuropsicológica"
   },
   "voz": {
     "on": "Voz activada",
