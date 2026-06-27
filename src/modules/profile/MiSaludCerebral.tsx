@@ -1,7 +1,9 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { ArrowRight, Check, ClipboardList, HeartPulse, Sparkles, Stethoscope, User } from 'lucide-react'
+import { useSettings } from '../../lib/store'
+import { Onboarding } from './Onboarding'
 import { usePreconsulta } from '../pre/preconsultaStore'
 import { avancePerfil } from '../../scoring/avancePerfil'
 import { prioridadDominio } from '../../scoring/catalogoModulos'
@@ -59,8 +61,24 @@ export function MiSaludCerebral() {
     ).length
   }, [pedidosCreados])
 
+  // ── Identidad/contexto: de quién es esta ficha + saludo por nombre ──────────────────
+  const usuarioRol = useSettings((s) => s.usuarioRol)
+  const setUsuarioRol = useSettings((s) => s.setUsuarioRol)
+  const activePersonId = useSettings((s) => s.activePersonId)
+  const personas = useSettings((s) => s.personas)
+  useEffect(() => {
+    if (!usuarioRol) setUsuarioRol(profileId === 'cuidador' ? 'cuidador' : 'persona')
+  }, [profileId, usuarioRol, setUsuarioRol])
+  const personaActiva = activePersonId ? personas[activePersonId] : undefined
+
+  // Sin identidad resuelta → onboarding (quién sos / a quién acompañás / cómo te llamamos).
+  if (!personaActiva) return <Onboarding />
+
+  const esCuidador = usuarioRol === 'cuidador'
+  const alias = personaActiva.alias
+  const saludo = esCuidador ? `Estás acompañando a ${alias}` : `Hola ${alias}. Cuidemos tu memoria.`
   const preconsultaTo = `/p/${profileId}/preconsulta`
-  const vozText = `${t('puerta.saludo')}. ${t(`puerta.nivel.${av.nivel}.sub`)}`
+  const vozText = `${saludo} ${t(`puerta.nivel.${av.nivel}.sub`)}`
   const nuevo = av.necesario.answered === 0
 
   // ── LAUNCHPAD (primera vez): nunca un tablero vacío; una sola acción guiada ──────────
@@ -69,7 +87,7 @@ export function MiSaludCerebral() {
       <div className="mx-auto max-w-2xl px-4 py-8" id="puerta">
         <div className="mb-5"><VozControl text={vozText} /></div>
         <div className="mb-5"><Gate0 /></div>
-        <h1 className="font-serif text-2xl text-ink sm:text-3xl">{t('puerta.saludo')}</h1>
+        <h1 className="font-serif text-2xl text-ink sm:text-3xl">{saludo}</h1>
         <p className="mt-2 text-muted">{t('puerta.bienvenida')}</p>
         <Link
           to={`${preconsultaTo}?nuevo=1`}
@@ -92,7 +110,7 @@ export function MiSaludCerebral() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-8" id="puerta">
       <div className="mb-4 flex items-center justify-between gap-3">
-        <h1 className="font-serif text-2xl text-ink sm:text-3xl">{t('puerta.saludo')}</h1>
+        <h1 className="font-serif text-2xl text-ink sm:text-3xl">{saludo}</h1>
       </div>
       <div className="mb-5"><VozControl text={vozText} /></div>
       <div className="mb-5"><Gate0 /></div>

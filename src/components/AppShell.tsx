@@ -6,6 +6,7 @@ import { useSettings } from '../lib/store'
 import { breadcrumbs, backTo } from '../app/nav'
 import { Logo } from './Logo'
 import { ModuleNav } from './ModuleNav'
+import { IdentityBadge } from './IdentityBadge'
 
 export function AppShell({ children }: { children: ReactNode }) {
   const { t } = useTranslation()
@@ -134,6 +135,8 @@ export function AppShell({ children }: { children: ReactNode }) {
           </ol>
         </nav>
       )}
+
+      <IdentityBadge />
 
       <main id="main" className="flex-1">{children}</main>
 

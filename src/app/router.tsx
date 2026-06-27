@@ -14,6 +14,7 @@ import { Comunidad } from '../modules/gov/Comunidad'
 import { MisDatos } from '../modules/gov/MisDatos'
 import { AvisoLegal } from '../modules/gov/AvisoLegal'
 import { PerfilHub } from '../modules/profile/PerfilHub'
+import { SelectorPersona } from '../modules/profile/SelectorPersona'
 import { RedView } from '../modules/red/RedView'
 import { RedAlarmas } from '../modules/red/RedAlarmas'
 import { PanelPedidos } from '../modules/red/PanelPedidos'
@@ -56,6 +57,7 @@ export const router = createHashRouter([
       { path: 'datos', element: <MisDatos /> },
       { path: 'aviso-legal', element: <AvisoLegal /> },
       { path: 'perfil', element: <PerfilHub /> },
+      { path: 'p/:profileId/personas', element: <SelectorPersona /> },
     ],
   },
 ])
