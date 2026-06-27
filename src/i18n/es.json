@@ -531,7 +531,8 @@
     "noEncontrado": "No encontramos el informe de esta persona.",
     "subtitulo": "Hoja clínica · resumen",
     "estadoLabel": "Seguimiento",
-    "accionesEquipo": "Acciones del equipo"
+    "accionesEquipo": "Acciones del equipo",
+    "evalSocial": "Evaluación social"
   },
   "aviso": {
     "title": "Aviso legal y privacidad",

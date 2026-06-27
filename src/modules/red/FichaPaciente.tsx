@@ -152,6 +152,11 @@ export function FichaPaciente() {
                 <Stethoscope size={16} /> {t('alarmas.cargarBateria')}
               </Link>
             )}
+            {acciones.includes('social') && (
+              <Link to={`/p/${profileId}/social/${r.id}`} className="inline-flex items-center gap-1 rounded-xl border border-line bg-surface px-3 py-2 text-sm text-ink">
+                <ClipboardList size={16} /> {t('ficha.evalSocial')}
+              </Link>
+            )}
             {acciones.includes('medir') && (
               <Link to={`/p/${profileId}/alarmas`} className="inline-flex items-center gap-1 rounded-xl border border-line bg-surface px-3 py-2 text-sm text-ink">
                 <Activity size={16} /> {t('alarmas.btn.medir')}

@@ -7,7 +7,7 @@ import type { Rol } from '../scoring/alarmas'
 export type LenteId =
   | 'paciente' | 'cuidador' | 'agente' | 'enfermeria' | 'unidad' | 'neuropsico' | 'social' | 'gestor' | 'comunidad'
 
-export type FichaAccion = 'pedir' | 'neuropsico' | 'informe' | 'medir' | 'contacto'
+export type FichaAccion = 'pedir' | 'neuropsico' | 'informe' | 'medir' | 'contacto' | 'social'
 export type HomeKind = 'persona' | 'gente' | 'cola' | 'tablero'
 export type RedTab = 'gente' | 'cola' | 'bandeja' | 'tablero'
 
@@ -35,7 +35,7 @@ export const LENTES: Record<LenteId, Lente> = {
   enfermeria: { id: 'enfermeria', rol: 'enfermero', homeKind: 'cola', homeSeg: 'alarmas', nav: [{ key: 'cola', seg: 'alarmas' }, { key: 'gente', seg: 'promotor' }, { key: 'agenda', seg: 'agenda' }], acciones: ['medir', 'pedir'] },
   unidad: { id: 'unidad', rol: 'medico', homeKind: 'cola', homeSeg: 'alarmas', tabsDefault: 'bandeja', nav: [{ key: 'cola', seg: 'alarmas' }, { key: 'bandeja', seg: 'red/bandeja' }, { key: 'agenda', seg: 'agenda' }], acciones: ['informe', 'pedir', 'neuropsico'] },
   neuropsico: { id: 'neuropsico', rol: 'neuropsico', homeKind: 'cola', homeSeg: 'alarmas', nav: [{ key: 'cola', seg: 'alarmas' }, { key: 'gente', seg: 'promotor' }], acciones: ['neuropsico', 'informe'] },
-  social: { id: 'social', rol: 'trabajadorSocial', homeKind: 'cola', homeSeg: 'alarmas', nav: [{ key: 'cola', seg: 'alarmas' }, { key: 'gente', seg: 'promotor' }], acciones: ['informe', 'pedir'] },
+  social: { id: 'social', rol: 'trabajadorSocial', homeKind: 'cola', homeSeg: 'alarmas', nav: [{ key: 'cola', seg: 'alarmas' }, { key: 'gente', seg: 'promotor' }], acciones: ['social', 'informe', 'pedir'] },
   gestor: { id: 'gestor', rol: 'gestor', homeKind: 'tablero', homeSeg: '', tabsDefault: 'tablero', nav: [{ key: 'panel', seg: '' }, { key: 'alarmas', seg: 'alarmas' }, { key: 'metricas', seg: 'metricas' }], acciones: [] },
   comunidad: { id: 'comunidad', rol: 'gestor', homeKind: 'tablero', homeSeg: '', tabsDefault: 'tablero', nav: [{ key: 'panel', seg: '' }, { key: 'gobernanza', seg: '/gobernanza' }], acciones: [] },
 }
