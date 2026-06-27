@@ -5,6 +5,7 @@ import { useRedRecords } from './redRecords'
 import { waMeLink } from '../../channel/ChannelAdapter'
 import { dexieRepo } from '../../data/dexieRepo'
 import { lenteDe } from '../../app/lentes'
+import { cdrLabel, dxLabel, ultimoDiagnostico, useDiagnostico } from './diagnosticoStore'
 import type { TriageLevel } from '../../data/types'
 
 const LEVEL_STYLE: Record<TriageLevel, string> = {
@@ -32,6 +33,8 @@ export function FichaPaciente() {
   const { records, reload } = useRedRecords()
   const r = records.find((x) => x.id === recordId)
   const acciones = lenteDe(profileId).acciones
+  const dxPorPersona = useDiagnostico((s) => s.porPersona)
+  const dxPrev = recordId ? ultimoDiagnostico(dxPorPersona, recordId) : undefined
 
   const back = (
     <button
@@ -67,6 +70,12 @@ export function FichaPaciente() {
         </div>
       </div>
       <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-muted">{t('ficha.subtitulo')}</p>
+
+      {dxPrev && (
+        <p className="mt-2 inline-flex items-center gap-1 rounded-full border border-secondary bg-secondary/10 px-3 py-1 text-sm text-secondary-text">
+          <Stethoscope size={14} /> {dxLabel(dxPrev.dx)}{dxPrev.cdr ? ` · ${cdrLabel(dxPrev.cdr)}` : ''}
+        </p>
+      )}
 
       {/* Triage */}
       <div className={`mt-3 rounded-2xl border p-4 ${LEVEL_STYLE[r.level]}`} role="status">
@@ -160,6 +169,11 @@ export function FichaPaciente() {
             {acciones.includes('medir') && (
               <Link to={`/p/${profileId}/vitales/${r.id}`} className="inline-flex items-center gap-1 rounded-xl border border-line bg-surface px-3 py-2 text-sm text-ink">
                 <Activity size={16} /> Signos vitales
+              </Link>
+            )}
+            {acciones.includes('diagnostico') && (
+              <Link to={`/p/${profileId}/diagnostico/${r.id}`} className="inline-flex items-center gap-1 rounded-xl border border-line bg-surface px-3 py-2 text-sm text-ink">
+                <Stethoscope size={16} /> Diagnóstico
               </Link>
             )}
             {acciones.includes('informe') && (
