@@ -129,21 +129,6 @@ export function RedAlarmas() {
       <h1 className="font-serif text-2xl text-ink sm:text-3xl">{t('alarmas.title')}</h1>
       <p className="mt-1 text-sm text-muted">{t('alarmas.intro', { rol: t(`alarmas.rol.${rol}`) })}</p>
 
-      <div className="mt-3 flex flex-wrap gap-2 no-print">
-        <Link
-          to={`/p/${profileId}/pedir/p7`}
-          className="inline-flex items-center gap-1 rounded-xl border border-secondary bg-secondary/10 px-3 py-2 text-sm font-medium text-secondary"
-        >
-          <ClipboardList size={16} /> {t('alarmas.pedirCompletar')}
-        </Link>
-        <Link
-          to={`/p/${profileId}/neuropsico/p7`}
-          className="inline-flex items-center gap-1 rounded-xl border border-line bg-surface px-3 py-2 text-sm text-ink"
-        >
-          <Stethoscope size={16} /> {t('alarmas.cargarBateria')}
-        </Link>
-      </div>
-
       <div className="mt-4 grid grid-cols-3 gap-3">
         <Kpi label={t('alarmas.kpi.abiertas')} value={String(cola.length)} />
         <Kpi label={t('alarmas.kpi.agudas')} value={String(agudas)} cls={agudas ? 'text-rojo-text' : 'text-ink'} />
@@ -188,6 +173,12 @@ export function RedAlarmas() {
                 </div>
 
                 <div className="mt-3 flex flex-wrap gap-2">
+                  <Link
+                    to={`/p/${profileId}/ficha/${a.personId}`}
+                    className="inline-flex items-center gap-1 rounded-xl border border-line bg-surface px-3 py-2 text-sm text-ink hover:bg-bg"
+                  >
+                    {t('alarmas.verFicha')}
+                  </Link>
                   {a.brechaDeServicio ? (
                     <span className="text-xs text-muted">{t('alarmas.brecha.accion')}</span>
                   ) : a.tipo === 'pedidoMedicion' ? (

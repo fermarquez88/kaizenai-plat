@@ -1,9 +1,10 @@
-import { useParams, useNavigate } from 'react-router-dom'
+import { Link, useParams, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { ArrowLeft, Check, MessageCircle, TriangleAlert } from 'lucide-react'
+import { Activity, ArrowLeft, Check, ClipboardList, FileText, MessageCircle, Stethoscope, TriangleAlert } from 'lucide-react'
 import { useRedRecords } from './redRecords'
 import { waMeLink } from '../../channel/ChannelAdapter'
 import { dexieRepo } from '../../data/dexieRepo'
+import { lenteDe } from '../../app/lentes'
 import type { TriageLevel } from '../../data/types'
 
 const LEVEL_STYLE: Record<TriageLevel, string> = {
@@ -26,10 +27,11 @@ function Stat({ label, value, cls }: { label: string; value: string; cls?: strin
 // (instrumentos/contribuciones) vive en el informe en vivo; acá va la HOJA de resumen + acciones.
 export function FichaPaciente() {
   const { t } = useTranslation()
-  const { recordId } = useParams()
+  const { profileId, recordId } = useParams()
   const navigate = useNavigate()
   const { records, reload } = useRedRecords()
   const r = records.find((x) => x.id === recordId)
+  const acciones = lenteDe(profileId).acciones
 
   const back = (
     <button
@@ -134,6 +136,35 @@ export function FichaPaciente() {
           </button>
         )}
       </div>
+
+      {/* Acciones del equipo (heredan el id de ESTA ficha; sin hardcodes) — según la lente */}
+      {acciones.length > 0 && (
+        <div className="mt-4 no-print">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted">{t('ficha.accionesEquipo')}</p>
+          <div className="flex flex-wrap gap-2">
+            {acciones.includes('pedir') && (
+              <Link to={`/p/${profileId}/pedir/${r.id}`} className="inline-flex items-center gap-1 rounded-xl border border-secondary bg-secondary/10 px-3 py-2 text-sm font-medium text-secondary">
+                <ClipboardList size={16} /> {t('alarmas.pedirCompletar')}
+              </Link>
+            )}
+            {acciones.includes('neuropsico') && (
+              <Link to={`/p/${profileId}/neuropsico/${r.id}`} className="inline-flex items-center gap-1 rounded-xl border border-line bg-surface px-3 py-2 text-sm text-ink">
+                <Stethoscope size={16} /> {t('alarmas.cargarBateria')}
+              </Link>
+            )}
+            {acciones.includes('medir') && (
+              <Link to={`/p/${profileId}/alarmas`} className="inline-flex items-center gap-1 rounded-xl border border-line bg-surface px-3 py-2 text-sm text-ink">
+                <Activity size={16} /> {t('alarmas.btn.medir')}
+              </Link>
+            )}
+            {acciones.includes('informe') && (
+              <Link to={`/p/${profileId}/informe-doc`} className="inline-flex items-center gap-1 rounded-xl border border-line bg-surface px-3 py-2 text-sm text-ink">
+                <FileText size={16} /> {t('puerta.informe')}
+              </Link>
+            )}
+          </div>
+        </div>
+      )}
 
       <p className="mt-5 text-xs text-muted">{t('triage.disclaimerShort')}</p>
     </div>

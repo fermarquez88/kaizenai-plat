@@ -530,7 +530,8 @@
     "volver": "Volver",
     "noEncontrado": "No encontramos el informe de esta persona.",
     "subtitulo": "Hoja clínica · resumen",
-    "estadoLabel": "Seguimiento"
+    "estadoLabel": "Seguimiento",
+    "accionesEquipo": "Acciones del equipo"
   },
   "aviso": {
     "title": "Aviso legal y privacidad",
@@ -1077,7 +1078,8 @@
       "completar": "Te lo pidió el equipo de salud."
     },
     "pedirCompletar": "Pedir completar un perfil",
-    "cargarBateria": "Cargar batería neuropsicológica"
+    "cargarBateria": "Cargar batería neuropsicológica",
+    "verFicha": "Ver ficha"
   },
   "voz": {
     "on": "Voz activada",
