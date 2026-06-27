@@ -110,6 +110,25 @@ export function RedView() {
     <div className="mx-auto max-w-3xl px-4 py-8">
       <h1 className="font-serif text-2xl text-ink sm:text-3xl">{t(`red.titles.${m}`)}</h1>
       <p className="mt-1 text-sm text-muted">{t('red.realNote', { real: realCount, demo: records.length - realCount })}</p>
+
+      {/* Tabs visibles: cambiar de modo en 1 toque (no editar la URL a mano). */}
+      <div className="mt-3 flex flex-wrap gap-1.5 no-print" role="tablist">
+        {MODES.map((mm) => (
+          <Link
+            key={mm}
+            to={`/p/${profileId}/red/${mm}`}
+            role="tab"
+            aria-selected={mm === m}
+            className={
+              'rounded-lg px-3 py-1.5 text-sm ' +
+              (mm === m ? 'bg-secondary font-medium text-white' : 'border border-line bg-surface text-ink hover:bg-bg')
+            }
+          >
+            {t(`red.titles.${mm}`)}
+          </Link>
+        ))}
+      </div>
+
       {records.length > realCount && (
         <p className="mt-2 inline-block rounded-full border border-amarillo bg-amarillo/10 px-3 py-1 text-xs text-ink">
           {t('red.demoBanner')}
