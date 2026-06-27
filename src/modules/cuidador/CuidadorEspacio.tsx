@@ -62,6 +62,9 @@ export function CuidadorEspacio() {
         <h1 className="font-serif text-2xl text-ink">Cuidarse para poder cuidar</h1>
         <p className="mt-1 text-sm text-muted">Cuidar al cuidador es parte del tratamiento. Esto es para vos.</p>
 
+        <Rama icon={BookOpen} titulo="Cómo cuidarse (guía)" sub="Sobrecarga, emociones, autocuidado, cuándo pedir ayuda" to="/p/cuidador/guia/apoyo" />
+        <div className="mt-1" />
+
         <h2 className="mt-5 text-sm font-semibold uppercase tracking-wide text-muted">¿Cómo está usted?</h2>
         <ul className="mt-2 space-y-2">
           {ESCALAS.map((id) => {
@@ -91,13 +94,12 @@ export function CuidadorEspacio() {
       <div className="mt-5 space-y-2.5">
         <Rama icon={ClipboardCheck} titulo={`Completar lo de ${alias}`} sub="Responder sus formularios (lo que usted observa)" to="/p/cuidador/preconsulta" />
         <Rama icon={HeartPulse} titulo="Cuidarse" sub="¿Cómo está usted? + su propio cerebro" onClick={() => setVista('cuidarse')} />
-        <Rama icon={BookOpen} titulo="Entender la enfermedad" sub="Qué pasa y por qué" to={GUIA} externo />
-        <Rama icon={Lightbulb} titulo="Qué hacer en cada situación" sub="Método DICE para las conductas" to={GUIA} externo />
-        <Rama icon={LifeBuoy} titulo="Recursos y dónde pedir ayuda" sub="San Juan: turnos, materiales, apoyo" to={GUIA} externo />
+        <Rama icon={BookOpen} titulo="Entender la enfermedad" sub="Qué pasa y por qué" to="/p/cuidador/guia/entender" />
+        <Rama icon={Lightbulb} titulo="Qué hacer en cada situación" sub="Método DICE para las conductas" to="/p/cuidador/guia/dice" />
+        <Rama icon={LifeBuoy} titulo="Recursos y dónde pedir ayuda" sub="San Juan: turnos, materiales, apoyo" to="/p/cuidador/guia/recursos" />
         <Rama icon={Users} titulo={`Conectar a ${alias} con la comunidad`} sub="Lo que sabe y puede aportar → vínculos con propósito" to="/p/cuidador/conectar" />
-        <Rama icon={HandHeart} titulo="Colaborar" sub="Sumar tu experiencia a la red" to={GUIA} externo />
+        <Rama icon={HandHeart} titulo="Colaborar con la investigación" sub="Sumar tu experiencia (estudio)" to={GUIA} externo />
       </div>
-      <p className="mt-5 text-xs text-muted">La guía completa se está integrando a KaizenAI; por ahora abre la app de cuidadores.</p>
     </div>
   )
 }

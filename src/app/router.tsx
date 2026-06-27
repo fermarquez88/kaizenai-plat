@@ -26,6 +26,7 @@ import { AgendaVisitas } from '../modules/red/AgendaVisitas'
 import { CoberturaTiempos } from '../modules/red/CoberturaTiempos'
 import { EquipoUnidad } from '../modules/red/EquipoUnidad'
 import { Conectar } from '../modules/comunidad/Conectar'
+import { CuidadorContenido } from '../modules/cuidador/CuidadorContenido'
 import { CasamenteroPanel } from '../modules/comunidad/CasamenteroPanel'
 import { VitalesStep } from '../modules/red/VitalesStep'
 import { DiagnosticoStep } from '../modules/red/DiagnosticoStep'
@@ -64,6 +65,7 @@ export const router = createHashRouter([
       { path: 'perfil', element: <PerfilHub /> },
       { path: 'p/:profileId/personas', element: <SelectorPersona /> },
       { path: 'p/:profileId/conectar', element: <Conectar /> },
+      { path: 'p/:profileId/guia/:seccion', element: <CuidadorContenido /> },
       { path: 'p/:profileId/tejer', element: <CasamenteroPanel /> },
       { path: 'p/:profileId/vitales/:personId', element: <VitalesStep /> },
       { path: 'p/:profileId/diagnostico/:personId', element: <DiagnosticoStep /> },
