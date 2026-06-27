@@ -94,7 +94,7 @@ export function CuidadorEspacio() {
         <Rama icon={BookOpen} titulo="Entender la enfermedad" sub="Qué pasa y por qué" to={GUIA} externo />
         <Rama icon={Lightbulb} titulo="Qué hacer en cada situación" sub="Método DICE para las conductas" to={GUIA} externo />
         <Rama icon={LifeBuoy} titulo="Recursos y dónde pedir ayuda" sub="San Juan: turnos, materiales, apoyo" to={GUIA} externo />
-        <Rama icon={Users} titulo="Conectar con otros" sub="Comunidad de cuidadores (pronto)" to={GUIA} externo />
+        <Rama icon={Users} titulo={`Conectar a ${alias} con la comunidad`} sub="Lo que sabe y puede aportar → vínculos con propósito" to="/p/cuidador/conectar" />
         <Rama icon={HandHeart} titulo="Colaborar" sub="Sumar tu experiencia a la red" to={GUIA} externo />
       </div>
       <p className="mt-5 text-xs text-muted">La guía completa se está integrando a KaizenAI; por ahora abre la app de cuidadores.</p>

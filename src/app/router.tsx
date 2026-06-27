@@ -25,6 +25,7 @@ import { FichaPaciente } from '../modules/red/FichaPaciente'
 import { AgendaVisitas } from '../modules/red/AgendaVisitas'
 import { CoberturaTiempos } from '../modules/red/CoberturaTiempos'
 import { EquipoUnidad } from '../modules/red/EquipoUnidad'
+import { Conectar } from '../modules/comunidad/Conectar'
 
 // Hash routing keeps refreshes working on static hosts (GitHub Pages).
 export const router = createHashRouter([
@@ -58,6 +59,7 @@ export const router = createHashRouter([
       { path: 'aviso-legal', element: <AvisoLegal /> },
       { path: 'perfil', element: <PerfilHub /> },
       { path: 'p/:profileId/personas', element: <SelectorPersona /> },
+      { path: 'p/:profileId/conectar', element: <Conectar /> },
     ],
   },
 ])

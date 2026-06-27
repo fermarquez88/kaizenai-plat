@@ -210,6 +210,9 @@ export function Hilo() {
           <Link to={`/p/${profileId}/mi-resultado`} className="flex items-center justify-between gap-3 rounded-2xl bg-primary px-5 py-4 text-white">
             <span className="font-medium">Ver mi resultado</span> <ArrowRight size={22} />
           </Link>
+          <Link to={`/p/${profileId}/conectar`} className="flex items-center justify-between gap-3 rounded-2xl border border-secondary bg-secondary/10 px-5 py-4">
+            <span className="text-sm text-ink"><b>Conectarte con tu comunidad</b><br />Contanos qué sabés hacer y te acercamos a otros.</span> <ArrowRight size={20} className="shrink-0 text-secondary" />
+          </Link>
         </section>
       )}
 
