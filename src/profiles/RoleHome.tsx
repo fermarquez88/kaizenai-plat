@@ -2,16 +2,16 @@ import { useParams } from 'react-router-dom'
 import { lenteDe } from '../app/lentes'
 import { DashboardShell } from './DashboardShell'
 import { PromotorHome } from './PromotorHome'
-import { MiSaludCerebral } from '../modules/profile/MiSaludCerebral'
+import { Hilo } from '../modules/profile/Hilo'
 import { RedAlarmas } from '../modules/red/RedAlarmas'
 
-// El home de cada lente sale de la MATRIZ: persona = su ficha cálida; agente = mi gente;
-// enfermería/médico/neuropsico/trabajo social = su cola; gestión/comunidad = tablero.
+// La PIEL la decide la matriz: modo 'hilo' (díada) = conversación cálida; modo 'cuaderno'
+// (equipo) = home de tareas según homeKind.
 export function RoleHome() {
   const { profileId } = useParams()
-  const kind = lenteDe(profileId).homeKind
-  if (kind === 'persona') return <MiSaludCerebral />
-  if (kind === 'gente') return <PromotorHome />
-  if (kind === 'cola') return <RedAlarmas />
+  const lente = lenteDe(profileId)
+  if (lente.modo === 'hilo') return <Hilo />
+  if (lente.homeKind === 'gente') return <PromotorHome />
+  if (lente.homeKind === 'cola') return <RedAlarmas />
   return <DashboardShell />
 }
