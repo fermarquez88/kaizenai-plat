@@ -33,7 +33,7 @@ export function FichaPaciente() {
   const { records, reload } = useRedRecords()
   // La cola enlaza con el id crudo de la persona seed (p7); los registros lo guardan como
   // seed-p7. Resolvemos ambas formas para que "Ver ficha" nunca quede en la nada.
-  const r = records.find((x) => x.id === recordId) ?? records.find((x) => x.id === `seed-${recordId}`)
+  const r = records.find((x) => x.id === recordId) ?? records.find((x) => x.personId === recordId) ?? records.find((x) => x.id === `seed-${recordId}`)
   const acciones = lenteDe(profileId).acciones
   const dxPorPersona = useDiagnostico((s) => s.porPersona)
   const dxPrev = recordId ? ultimoDiagnostico(dxPorPersona, recordId) : undefined

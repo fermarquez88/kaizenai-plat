@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom'
 import { Link } from 'react-router-dom'
-import { Activity, Brain, CalendarClock, ClipboardList, FileText, HeartHandshake, Inbox, ListChecks, Stethoscope, Users } from 'lucide-react'
+import { Brain, CalendarClock, ClipboardList, HeartHandshake, ListChecks, Stethoscope, UserPlus, Users } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 
 // Bienvenida "forma de comenzar" para el EQUIPO: cada perfil aterriza en SU tarea, no en la
@@ -11,89 +11,56 @@ interface Card {
   titulo: string
   sub: string
   seg: string // relativo a /p/:id
-  primary?: boolean
 }
 interface Cfg {
   titulo: string
-  sub: string
-  cards: Card[]
+  icon: LucideIcon
+  /** verbo de la acción principal (mandar a evaluar directo). */
+  accion: string
+  /** qué carga este perfil al abrir el panel del paciente. */
+  carga: string
+  secundarios: Card[]
 }
 
-const COLA: Card = { icon: ListChecks, titulo: 'Pendientes (cola)', sub: 'Lo que está esperando acción, priorizado', seg: 'alarmas' }
-const GENTE: Card = { icon: Users, titulo: 'Mi gente', sub: 'Tu lista para seguimiento y recontacto', seg: 'seguimiento' }
+const COLA: Card = { icon: ListChecks, titulo: 'Cola de pendientes', sub: 'Señales que esperan acción', seg: 'alarmas' }
+const GENTE: Card = { icon: Users, titulo: 'Mi gente', sub: 'Seguimiento y recontacto', seg: 'seguimiento' }
 const AGENDA: Card = { icon: CalendarClock, titulo: 'Agenda', sub: 'Turnos y visitas', seg: 'agenda' }
 
 const CONFIG: Record<string, Cfg> = {
-  enfermeria: {
-    titulo: 'Enfermería',
-    sub: 'Tomá signos vitales y acompañá en la sala de espera.',
-    cards: [
-      { icon: Activity, titulo: 'Tomar signos vitales', sub: 'Personas con medición pendiente → cargá presión, peso, glucemia…', seg: 'alarmas', primary: true },
-      GENTE,
-      AGENDA,
-    ],
-  },
-  unidad: {
-    titulo: 'Consultorio',
-    sub: 'Tu bandeja del día, la cola y los estudios/derivaciones a pedir.',
-    cards: [
-      { icon: Inbox, titulo: 'Bandeja del día', sub: 'Pacientes a ver hoy', seg: 'red/bandeja', primary: true },
-      COLA,
-      { icon: FileText, titulo: 'Informe / constancia', sub: 'Generar documento para el paciente', seg: 'informe-doc' },
-      AGENDA,
-    ],
-  },
-  neuropsico: {
-    titulo: 'Neuropsicología',
-    sub: 'Pacientes a evaluar → batería (normas El Castaño) → informe.',
-    cards: [
-      { icon: Brain, titulo: 'Pendientes de evaluación', sub: 'Abrí la ficha → batería → informe', seg: 'alarmas', primary: true },
-      GENTE,
-    ],
-  },
-  social: {
-    titulo: 'Trabajo social',
-    sub: 'Pedidos → evaluación social → gestión de derechos.',
-    cards: [
-      { icon: HeartHandshake, titulo: 'Pedidos de trabajo social', sub: 'Abrí la ficha → evaluación → gestiones', seg: 'alarmas', primary: true },
-      GENTE,
-    ],
-  },
+  enfermeria: { titulo: 'Enfermería', icon: HeartHandshake, accion: 'Tomar signos vitales', carga: 'presión, peso, glucemia…', secundarios: [COLA, GENTE, AGENDA] },
+  unidad: { titulo: 'Consultorio', icon: Stethoscope, accion: 'Atender a un paciente', carga: 'diagnóstico, informe, estudios', secundarios: [COLA, AGENDA] },
+  neuropsico: { titulo: 'Neuropsicología', icon: Brain, accion: 'Evaluar a un paciente', carga: 'batería (normas El Castaño) → informe', secundarios: [COLA, GENTE] },
+  social: { titulo: 'Trabajo social', icon: HeartHandshake, accion: 'Evaluación social', carga: 'situación social → gestiones', secundarios: [COLA, GENTE] },
 }
-
-const ICONO_PERFIL: Record<string, LucideIcon> = { enfermeria: Activity, unidad: Stethoscope, neuropsico: Brain, social: HeartHandshake }
 
 export function EquipoHome() {
   const { profileId } = useParams()
   const pid = profileId ?? 'agente'
-  const cfg = CONFIG[pid] ?? { titulo: 'Equipo', sub: 'Tu trabajo de hoy.', cards: [COLA, GENTE, AGENDA] }
-  const Icono = ICONO_PERFIL[pid] ?? ClipboardList
+  const cfg = CONFIG[pid] ?? { titulo: 'Equipo', icon: ClipboardList, accion: 'Completar un paciente', carga: 'sus datos', secundarios: [COLA, GENTE, AGENDA] }
+  const Icono = cfg.icon
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-8">
       <p className="flex items-center gap-2 text-sm font-medium text-secondary"><Icono size={18} /> {cfg.titulo}</p>
       <h1 className="mt-1 font-serif text-2xl text-ink sm:text-3xl">¿Qué necesita hacer hoy?</h1>
-      <p className="mt-1 text-muted">{cfg.sub}</p>
 
-      <div className="mt-5 space-y-3">
-        {cfg.cards.map((c) => {
+      {/* Acción PRINCIPAL: completar a mano el bus del paciente */}
+      <Link to={`/p/${pid}/paciente`} className="mt-5 flex items-center gap-3 rounded-2xl bg-primary p-5 text-white shadow-card transition hover:-translate-y-0.5">
+        <span className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/20"><UserPlus size={26} /></span>
+        <span>
+          <span className="block text-lg font-medium">{cfg.accion}</span>
+          <span className="block text-sm text-white/90">Buscá por nombre o DNI (o cargá nueva) → {cfg.carga}.</span>
+        </span>
+      </Link>
+
+      <p className="mt-6 mb-2 text-xs font-semibold uppercase tracking-wide text-muted">Otras vistas</p>
+      <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+        {cfg.secundarios.map((c) => {
           const Icon = c.icon
           return (
-            <Link
-              key={c.seg + c.titulo}
-              to={`/p/${pid}/${c.seg}`}
-              className={
-                'flex items-center gap-3 rounded-2xl border p-4 transition hover:-translate-y-0.5 ' +
-                (c.primary ? 'border-transparent bg-primary text-white shadow-card' : 'border-line bg-surface hover:border-secondary')
-              }
-            >
-              <span className={'inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ' + (c.primary ? 'bg-white/20 text-white' : 'border border-line bg-bg text-secondary')}>
-                <Icon size={22} />
-              </span>
-              <span>
-                <span className={'block font-medium ' + (c.primary ? 'text-white' : 'text-ink')}>{c.titulo}</span>
-                <span className={'block text-sm ' + (c.primary ? 'text-white/90' : 'text-muted')}>{c.sub}</span>
-              </span>
+            <Link key={c.seg} to={`/p/${pid}/${c.seg}`} className="flex items-center gap-2 rounded-xl border border-line bg-surface p-3 hover:border-secondary">
+              <Icon size={18} className="shrink-0 text-secondary" />
+              <span><span className="block text-sm text-ink">{c.titulo}</span><span className="block text-xs text-muted">{c.sub}</span></span>
             </Link>
           )
         })}

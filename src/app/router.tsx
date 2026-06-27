@@ -31,6 +31,7 @@ import { CasamenteroPanel } from '../modules/comunidad/CasamenteroPanel'
 import { VitalesStep } from '../modules/red/VitalesStep'
 import { DiagnosticoStep } from '../modules/red/DiagnosticoStep'
 import { AgendarTurno } from '../modules/red/AgendarTurno'
+import { PacientePicker } from '../modules/red/PacientePicker'
 import { EquipoHome } from '../profiles/EquipoHome'
 
 // Hash routing keeps refreshes working on static hosts (GitHub Pages).
@@ -71,6 +72,7 @@ export const router = createHashRouter([
       { path: 'p/:profileId/vitales/:personId', element: <VitalesStep /> },
       { path: 'p/:profileId/diagnostico/:personId', element: <DiagnosticoStep /> },
       { path: 'p/:profileId/turno/:personId', element: <AgendarTurno /> },
+      { path: 'p/:profileId/paciente', element: <PacientePicker /> },
     ],
   },
 ])

@@ -6,12 +6,14 @@ import { useCallback, useEffect, useState } from 'react'
 import { dexieRepo } from '../../data/dexieRepo'
 import { SEED_PERSONAS, type SeedPersona } from '../../seed/personas'
 import { estadoSeguimiento, type SeguimientoEstado } from '../../scoring/retention'
-import type { DerivationStatus, MrcaBand, PreAssessmentSummary, TriageLevel } from '../../data/types'
+import type { DerivationStatus, MrcaBand, Person, PreAssessmentSummary, TriageLevel } from '../../data/types'
 
 const DAY = 86_400_000
 
 export interface RedRecord {
   id: string
+  /** id estable de la persona (DNI/self) para resolver la ficha y vincular tomas. */
+  personId?: string
   alias: string
   ageYears?: number
   educationYears?: number
@@ -59,6 +61,7 @@ export function fromAssessment(a: PreAssessmentSummary, now: number): RedRecord 
   const days = Math.max(0, Math.floor((now - base) / DAY))
   return {
     id: a.id,
+    personId: a.personId,
     alias: a.alias || '—',
     ageYears: a.ageYears,
     educationYears: a.educationYears,
@@ -79,6 +82,31 @@ export function fromAssessment(a: PreAssessmentSummary, now: number): RedRecord 
   }
 }
 
+// Persona cargada a mano (aún sin evaluación) → ficha alcanzable para completar su "bus".
+export function fromPerson(p: Person, now: number): RedRecord {
+  const days = Math.max(0, Math.floor((now - (p.createdAt || now)) / DAY))
+  return {
+    id: p.id,
+    personId: p.id,
+    alias: p.alias || '—',
+    ageYears: p.ageYears,
+    educationYears: p.educationYears,
+    level: 'verde',
+    riskPct: 0,
+    mrcaBand: 'bajo',
+    meds: 0,
+    redFlags: 0,
+    note: '',
+    daysSinceContact: days,
+    estado: estadoSeguimiento(days),
+    phone: p.phone,
+    cuidadorAlias: p.cuidadorAlias,
+    derivationStatus: undefined,
+    createdAt: p.createdAt || now,
+    demo: false,
+  }
+}
+
 export function useRedRecords() {
   const [records, setRecords] = useState<RedRecord[]>([])
   const [realCount, setRealCount] = useState(0)
@@ -86,14 +114,16 @@ export function useRedRecords() {
 
   const reload = useCallback(() => {
     setLoading(true)
-    dexieRepo
-      .listPreAssessments()
-      .then((list) => {
+    Promise.all([dexieRepo.listPreAssessments(), dexieRepo.listPeople()])
+      .then(([list, people]) => {
         const now = Date.now()
         const real = list.filter((a) => a.triage).map((a) => fromAssessment(a, now))
         real.sort((x, y) => y.createdAt - x.createdAt)
         setRealCount(real.length)
-        setRecords([...real, ...SEED_PERSONAS.map(fromSeed)])
+        // Personas SIN evaluación todavía (cargadas a mano) → alcanzables para completar.
+        const evaluadas = new Set(list.map((a) => a.personId))
+        const sinEval = people.filter((p) => !evaluadas.has(p.id)).map((p) => fromPerson(p, now))
+        setRecords([...real, ...sinEval, ...SEED_PERSONAS.map(fromSeed)])
       })
       .finally(() => setLoading(false))
   }, [])
