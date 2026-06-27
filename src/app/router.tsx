@@ -9,6 +9,7 @@ import { MiResultado } from '../modules/pre/MiResultado'
 import { CasoEjemplo } from '../modules/pre/CasoEjemplo'
 import { CuidadorGuia } from '../modules/post/CuidadorGuia'
 import { PacienteGuia } from '../modules/post/PacienteGuia'
+import { InformeDocumento } from '../modules/post/InformeDocumento'
 import { Comunidad } from '../modules/gov/Comunidad'
 import { MisDatos } from '../modules/gov/MisDatos'
 import { AvisoLegal } from '../modules/gov/AvisoLegal'
@@ -39,6 +40,7 @@ export const router = createHashRouter([
       { path: 'p/:profileId/mi-resultado', element: <MiResultado /> },
       { path: 'p/:profileId/post/cuidador', element: <CuidadorGuia /> },
       { path: 'p/:profileId/post/paciente', element: <PacienteGuia /> },
+      { path: 'p/:profileId/informe-doc', element: <InformeDocumento /> },
       { path: 'p/:profileId/red/:mode', element: <RedView /> },
       { path: 'p/:profileId/alarmas', element: <RedAlarmas /> },
       { path: 'p/:profileId/pedir/:personId', element: <PanelPedidos /> },

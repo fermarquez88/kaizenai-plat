@@ -1167,7 +1167,8 @@
       "fisica": "Controlar la presión y el azúcar protege tu memoria."
     },
     "verPerfil": "Ver toda mi ficha",
-    "elegir": "Elegir qué completar"
+    "elegir": "Elegir qué completar",
+    "informe": "Informe para trámites (CUD, derivación…)"
   },
   "alcance": {
     "minima-completa": "Evaluación mínima completa",

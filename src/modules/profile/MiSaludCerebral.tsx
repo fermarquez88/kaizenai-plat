@@ -172,6 +172,14 @@ export function MiSaludCerebral() {
         <span>{t('puerta.elegir')}</span>
         <ArrowRight size={16} className="text-secondary" />
       </Link>
+
+      <Link
+        to={`/p/${profileId}/informe-doc`}
+        className="mt-2 flex items-center justify-between gap-2 rounded-xl border border-line bg-surface px-4 py-3 text-sm text-ink"
+      >
+        <span>{t('puerta.informe')}</span>
+        <ArrowRight size={16} className="text-secondary" />
+      </Link>
     </div>
   )
 }
