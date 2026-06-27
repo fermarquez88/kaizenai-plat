@@ -25,7 +25,8 @@
   }
 
   html {
-    font-size: calc(100% * var(--font-scale));
+    /* Base ~18px (112.5%) por público mayor; escalable con A−/A+. */
+    font-size: calc(112.5% * var(--font-scale));
     -webkit-text-size-adjust: 100%;
   }
 
