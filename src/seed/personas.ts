@@ -171,3 +171,10 @@ export const SEED_PERSONAS: SeedPersona[] = [
 ]
 
 export const PRIORITY: Record<TriageLevel, number> = { rojo: 0, amarillo: 1, verde: 2 }
+
+/** Busca una persona seed por id crudo (p7) o con prefijo de registro (seed-p7). */
+export function personaSeed(personId?: string): SeedPersona | undefined {
+  if (!personId) return undefined
+  const raw = personId.replace(/^seed-/, '')
+  return SEED_PERSONAS.find((p) => p.id === raw)
+}

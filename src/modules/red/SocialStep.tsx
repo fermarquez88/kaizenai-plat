@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { AlertTriangle, ArrowLeft, Pencil, Printer, Save } from 'lucide-react'
-import { SEED_PERSONAS } from '../../seed/personas'
+import { personaSeed } from '../../seed/personas'
 import { useSocial } from './socialStore'
 import { usePedidos } from './pedidosStore'
 
@@ -72,7 +72,7 @@ export function SocialStep() {
   const data = useSocial((s) => (personId ? s.porPersona[personId] : undefined)) ?? {}
   const setCampo = useSocial((s) => s.setCampo)
   const cerrarPedido = usePedidos((s) => s.cerrarPedido)
-  const persona = SEED_PERSONAS.find((p) => p.id === personId)
+  const persona = personaSeed(personId)
   const alias = persona?.alias ?? personId ?? '—'
   const [gestiones, setGestiones] = useState(data.gestiones ?? '')
   const [modo, setModo] = useState<'cargar' | 'informe'>('cargar')

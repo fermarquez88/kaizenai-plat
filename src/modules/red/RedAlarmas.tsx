@@ -182,9 +182,9 @@ export function RedAlarmas() {
                   {a.brechaDeServicio ? (
                     <span className="text-xs text-muted">{t('alarmas.brecha.accion')}</span>
                   ) : a.tipo === 'pedidoMedicion' ? (
-                    <button onClick={() => registrarMedicion(a)} className="inline-flex items-center gap-1 rounded-xl bg-primary px-3 py-2 text-sm font-medium text-white">
+                    <Link to={`/p/${profileId}/vitales/${a.personId}`} className="inline-flex items-center gap-1 rounded-xl bg-primary px-3 py-2 text-sm font-medium text-white">
                       <Activity size={16} /> {t('alarmas.btn.medir')}
-                    </button>
+                    </Link>
                   ) : a.tipo === 'noVolvio' ? (
                     <>
                       {persona?.phone && (
@@ -197,10 +197,10 @@ export function RedAlarmas() {
                       </button>
                     </>
                   ) : (
-                    <button onClick={() => cerrar(a)} className="inline-flex items-center gap-1 rounded-xl bg-primary px-3 py-2 text-sm font-medium text-white">
+                    <Link to={`/p/${profileId}/ficha/${a.personId}`} className="inline-flex items-center gap-1 rounded-xl bg-primary px-3 py-2 text-sm font-medium text-white">
                       {a.tipo === 'aguda' ? <Stethoscope size={16} /> : <HeartHandshake size={16} />}
                       {t(`alarmas.btn.${a.accion}`, { defaultValue: t('alarmas.btn.cerrar') })}
-                    </button>
+                    </Link>
                   )}
                 </div>
               </li>

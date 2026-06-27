@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { Activity, AlertTriangle, ArrowLeft, Pencil, Printer, Save } from 'lucide-react'
-import { SEED_PERSONAS } from '../../seed/personas'
+import { personaSeed } from '../../seed/personas'
 import { usePedidos } from './pedidosStore'
 import { alertasVitales, imc, ultimoVital, useVitales, Vitales } from './vitalesStore'
 
@@ -43,7 +43,7 @@ export function VitalesStep() {
   const registrar = useVitales((s) => s.registrar)
   const porPersona = useVitales((s) => s.porPersona)
   const cerrarPedido = usePedidos((s) => s.cerrarPedido)
-  const persona = SEED_PERSONAS.find((p) => p.id === personId)
+  const persona = personaSeed(personId)
   const alias = persona?.alias ?? personId ?? '—'
   const previo = personId ? ultimoVital(porPersona, personId) : undefined
 

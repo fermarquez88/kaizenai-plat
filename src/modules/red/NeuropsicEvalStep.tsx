@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import { ArrowLeft, FileText, Pencil, Plus, Printer, Save } from 'lucide-react'
 import { BATERIA_NPS, puntuarBateria, type ResultadoBateria } from '../../scoring/bateriaNps'
 import type { Sexo } from '../../scoring/cognitiveNorms'
-import { SEED_PERSONAS } from '../../seed/personas'
+import { personaSeed } from '../../seed/personas'
 import { useNeuro, type NeuroResultado } from './neuroStore'
 import { usePedidos } from './pedidosStore'
 
@@ -25,7 +25,7 @@ export function NeuropsicEvalStep() {
   const { profileId, personId } = useParams()
   const setResultados = useNeuro((s) => s.setResultados)
   const cerrarPedido = usePedidos((s) => s.cerrarPedido)
-  const persona = SEED_PERSONAS.find((p) => p.id === personId)
+  const persona = personaSeed(personId)
   const alias = persona?.alias ?? personId ?? '—'
 
   const [sexo, setSexo] = useState<Sexo | ''>('')

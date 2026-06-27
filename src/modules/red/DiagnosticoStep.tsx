@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { ArrowLeft, Pencil, Printer, Save, Stethoscope } from 'lucide-react'
-import { SEED_PERSONAS } from '../../seed/personas'
+import { personaSeed } from '../../seed/personas'
 import { usePedidos } from './pedidosStore'
 import { CDR, cdrLabel, DIAGNOSTICOS, Diagnostico, dxLabel, ultimoDiagnostico, useDiagnostico } from './diagnosticoStore'
 
@@ -14,7 +14,7 @@ export function DiagnosticoStep() {
   const registrar = useDiagnostico((s) => s.registrar)
   const porPersona = useDiagnostico((s) => s.porPersona)
   const cerrarPedido = usePedidos((s) => s.cerrarPedido)
-  const persona = SEED_PERSONAS.find((p) => p.id === personId)
+  const persona = personaSeed(personId)
   const alias = persona?.alias ?? personId ?? '—'
   const previo = personId ? ultimoDiagnostico(porPersona, personId) : undefined
 

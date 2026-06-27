@@ -28,8 +28,8 @@ const CONFIG: Record<string, Cfg> = {
     titulo: 'Enfermería',
     sub: 'Tomá signos vitales y acompañá en la sala de espera.',
     cards: [
-      { icon: Activity, titulo: 'Tomar signos vitales', sub: 'Elegí a quién atender → cargá presión, peso, glucemia…', seg: 'seguimiento', primary: true },
-      COLA,
+      { icon: Activity, titulo: 'Tomar signos vitales', sub: 'Personas con medición pendiente → cargá presión, peso, glucemia…', seg: 'alarmas', primary: true },
+      GENTE,
       AGENDA,
     ],
   },
