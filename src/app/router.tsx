@@ -27,6 +27,8 @@ import { CoberturaTiempos } from '../modules/red/CoberturaTiempos'
 import { EquipoUnidad } from '../modules/red/EquipoUnidad'
 import { Conectar } from '../modules/comunidad/Conectar'
 import { CasamenteroPanel } from '../modules/comunidad/CasamenteroPanel'
+import { VitalesStep } from '../modules/red/VitalesStep'
+import { EquipoHome } from '../profiles/EquipoHome'
 
 // Hash routing keeps refreshes working on static hosts (GitHub Pages).
 export const router = createHashRouter([
@@ -62,6 +64,7 @@ export const router = createHashRouter([
       { path: 'p/:profileId/personas', element: <SelectorPersona /> },
       { path: 'p/:profileId/conectar', element: <Conectar /> },
       { path: 'p/:profileId/tejer', element: <CasamenteroPanel /> },
+      { path: 'p/:profileId/vitales/:personId', element: <VitalesStep /> },
     ],
   },
 ])
