@@ -1,95 +1,150 @@
 import { useMemo, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
-import { ArrowLeft, Check, Plus, Save } from 'lucide-react'
-import { PACK, scoreSubtest, type Sexo } from '../../scoring/cognitiveNorms'
+import { Link, useParams } from 'react-router-dom'
+import { ArrowLeft, FileText, Pencil, Plus, Printer, Save } from 'lucide-react'
+import { BATERIA_NPS, puntuarBateria, type ResultadoBateria } from '../../scoring/bateriaNps'
+import type { Sexo } from '../../scoring/cognitiveNorms'
 import { SEED_PERSONAS } from '../../seed/personas'
 import { useNeuro, type NeuroResultado } from './neuroStore'
 import { usePedidos } from './pedidosStore'
 
-// Carga de la batería neuropsicológica OBJETIVA (M4). Por defecto se ofrecen ACE-III y
-// Mini-Mental (cortes clínicos directos); al lado y al final, un panel para AGREGAR tests
-// normados (motor cognitiveNorms: RAVLT, TMT, Dígitos, Fluencias, IFS…). El motor NUNCA
-// inventa: si faltan datos demográficos, los pide.
-
-// Tests normados soportados (regla gaussiana) descubiertos del pack — no hardcodeo ids.
-const SUPPORTED: { tid: string; sub: string }[] = Object.entries(PACK.tests).flatMap(([tid, subs]) =>
-  Object.entries(subs)
-    .filter(([, st]) => st.z_rule === '(raw-M)/SD' || st.z_rule === '(M-raw)/SD')
-    .map(([sub]) => ({ tid, sub })),
-)
-
-// Cortes clínicos directos (no dependen de normas demográficas del pack).
+// Evaluación neuropsicológica de PUNTA A PUNTA: cargar tests (ACE-III + Mini-Mental por
+// defecto + batería normada) → puntuar con cognitiveNorms (z/banda real) → guardar →
+// INFORME imprimible. El motor nunca inventa: si falta una norma para el perfil, lo dice.
 const aceBand = (raw: number) => (raw >= 88 ? 'normal' : raw >= 82 ? 'limítrofe' : 'sugiere deterioro')
 const mmseBand = (raw: number) => (raw >= 27 ? 'normal' : raw >= 24 ? 'limítrofe' : 'sugiere deterioro')
+const ALTERADA = new Set(['limite', 'leve', 'moderado', 'severo'])
+
+function resultadoTexto(r: ResultadoBateria): { z: string; band: string; alterada: boolean } {
+  const o = r.outcome
+  if (o.ok) return { z: o.score.z.toFixed(2), band: o.score.band, alterada: ALTERADA.has(o.score.band) }
+  if ('faltan' in o) return { z: '—', band: `faltan datos (${o.faltan.join(', ')})`, alterada: false }
+  return { z: '—', band: 'sin norma para este perfil', alterada: false }
+}
 
 export function NeuropsicEvalStep() {
   const { profileId, personId } = useParams()
-  const navigate = useNavigate()
   const setResultados = useNeuro((s) => s.setResultados)
   const cerrarPedido = usePedidos((s) => s.cerrarPedido)
   const persona = SEED_PERSONAS.find((p) => p.id === personId)
   const alias = persona?.alias ?? personId ?? '—'
-  const [sexo, setSexo] = useState<Sexo | ''>('')
-  const demo = useMemo(() => ({ edad: persona?.age, eduAnios: persona?.edu, sexo: (sexo || undefined) as Sexo | undefined }), [persona, sexo])
 
+  const [sexo, setSexo] = useState<Sexo | ''>('')
   const [ace, setAce] = useState('')
   const [mmse, setMmse] = useState('')
-  const [agregados, setAgregados] = useState<{ tid: string; sub: string; raw: string }[]>([])
-  const [sel, setSel] = useState('')
+  const [raws, setRaws] = useState<Record<string, string>>({})
+  const [verBateria, setVerBateria] = useState(false)
+  const [modo, setModo] = useState<'cargar' | 'informe'>('cargar')
 
-  const agregar = () => {
-    if (!sel) return
-    const [tid, sub] = sel.split('|')
-    if (agregados.some((a) => a.tid === tid && a.sub === sub)) return
-    setAgregados((a) => [...a, { tid, sub, raw: '' }])
-    setSel('')
-  }
-  const setRaw = (i: number, raw: string) => setAgregados((a) => a.map((x, j) => (j === i ? { ...x, raw } : x)))
+  const demo = useMemo(() => ({ edad: persona?.age, eduAnios: persona?.edu, sexo: (sexo || undefined) as Sexo | undefined }), [persona, sexo])
+  const numericRaws = useMemo(() => {
+    const o: Record<string, number> = {}
+    for (const [k, v] of Object.entries(raws)) if (v !== '' && !Number.isNaN(Number(v))) o[k] = Number(v)
+    return o
+  }, [raws])
+  const resultados = useMemo(() => puntuarBateria(numericRaws, demo), [numericRaws, demo])
 
-  // Evalúa un test agregado con el motor de normas (z/banda) o reporta qué falta.
-  const evalAgregado = (tid: string, sub: string, raw: string): string => {
-    const n = Number(raw)
-    if (raw === '' || Number.isNaN(n)) return ''
-    const r = scoreSubtest(tid, sub, n, demo)
-    if (r.ok) return `z = ${r.score.z.toFixed(2)} · ${r.score.band}${r.score.preliminary ? ' (preliminar)' : ''}`
-    if ('faltan' in r) return `falta cargar: ${r.faltan.join(', ')}`
-    return 'sin norma disponible'
-  }
+  const setRaw = (id: string, v: string) => setRaws((r) => ({ ...r, [id]: v }))
+  const num = (s: string) => (s !== '' && !Number.isNaN(Number(s)) ? Number(s) : null)
 
   const guardar = () => {
     if (!personId) return
     const rs: NeuroResultado[] = []
-    if (ace !== '' && !Number.isNaN(Number(ace))) rs.push({ testId: 'ACE-III', label: 'ACE-III', raw: Number(ace), band: aceBand(Number(ace)) })
-    if (mmse !== '' && !Number.isNaN(Number(mmse))) rs.push({ testId: 'MMSE', label: 'Mini-Mental (MMSE)', raw: Number(mmse), band: mmseBand(Number(mmse)) })
-    for (const a of agregados) {
-      const n = Number(a.raw)
-      if (a.raw === '' || Number.isNaN(n)) continue
-      const r = scoreSubtest(a.tid, a.sub, n, demo)
-      rs.push({ testId: `${a.tid}/${a.sub}`, label: `${a.tid} · ${a.sub}`, raw: n, ...(r.ok ? { z: r.score.z, band: r.score.band } : {}) })
+    const a = num(ace)
+    if (a != null) rs.push({ testId: 'ACE-III', label: 'ACE-III', raw: a, band: aceBand(a) })
+    const m = num(mmse)
+    if (m != null) rs.push({ testId: 'MMSE', label: 'Mini-Mental (MMSE)', raw: m, band: mmseBand(m) })
+    for (const r of resultados) {
+      const t = resultadoTexto(r)
+      rs.push({ testId: r.id, label: r.label, raw: r.raw, ...(r.outcome.ok ? { z: r.outcome.score.z, band: r.outcome.score.band } : { band: t.band }) })
     }
     setResultados(personId, rs)
-    // Cierra los pedidos de evaluación neuropsicológica de esta persona.
     for (const alc of ['test:bateria', 'test:ACE-III', 'test:MMSE']) cerrarPedido(`${personId}:pedidoCompletar:${alc}`)
-    navigate(`/p/${profileId}/alarmas`)
+    setModo('informe')
+    window.scrollTo({ top: 0 })
   }
 
-  const AgregarPanel = (
-    <div className="rounded-xl border border-line bg-bg p-3">
-      <p className="text-sm font-medium text-ink">Agregar un test normado</p>
-      <div className="mt-2 flex gap-2">
-        <select value={sel} onChange={(e) => setSel(e.target.value)} className="flex-1 rounded-lg border border-line bg-surface px-2 py-1.5 text-sm text-ink">
-          <option value="">Elegí un test…</option>
-          {SUPPORTED.map(({ tid, sub }) => (
-            <option key={`${tid}|${sub}`} value={`${tid}|${sub}`}>
-              {tid} · {sub}
-            </option>
-          ))}
-        </select>
-        <button onClick={agregar} disabled={!sel} className="inline-flex items-center gap-1 rounded-lg bg-secondary px-3 py-1.5 text-sm font-medium text-white disabled:opacity-40">
-          <Plus size={16} /> Agregar
-        </button>
+  const aN = num(ace)
+  const mN = num(mmse)
+  const alteradas = resultados.filter((r) => resultadoTexto(r).alterada).length
+
+  // ── INFORME imprimible ────────────────────────────────────────────────────────────────
+  if (modo === 'informe') {
+    return (
+      <div className="mx-auto max-w-2xl px-4 py-6">
+        <div className="no-print mb-4 flex items-center gap-2">
+          <button onClick={() => setModo('cargar')} className="inline-flex items-center gap-1 text-sm text-muted hover:text-ink">
+            <Pencil size={16} /> Volver a editar
+          </button>
+          <button onClick={() => window.print()} className="ml-auto inline-flex items-center gap-1 rounded-xl bg-primary px-4 py-2 text-sm font-medium text-white">
+            <Printer size={16} /> Imprimir
+          </button>
+        </div>
+        <article className="rounded-2xl border border-line bg-surface p-6 print:border-0 print:p-0">
+          <header className="border-b-2 border-ink pb-2">
+            <p className="text-xs text-muted">Programa de Salud Cerebral · San Juan · KaizenAI</p>
+            <h1 className="font-serif text-2xl text-ink">Informe neuropsicológico</h1>
+            <p className="text-sm text-ink">{alias}{persona ? ` · ${persona.age} años · ${persona.edu} años de escuela` : ''}{sexo ? ` · ${sexo}` : ''}</p>
+            <p className="mt-1 text-xs text-muted">Normas por edad/sexo/educación (estimación, no diagnóstico).</p>
+          </header>
+
+          {(aN != null || mN != null) && (
+            <section className="mt-4">
+              <h2 className="text-sm font-semibold uppercase tracking-wide text-ink">Cribado global</h2>
+              {aN != null && <p className="mt-1 text-sm text-ink">ACE-III: {aN}/100 — {aceBand(aN)}</p>}
+              {mN != null && <p className="text-sm text-ink">Mini-Mental (MMSE): {mN}/30 — {mmseBand(mN)}</p>}
+            </section>
+          )}
+
+          {resultados.length > 0 && (
+            <section className="mt-4">
+              <h2 className="text-sm font-semibold uppercase tracking-wide text-ink">Pruebas por dominio</h2>
+              <table className="mt-2 w-full text-sm">
+                <thead>
+                  <tr className="border-b border-line text-left text-xs text-muted">
+                    <th className="py-1">Prueba</th><th className="py-1">Bruto</th><th className="py-1">z</th><th className="py-1">Interpretación</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {resultados.map((r) => {
+                    const t = resultadoTexto(r)
+                    return (
+                      <tr key={r.id} className="border-b border-line/60">
+                        <td className="py-1 pr-2 text-ink">{r.label}</td>
+                        <td className="py-1 pr-2 text-ink">{r.raw}</td>
+                        <td className="py-1 pr-2 text-ink">{t.z}</td>
+                        <td className={'py-1 ' + (t.alterada ? 'font-medium text-rojo-text' : 'text-ink')}>{t.band}</td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+            </section>
+          )}
+
+          <section className="mt-4">
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-ink">Síntesis</h2>
+            <p className="mt-1 text-sm text-ink">
+              {resultados.length === 0 && aN == null && mN == null
+                ? 'Sin pruebas cargadas.'
+                : `${alteradas} de ${resultados.length} pruebas de la batería por debajo de lo esperado para el perfil.`}
+            </p>
+          </section>
+
+          <div className="mt-10 flex items-end justify-between gap-6">
+            <div className="flex-1 border-t border-ink pt-1 text-center text-xs text-muted">Firma del/la neuropsicólogo/a</div>
+            <div className="h-20 w-32 rounded border border-dashed border-line text-center text-[10px] text-muted">Sello</div>
+          </div>
+          <p className="mt-4 border-t border-line pt-2 text-[11px] text-muted">Estimación basada en normas locales; la interpretación clínica corresponde al profesional firmante.</p>
+        </article>
       </div>
-    </div>
+    )
+  }
+
+  // ── CARGA ─────────────────────────────────────────────────────────────────────────────
+  const AgregarBtn = (
+    <button onClick={() => setVerBateria((v) => !v)} className="inline-flex items-center gap-1 rounded-xl border border-secondary bg-secondary/10 px-3 py-2 text-sm font-medium text-secondary">
+      <Plus size={16} /> {verBateria ? 'Ocultar batería' : 'Agregar tests de la batería'}
+    </button>
   )
 
   return (
@@ -98,14 +153,12 @@ export function NeuropsicEvalStep() {
         <ArrowLeft size={16} /> Volver
       </Link>
       <h1 className="font-serif text-2xl text-ink sm:text-3xl">Batería neuropsicológica</h1>
-      <p className="mt-1 text-sm text-muted">{alias}{persona ? ` · ${persona.age} años · ${persona.edu} años de escuela` : ''}. Cargá los puntajes brutos; el sistema calcula la banda normada.</p>
+      <p className="mt-1 text-sm text-muted">{alias}{persona ? ` · ${persona.age} años · ${persona.edu} años de escuela` : ''}. Cargá los puntajes brutos; calculamos la banda normada.</p>
 
       <div className="mt-3 flex items-center gap-2">
         <label className="text-sm text-muted">Sexo (para normas):</label>
         <select value={sexo} onChange={(e) => setSexo(e.target.value as Sexo | '')} className="rounded-lg border border-line bg-bg px-2 py-1 text-sm text-ink">
-          <option value="">—</option>
-          <option value="Mujer">Mujer</option>
-          <option value="Hombre">Hombre</option>
+          <option value="">—</option><option value="Mujer">Mujer</option><option value="Hombre">Hombre</option>
         </select>
       </div>
 
@@ -115,44 +168,45 @@ export function NeuropsicEvalStep() {
           <label className="text-sm font-medium text-ink">ACE-III (0-100)</label>
           <div className="mt-1 flex items-center gap-3">
             <input type="number" inputMode="numeric" value={ace} onChange={(e) => setAce(e.target.value)} className="w-28 rounded-lg border border-line bg-bg px-2 py-1.5 text-ink" />
-            {ace !== '' && !Number.isNaN(Number(ace)) && <span className="text-sm text-muted">{aceBand(Number(ace))}</span>}
+            {aN != null && <span className="text-sm text-muted">{aceBand(aN)}</span>}
           </div>
         </div>
         <div className="rounded-xl border border-line bg-surface p-3">
           <label className="text-sm font-medium text-ink">Mini-Mental — MMSE (0-30)</label>
           <div className="mt-1 flex items-center gap-3">
             <input type="number" inputMode="numeric" value={mmse} onChange={(e) => setMmse(e.target.value)} className="w-28 rounded-lg border border-line bg-bg px-2 py-1.5 text-ink" />
-            {mmse !== '' && !Number.isNaN(Number(mmse)) && <span className="text-sm text-muted">{mmseBand(Number(mmse))}</span>}
+            {mN != null && <span className="text-sm text-muted">{mmseBand(mN)}</span>}
           </div>
         </div>
       </section>
 
-      {/* Agregar tests (al lado de los default) */}
-      <div className="mt-4">{AgregarPanel}</div>
+      <div className="mt-4">{AgregarBtn}</div>
 
-      {agregados.length > 0 && (
-        <section className="mt-4 space-y-3">
-          {agregados.map((a, i) => (
-            <div key={`${a.tid}/${a.sub}`} className="rounded-xl border border-line bg-surface p-3">
-              <label className="text-sm font-medium text-ink">{a.tid} · {a.sub}</label>
-              <div className="mt-1 flex items-center gap-3">
-                <input type="number" inputMode="numeric" value={a.raw} onChange={(e) => setRaw(i, e.target.value)} className="w-28 rounded-lg border border-line bg-bg px-2 py-1.5 text-ink" />
-                <span className="text-sm text-muted">{evalAgregado(a.tid, a.sub, a.raw)}</span>
+      {verBateria && (
+        <section className="mt-4 space-y-2">
+          {BATERIA_NPS.map((t) => {
+            const r = resultados.find((x) => x.id === t.id)
+            const txt = r ? resultadoTexto(r) : null
+            return (
+              <div key={t.id} className="rounded-xl border border-line bg-surface p-3">
+                <label className="text-sm font-medium text-ink">{t.label}{t.ayuda ? <span className="text-xs text-muted"> · {t.ayuda}</span> : null}</label>
+                <div className="mt-1 flex items-center gap-3">
+                  <input type="number" inputMode="numeric" value={raws[t.id] ?? ''} onChange={(e) => setRaw(t.id, e.target.value)} className="w-28 rounded-lg border border-line bg-bg px-2 py-1.5 text-ink" />
+                  {txt && <span className={'text-sm ' + (txt.alterada ? 'text-rojo-text' : 'text-muted')}>z {txt.z} · {txt.band}</span>}
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
+          <div className="pt-1">{AgregarBtn}</div>
         </section>
       )}
 
-      {/* Y también al final: agregar más tests */}
-      <div className="mt-4">{AgregarPanel}</div>
-
       <div className="fixed inset-x-0 bottom-0 border-t border-line bg-bg/90 backdrop-blur no-print">
         <div className="mx-auto flex max-w-2xl items-center gap-3 px-4 py-3">
-          <Check size={16} className="text-verde-text" />
-          <span className="text-sm text-muted">Cierra el pedido de evaluación al guardar.</span>
+          <FileText size={16} className="text-secondary" />
+          <span className="text-sm text-muted">Guardar genera el informe y cierra el pedido.</span>
           <button onClick={guardar} className="ml-auto inline-flex items-center gap-1 rounded-xl bg-primary px-5 py-2.5 font-medium text-white">
-            <Save size={18} /> Guardar
+            <Save size={18} /> Guardar e informar
           </button>
         </div>
       </div>
