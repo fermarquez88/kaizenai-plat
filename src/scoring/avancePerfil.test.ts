@@ -41,13 +41,23 @@ describe('avancePerfil — niveles cálidos + próxima-mejor-acción', () => {
     expect(a.necesario.pct).toBe(1)
   })
 
-  it('estado intermedio → vamosBien con la primera brecha como próxima acción', () => {
+  it('demografía lista + Lancet a medias → vamosBien con Lancet como próxima acción', () => {
     const a = avancePerfil({
       demo: { edad: 72, sexo: 'Mujer', edu_anios: 4 },
-      lancet: { education: 'no', hearing: 'si', ldl: 'no', depression: 'no', tbi: 'no', inactivity: 'no', diabetes: 'no', smoking: 'no', hypertension: 'no', obesity: 'no', alcohol: 'no', isolation: 'no', airPollution: 'no', vision: 'no' },
+      // solo 7 de 14 factores Lancet respondidos
+      lancet: { education: 'no', hearing: 'si', ldl: 'no', depression: 'no', tbi: 'no', inactivity: 'no', diabetes: 'no' },
       instruments: {},
     })
     expect(a.nivel).toBe('vamosBien')
-    expect(a.proxima).toBe('cqc') // demografía y lancet listos → sigue el primer instrumento núcleo
+    expect(a.proxima).toBe('lancet') // el obligatorio es demografía + Lancet (MRCA-7), no CQC/GDS/T-ADLQ
+  })
+
+  it('CQC/GDS/T-ADLQ NO cuentan como obligatorio (son deseables, modelo viejo)', () => {
+    // demografía + Lancet completos pero SIN instrumentos → ya es "completo" lo necesario
+    const lancet: Record<string, string> = {}
+    for (const k of ['education', 'hearing', 'ldl', 'depression', 'tbi', 'inactivity', 'diabetes', 'smoking', 'hypertension', 'obesity', 'alcohol', 'isolation', 'airPollution', 'vision']) lancet[k] = 'no'
+    const a = avancePerfil({ demo: { edad: 72, sexo: 'Mujer', edu_anios: 4 }, lancet, instruments: {} })
+    expect(a.nivel).toBe('completo')
+    expect(a.proxima).toBeNull()
   })
 })

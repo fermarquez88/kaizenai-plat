@@ -233,7 +233,9 @@
       "medicacion": "¡Listo lo de tus remedios!",
       "senales": "¡Casi terminamos!",
       "entorno": "¡Listo lo de tu casa y entorno!"
-    }
+    },
+    "opcionalSumar": "Listo lo necesario — podés sumar más (opcional)",
+    "sumarMas": "Sumar más"
   },
   "pre": {
     "modo": {

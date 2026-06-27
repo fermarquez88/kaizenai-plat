@@ -9,9 +9,11 @@ import { LANCET_FACTORS } from './lancet'
 
 export type NivelAvance = 'empezamos' | 'vamosBien' | 'completo'
 
-// "Lo necesario para la consulta" = demografía + Lancet 14 + 3 instrumentos núcleo.
+// "Lo necesario para la consulta" = demografía (edad/sexo/educación) + Lancet 14.
+// Eso cubre el modelo MRCA-7 reducido (edad·sexo·edu·hipoacusia·tabaco·vive_solo, las 3
+// últimas son ítems Lancet). NO incluye CQC/GDS/T-ADLQ (esos son del modelo VIEJO de 20+
+// y van como DESEABLES, ofrecidos al final en orden de relevancia).
 const NEC_DEMO = ['edad', 'sexo', 'edu_anios'] as const
-const NEC_INSTR = ['cqc', 'gds', 'tadlq'] as const
 // Orden de la próxima-mejor-acción: primero lo que da el "magic moment" (riesgo).
 export const UMBRAL_VAMOS_BIEN = 0.34
 
@@ -30,9 +32,6 @@ export function nivelDeAvance(necesarioPct: number): NivelAvance {
   return 'empezamos'
 }
 
-const instStarted = (inp: DomainInputs, id: string): boolean =>
-  Object.values(inp.instruments[id] ?? {}).some((v) => v != null)
-
 export function avancePerfil(inp: DomainInputs): AvancePerfil {
   const full = computeDomainCompleteness(inp)
   let answered = 0
@@ -49,7 +48,6 @@ export function avancePerfil(inp: DomainInputs): AvancePerfil {
   total += LANCET_FACTORS.length
   answered += lancetDone
   if (lancetDone < LANCET_FACTORS.length && !proxima) proxima = 'lancet'
-  for (const id of NEC_INSTR) consider(instStarted(inp, id), id)
 
   const pct = total ? answered / total : 0
   return {

@@ -22,10 +22,6 @@ interface Step {
   inst?: string
 }
 
-// La persona y el agente usan instrumentos AUTORREPORTADOS; el cuidador, de INFORMANTE.
-const SELF = ['cqc', 'gds', 'tadlq', 'isi', 'mind', 'auditc', 'frail', 'mnasf']
-const INFORMANT = ['ad8', 'iqcode', 'faq']
-
 // Bloques del chequeo, para micro-logros y progreso cálido.
 const BLOQUE: Record<string, string> = {
   modo: 'vos',
@@ -57,21 +53,43 @@ function modoFromProfile(profileId?: string): 'persona' | 'cuidador' | undefined
   return undefined
 }
 
+// DESEABLES en ORDEN DE RELEVANCIA — se ofrecen DESPUÉS del resultado (opt-in, sin saturar).
+function deseables(modo: string | undefined): Step[] {
+  if (modo === 'cuidador')
+    return [
+      { id: 'ad8', inst: 'ad8' },
+      { id: 'iqcode', inst: 'iqcode' },
+      { id: 'faq', inst: 'faq' },
+      { id: 'determinantes', Component: DeterminantesStep },
+      { id: 'medicacion', Component: MedicacionStep },
+    ]
+  return [
+    { id: 'cqc', inst: 'cqc' },
+    { id: 'gds', inst: 'gds' },
+    { id: 'tadlq', inst: 'tadlq' },
+    { id: 'determinantes', Component: DeterminantesStep },
+    { id: 'medicacion', Component: MedicacionStep },
+    { id: 'factores', Component: FactoresStep },
+    { id: 'isi', inst: 'isi' },
+    { id: 'auditc', inst: 'auditc' },
+    { id: 'ipaq', Component: IpaqStep },
+    { id: 'mind', inst: 'mind' },
+    { id: 'frail', inst: 'frail' },
+    { id: 'mnasf', inst: 'mnasf' },
+  ]
+}
+
+// OBLIGATORIO mínimo = demografía + Lancet (cubre el MRCA-7) + banderas (seguridad) →
+// RESULTADO → y recién ahí los deseables, en orden de relevancia (no se fuerzan).
 function buildSteps(modo: string | undefined, askModo: boolean): Step[] {
-  const inst = modo === 'cuidador' ? INFORMANT : SELF
   const steps: Step[] = []
   if (askModo) steps.push({ id: 'modo', Component: ModoStep })
   steps.push(
     { id: 'demografia', Component: DemografiaStep },
     { id: 'prevencion', Component: PrevencionStep },
-    { id: 'factores', Component: FactoresStep },
-    { id: 'determinantes', Component: DeterminantesStep },
-    ...inst.map((id) => ({ id, inst: id })),
-    // Actividad física (IPAQ): autorreporte numérico, no informante.
-    ...(modo !== 'cuidador' ? [{ id: 'ipaq', Component: IpaqStep }] : []),
-    { id: 'medicacion', Component: MedicacionStep },
     { id: 'banderas', Component: BanderasRojasStep },
     { id: 'resultado', Component: ResultadoStep },
+    ...deseables(modo),
   )
   return steps
 }
@@ -115,7 +133,11 @@ export function PreconsultaFlow() {
   const entry = STEPS[safeStep]
   const isLast = safeStep === STEPS.length - 1
   const Current = entry.Component
-  const restantes = STEPS.length - 1 - safeStep
+  // El resultado parte el flujo: antes = obligatorio (incremental); después = deseables opt-in.
+  const resultadoIdx = STEPS.findIndex((s) => s.id === 'resultado')
+  const enDeseables = resultadoIdx >= 0 && safeStep >= resultadoIdx
+  const restantesOblig = Math.max(0, resultadoIdx - safeStep)
+  const finalizar = () => navigate(`/p/${profileId ?? 'paciente'}`)
 
   const empezarDeNuevo = () => {
     reset()
@@ -155,7 +177,7 @@ export function PreconsultaFlow() {
       </div>
       <div className="mb-4 flex items-center justify-between gap-2 no-print">
         <p className="text-sm text-muted">
-          {restantes > 0 ? t('preconsulta.faltaPoco', { n: restantes }) : t('preconsulta.ultimoPaso')}
+          {enDeseables ? t('preconsulta.opcionalSumar') : t('preconsulta.faltaPoco', { n: restantesOblig })}
         </p>
         <button onClick={empezarDeNuevo} className="text-xs text-muted underline">
           {t('preconsulta.empezarDeNuevo')}
@@ -180,21 +202,27 @@ export function PreconsultaFlow() {
           >
             <ArrowLeft size={18} /> {t('common.prev')}
           </button>
-          {!isLast ? (
-            <button
-              onClick={() => go(safeStep + 1)}
-              className="ml-auto inline-flex items-center gap-1 rounded-xl bg-primary px-5 py-2.5 font-medium text-white"
-            >
-              {t('common.next')} <ArrowRight size={18} />
-            </button>
-          ) : (
-            <button
-              onClick={() => navigate(`/p/${profileId ?? 'paciente'}`)}
-              className="ml-auto inline-flex items-center gap-1 rounded-xl bg-primary px-5 py-2.5 font-medium text-white"
-            >
-              <Check size={18} /> {t('preconsulta.finish')}
-            </button>
-          )}
+          <div className="ml-auto flex items-center gap-2">
+            {!isLast && (
+              <button
+                onClick={() => go(safeStep + 1)}
+                className={
+                  'inline-flex items-center gap-1 rounded-xl px-5 py-2.5 font-medium ' +
+                  (enDeseables ? 'border border-line bg-surface text-ink' : 'bg-primary text-white')
+                }
+              >
+                {enDeseables ? t('preconsulta.sumarMas') : t('common.next')} <ArrowRight size={18} />
+              </button>
+            )}
+            {enDeseables && (
+              <button
+                onClick={finalizar}
+                className="inline-flex items-center gap-1 rounded-xl bg-primary px-5 py-2.5 font-medium text-white"
+              >
+                <Check size={18} /> {t('preconsulta.finish')}
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>
