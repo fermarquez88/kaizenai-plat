@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { ArrowLeft, FileText, Pencil, Plus, Printer, Save } from 'lucide-react'
-import { BATERIA_NPS, puntuarBateria, type ResultadoBateria } from '../../scoring/bateriaNps'
+import { BATERIA_NPS, DOMINIOS_NPS, puntuarBateria, type ResultadoBateria } from '../../scoring/bateriaNps'
 import type { Sexo } from '../../scoring/cognitiveNorms'
 import { personaSeed } from '../../seed/personas'
 import { useNeuro, type NeuroResultado } from './neuroStore'
@@ -183,16 +183,28 @@ export function NeuropsicEvalStep() {
       <div className="mt-4">{AgregarBtn}</div>
 
       {verBateria && (
-        <section className="mt-4 space-y-2">
-          {BATERIA_NPS.map((t) => {
-            const r = resultados.find((x) => x.id === t.id)
-            const txt = r ? resultadoTexto(r) : null
+        <section className="mt-4 space-y-5">
+          <p className="text-xs text-muted">Cargá solo las pruebas que administraste. Normas locales (El Castaño) por edad/sexo/educación.</p>
+          {DOMINIOS_NPS.map((dom) => {
+            const tests = BATERIA_NPS.filter((t) => t.dominio === dom)
+            if (!tests.length) return null
             return (
-              <div key={t.id} className="rounded-xl border border-line bg-surface p-3">
-                <label className="text-sm font-medium text-ink">{t.label}{t.ayuda ? <span className="text-xs text-muted"> · {t.ayuda}</span> : null}</label>
-                <div className="mt-1 flex items-center gap-3">
-                  <input type="number" inputMode="numeric" value={raws[t.id] ?? ''} onChange={(e) => setRaw(t.id, e.target.value)} className="w-28 rounded-lg border border-line bg-bg px-2 py-1.5 text-ink" />
-                  {txt && <span className={'text-sm ' + (txt.alterada ? 'text-rojo-text' : 'text-muted')}>z {txt.z} · {txt.band}</span>}
+              <div key={dom}>
+                <h3 className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-secondary">{dom}</h3>
+                <div className="space-y-2">
+                  {tests.map((t) => {
+                    const r = resultados.find((x) => x.id === t.id)
+                    const txt = r ? resultadoTexto(r) : null
+                    return (
+                      <div key={t.id} className="rounded-xl border border-line bg-surface p-3">
+                        <label className="text-sm font-medium text-ink">{t.label}{t.ayuda ? <span className="text-xs text-muted"> · {t.ayuda}</span> : null}</label>
+                        <div className="mt-1 flex items-center gap-3">
+                          <input type="number" inputMode="numeric" value={raws[t.id] ?? ''} onChange={(e) => setRaw(t.id, e.target.value)} className="w-28 rounded-lg border border-line bg-bg px-2 py-1.5 text-ink" />
+                          {txt && <span className={'text-sm ' + (txt.alterada ? 'text-rojo-text' : 'text-muted')}>z {txt.z} · {txt.band}</span>}
+                        </div>
+                      </div>
+                    )
+                  })}
                 </div>
               </div>
             )

@@ -19,9 +19,14 @@ describe('bateriaNps — puntúa de verdad contra el motor de normas', () => {
     expect(res).toHaveLength(BATERIA_NPS.length)
   })
 
-  it('la mayoría de la batería puntúa OK con un perfil con cobertura de normas', () => {
-    const res = puntuarBateria(raws, demo)
-    const ok = res.filter((r) => r.outcome.ok).length
-    expect(ok).toBeGreaterThanOrEqual(Math.ceil(BATERIA_NPS.length * 0.6))
+  it('TODO subtest del catálogo tiene baremo (no se ofrecen pruebas sin norma)', () => {
+    // raw razonable dentro de rango para evitar falsos "sin norma" por valor extremo.
+    const r = puntuarBateria(Object.fromEntries(BATERIA_NPS.map((t) => [t.id, 8])), { edad: 70, sexo: 'Mujer', eduAnios: 10 })
+    const sinNorma = r.filter((x) => !x.outcome.ok && !('faltan' in x.outcome)).map((x) => x.id)
+    expect(sinNorma).toEqual([])
+  })
+
+  it('cada entrada declara dominio', () => {
+    expect(BATERIA_NPS.every((t) => !!t.dominio)).toBe(true)
   })
 })
