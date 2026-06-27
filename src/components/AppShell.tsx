@@ -1,8 +1,9 @@
 import { useState, type ReactNode } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { ArrowLeft, Minus, Plus, Volume2, VolumeX } from 'lucide-react'
 import { useSettings } from '../lib/store'
+import { breadcrumbs, backTo } from '../app/nav'
 import { Logo } from './Logo'
 import { ModuleNav } from './ModuleNav'
 
@@ -13,13 +14,11 @@ export function AppShell({ children }: { children: ReactNode }) {
   const fontScale = useSettings((s) => s.fontScale)
   const [speaking, setSpeaking] = useState(false)
   const location = useLocation()
-  const navigate = useNavigate()
-  const atHome = ['/', '', '/inicio'].includes(location.pathname)
-  // Back ANCLADO: dentro de un módulo de un rol, "volver" lleva a "mi panel" (/p/:rol),
-  // no al historial impredecible del navegador.
-  const enModulo = location.pathname.match(/^\/p\/([^/]+)\/.+/)
-  const panelHref = enModulo ? `/p/${enModulo[1]}` : null
-  // Nav de módulos: visible dentro de un rol, oculta en el chequeo (que tiene su propia barra).
+  // Migas de pan + back de REGLA DE ORO (sube un nivel, nunca al limbo).
+  const crumbs = breadcrumbs(location.pathname)
+  const back = backTo(location.pathname)
+  // Nav de módulos: visible dentro de un rol, oculta en el chequeo (que tiene su propia barra;
+  // el back de la miga de pan da la salida, así que no es un callejón).
   const rol = location.pathname.match(/^\/p\/([^/]+)(?:\/(.*))?$/)
   const showModuleNav = !!rol && (rol[2] ?? '').split('/')[0] !== 'preconsulta'
 
@@ -34,25 +33,14 @@ export function AppShell({ children }: { children: ReactNode }) {
       <header className="sticky top-0 z-10 border-b border-line bg-bg/85 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between gap-3 px-4">
           <div className="flex items-center gap-2">
-            {panelHref ? (
+            {crumbs.length > 1 && (
               <Link
-                to={panelHref}
-                aria-label={t('nav.miPanel')}
-                className="inline-flex items-center gap-1 rounded-lg p-3 text-muted hover:bg-surface"
+                to={back}
+                aria-label={t('common.back')}
+                className="rounded-lg p-3 text-muted hover:bg-surface"
               >
                 <ArrowLeft size={20} />
-                <span className="hidden text-sm sm:inline">{t('nav.miPanel')}</span>
               </Link>
-            ) : (
-              !atHome && (
-                <button
-                  onClick={() => navigate(-1)}
-                  aria-label={t('common.back')}
-                  className="rounded-lg p-3 text-muted hover:bg-surface"
-                >
-                  <ArrowLeft size={20} />
-                </button>
-              )
             )}
             <Link to="/inicio" className="flex items-center gap-2">
               <Logo className="h-8 w-8 text-secondary" />
@@ -127,6 +115,25 @@ export function AppShell({ children }: { children: ReactNode }) {
           </div>
         </div>
       </header>
+
+      {crumbs.length > 1 && (
+        <nav aria-label="migas de pan" className="border-b border-line bg-surface/60 no-print">
+          <ol className="mx-auto flex max-w-5xl flex-wrap items-center gap-1 px-4 py-1.5 text-xs text-muted">
+            {crumbs.map((c, i) => (
+              <li key={c.to + i} className="flex items-center gap-1">
+                {i > 0 && <span aria-hidden>›</span>}
+                {i < crumbs.length - 1 ? (
+                  <Link to={c.to} className="hover:text-ink hover:underline">
+                    {t(c.label)}
+                  </Link>
+                ) : (
+                  <span className="text-ink">{t(c.label)}</span>
+                )}
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )}
 
       <main id="main" className="flex-1">{children}</main>
 

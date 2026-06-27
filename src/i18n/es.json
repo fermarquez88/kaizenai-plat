@@ -1106,7 +1106,45 @@
       "alarmas": "Alertas",
       "agenda": "Agenda",
       "panel": "Panel",
-      "metricas": "Métricas"
+      "metricas": "Métricas",
+      "cola": "Cola",
+      "bandeja": "Bandeja",
+      "gobernanza": "Gobernanza"
+    },
+    "lente": {
+      "paciente": "Mi espacio",
+      "cuidador": "Cuidador",
+      "agente": "Agente",
+      "enfermeria": "Enfermería",
+      "unidad": "Médico / Unidad",
+      "neuropsico": "Neuropsicología",
+      "social": "Trabajo social",
+      "gestor": "Gestión",
+      "comunidad": "Comunidad"
+    },
+    "crumb": {
+      "inicio": "Inicio",
+      "chequeo": "Chequeo",
+      "resultado": "Resultado",
+      "alarmas": "Pendientes",
+      "seguimiento": "Seguimiento",
+      "gente": "Mi gente",
+      "ficha": "Ficha",
+      "pedir": "Pedir",
+      "neuropsico": "Batería",
+      "informe": "Informe",
+      "agenda": "Agenda",
+      "metricas": "Métricas",
+      "equipo": "Equipo",
+      "red": "Red",
+      "guia": "Guía",
+      "perfil": "Mi ficha",
+      "datos": "Mis datos",
+      "gobernanza": "Gobernanza",
+      "aviso": "Aviso legal",
+      "demo": "Recorrido (demo)",
+      "ejemplo": "Ejemplo",
+      "area": "Área"
     }
   },
   "puerta": {
