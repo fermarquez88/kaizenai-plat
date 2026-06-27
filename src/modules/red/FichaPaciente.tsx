@@ -1,6 +1,6 @@
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { Activity, ArrowLeft, Check, ClipboardList, FileText, MessageCircle, Stethoscope, TriangleAlert } from 'lucide-react'
+import { Activity, ArrowLeft, CalendarCheck, Check, ClipboardList, FileText, MessageCircle, Stethoscope, TriangleAlert } from 'lucide-react'
 import { useRedRecords } from './redRecords'
 import { waMeLink } from '../../channel/ChannelAdapter'
 import { dexieRepo } from '../../data/dexieRepo'
@@ -176,6 +176,11 @@ export function FichaPaciente() {
             {acciones.includes('diagnostico') && (
               <Link to={`/p/${profileId}/diagnostico/${r.id}`} className="inline-flex items-center gap-1 rounded-xl border border-line bg-surface px-3 py-2 text-sm text-ink">
                 <Stethoscope size={16} /> Diagnóstico
+              </Link>
+            )}
+            {acciones.includes('turno') && (
+              <Link to={`/p/${profileId}/turno/${r.id}`} className="inline-flex items-center gap-1 rounded-xl border border-line bg-surface px-3 py-2 text-sm text-ink">
+                <CalendarCheck size={16} /> Agendar turno
               </Link>
             )}
             {acciones.includes('informe') && (

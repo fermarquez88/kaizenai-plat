@@ -1,12 +1,18 @@
 import { useTranslation } from 'react-i18next'
-import { CalendarDays, MapPin } from 'lucide-react'
+import { CalendarCheck, CalendarDays, Clock, MapPin, X } from 'lucide-react'
 import { useRedRecords } from './redRecords'
+import { turnosProximos, useTurnos } from './turnosStore'
 
 // Agenda DERIVADA de datos reales: a quién hay que ir a ver (seguimiento por vencer
-// o que no volvió). Deja de ser una lista fija: refleja el estado real de la red.
+// o que no volvió) + los TURNOS agendados por el equipo. Refleja el estado real de la red.
+const hoyISO = () => new Date().toISOString().slice(0, 10)
+
 export function AgendaVisitas() {
   const { t } = useTranslation()
   const { records } = useRedRecords()
+  const turnos = useTurnos((s) => s.turnos)
+  const cancelar = useTurnos((s) => s.cancelar)
+  const proximos = turnosProximos(turnos, hoyISO())
 
   const due = records
     .filter((p) => p.estado !== 'aldia')
@@ -23,6 +29,28 @@ export function AgendaVisitas() {
       </h1>
       <p className="mt-1 text-sm text-muted">{t('agenda.intro')}</p>
 
+      {proximos.length > 0 && (
+        <section className="mt-5">
+          <h2 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-muted"><CalendarCheck size={16} /> Turnos agendados</h2>
+          <ul className="mt-2 space-y-2">
+            {proximos.map((tr) => (
+              <li key={tr.id} className="flex items-start justify-between gap-3 rounded-xl border border-secondary/40 bg-secondary/5 p-3">
+                <div>
+                  <p className="font-medium text-ink">{tr.alias}</p>
+                  <p className="mt-0.5 flex flex-wrap items-center gap-x-3 text-sm text-muted">
+                    <span className="inline-flex items-center gap-1"><Clock size={13} /> {new Date(tr.fecha + 'T00:00').toLocaleDateString('es-AR')}{tr.hora ? ` · ${tr.hora}` : ''}</span>
+                    {tr.lugar && <span className="inline-flex items-center gap-1"><MapPin size={13} /> {tr.lugar}</span>}
+                  </p>
+                  {tr.nota && <p className="mt-0.5 text-sm text-ink">{tr.nota}</p>}
+                </div>
+                <button onClick={() => cancelar(tr.id)} aria-label="Cancelar turno" className="shrink-0 rounded-lg border border-line p-1.5 text-muted hover:text-rojo-text"><X size={15} /></button>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      <h2 className="mt-6 text-sm font-semibold uppercase tracking-wide text-muted">A quién ir a ver</h2>
       {due.length === 0 ? (
         <p className="mt-6 rounded-2xl border border-line bg-surface p-5 text-muted">{t('agenda.empty')}</p>
       ) : (
