@@ -11,7 +11,6 @@ import { colaPorRol, derivarAlarmas } from '../../scoring/alarmas'
 import { inputFromSeed } from '../../scoring/alarmasFromSeed'
 import { SEED_PERSONAS } from '../../seed/personas'
 import { usePedidos } from '../red/pedidosStore'
-import { Gate0 } from './Gate0'
 import { VozControl } from './VozControl'
 
 // Barra suave de avance (la persona ve el nivel cálido; el % es secundario).
@@ -86,7 +85,6 @@ export function MiSaludCerebral() {
     return (
       <div className="mx-auto max-w-2xl px-4 py-8" id="puerta">
         <div className="mb-5"><VozControl text={vozText} /></div>
-        <div className="mb-5"><Gate0 /></div>
         <h1 className="font-serif text-2xl text-ink sm:text-3xl">{saludo}</h1>
         <p className="mt-2 text-muted">{t('puerta.bienvenida')}</p>
         <Link
@@ -113,7 +111,6 @@ export function MiSaludCerebral() {
         <h1 className="font-serif text-2xl text-ink sm:text-3xl">{saludo}</h1>
       </div>
       <div className="mb-5"><VozControl text={vozText} /></div>
-      <div className="mb-5"><Gate0 /></div>
 
       {/* Avance del perfil — nivel cálido (la persona) + % chico (equipo) */}
       <section className="rounded-2xl border border-line bg-surface p-5">

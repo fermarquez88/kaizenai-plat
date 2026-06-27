@@ -11,7 +11,6 @@ import { inputFromSeed } from '../../scoring/alarmasFromSeed'
 import { SEED_PERSONAS } from '../../seed/personas'
 import { usePedidos } from '../red/pedidosStore'
 import { Onboarding } from './Onboarding'
-import { Gate0 } from './Gate0'
 
 // EL HILO — la piel de la díada: una conversación cálida, UNA pregunta por turno (inline),
 // voz que lee sola, sujeto según quién responde. Sin barra, sin tabs, sin %, sin grilla.
@@ -149,8 +148,6 @@ export function Hilo() {
       </div>
       {voiceOn && <p className="mt-1 text-xs text-secondary">🔊 Te leo en voz alta · tocá el altavoz para apagar</p>}
 
-      <div className="mt-4"><Gate0 /></div>
-
       {festejo && (
         <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-verde bg-verde/10 px-3 py-1.5 text-sm text-verde-text">
           <Sparkles size={16} /> {festejo}
@@ -207,8 +204,11 @@ export function Hilo() {
             <p className="font-serif text-xl text-verde-text">¡Listo lo necesario para tu consulta!</p>
             <p className="mt-1 text-sm text-ink">Ya tenemos lo básico de {esCuidador ? alias : 'vos'}. Podés sumar más cuando quieras.</p>
           </div>
-          <Link to={`/p/${profileId}/mi-resultado`} className="flex items-center justify-between gap-3 rounded-2xl bg-primary px-5 py-4 text-white">
-            <span className="font-medium">Ver mi resultado</span> <ArrowRight size={22} />
+          <Link to={`/p/${profileId}/preconsulta`} className="flex items-center justify-between gap-3 rounded-2xl bg-primary px-5 py-4 text-white">
+            <span className="font-medium">Seguir completando el perfil</span> <ArrowRight size={22} />
+          </Link>
+          <Link to={`/p/${profileId}/mi-resultado`} className="flex items-center justify-between gap-3 rounded-2xl border border-line bg-surface px-5 py-4">
+            <span className="font-medium text-ink">Ver mi resultado</span> <ArrowRight size={22} className="text-muted" />
           </Link>
           <Link to={`/p/${profileId}/conectar`} className="flex items-center justify-between gap-3 rounded-2xl border border-secondary bg-secondary/10 px-5 py-4">
             <span className="text-sm text-ink"><b>Conectarte con tu comunidad</b><br />Contanos qué sabés hacer y te acercamos a otros.</span> <ArrowRight size={20} className="shrink-0 text-secondary" />

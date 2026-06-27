@@ -95,8 +95,9 @@ export function CuidadorEspacio() {
         <Rama icon={ClipboardCheck} titulo={`Completar lo de ${alias}`} sub="Responder sus formularios (lo que usted observa)" to="/p/cuidador/preconsulta" />
         <Rama icon={HeartPulse} titulo="Cuidarse" sub="¿Cómo está usted? + su propio cerebro" onClick={() => setVista('cuidarse')} />
         <Rama icon={BookOpen} titulo="Entender la enfermedad" sub="Qué pasa y por qué" to="/p/cuidador/guia/entender" />
-        <Rama icon={Lightbulb} titulo="Qué hacer en cada situación" sub="Método DICE para las conductas" to="/p/cuidador/guia/dice" />
-        <Rama icon={LifeBuoy} titulo="Recursos y dónde pedir ayuda" sub="San Juan: turnos, materiales, apoyo" to="/p/cuidador/guia/recursos" />
+        <Rama icon={Lightbulb} titulo="Necesito resolver una situación ahora" sub="Conductas difíciles, paso a paso (método DICE)" to="/p/cuidador/guia/dice" />
+        <Rama icon={BookOpen} titulo="Recursos y materiales" sub="Ejercicios, planillas, materiales oficiales" to="/p/cuidador/guia/recursos" />
+        <Rama icon={LifeBuoy} titulo="Dónde pedir ayuda" sub="San Juan: turnos, asociaciones, contactos" to="/p/cuidador/guia/ayuda" />
         <Rama icon={Users} titulo={`Conectar a ${alias} con la comunidad`} sub="Lo que sabe y puede aportar → vínculos con propósito" to="/p/cuidador/conectar" />
         <Rama icon={HandHeart} titulo="Colaborar con la investigación" sub="Sumar tu experiencia (estudio)" to={GUIA} externo />
       </div>

@@ -167,18 +167,19 @@ export function PreconsultaFlow() {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-6 pb-28">
-      <div
-        className="mb-3 flex items-center gap-1.5 no-print"
-        role="progressbar"
-        aria-valuenow={safeStep + 1}
-        aria-valuemin={1}
-        aria-valuemax={STEPS.length}
-        aria-label={t(`preconsulta.steps.${entry.id}`)}
-      >
-        {STEPS.map((s, i) => (
-          <div key={s.id} className={'h-2 flex-1 rounded-full ' + (i <= safeStep ? 'bg-secondary' : 'bg-line')} />
-        ))}
-      </div>
+      {/* Barra SOLO de lo obligatorio (hasta el resultado): corta y motivante. Los deseables
+          van después y no se cuentan acá (evita la barra larguísima). */}
+      {(() => {
+        const totalBar = resultadoIdx >= 0 ? resultadoIdx + 1 : STEPS.length
+        const fillBar = Math.min(safeStep, totalBar - 1) + 1
+        return (
+          <div className="mb-3 flex items-center gap-1.5 no-print" role="progressbar" aria-valuenow={fillBar} aria-valuemin={1} aria-valuemax={totalBar} aria-label={t(`preconsulta.steps.${entry.id}`)}>
+            {Array.from({ length: totalBar }, (_, i) => (
+              <div key={i} className={'h-2 flex-1 rounded-full ' + (i < fillBar ? 'bg-secondary' : 'bg-line')} />
+            ))}
+          </div>
+        )
+      })()}
       <div className="mb-4 flex items-center justify-between gap-2 no-print">
         <p className="text-sm text-muted">
           {enDeseables ? t('preconsulta.opcionalSumar') : t('preconsulta.faltaPoco', { n: restantesOblig })}

@@ -11,8 +11,9 @@ import cuidarse from '../../content/cuidador/guia/cuidarse.html?raw'
 // detalle + Experto + leer en voz), portada nativa vía ShadowGuia. Ya no es texto plano.
 const SECCIONES: Record<string, { titulo: string; html: string }> = {
   entender: { titulo: 'Entender la enfermedad', html: entender },
-  dice: { titulo: 'Qué hacer en cada situación', html: hacer },
-  recursos: { titulo: 'Recursos y dónde pedir ayuda', html: apoyoContactos + recursos },
+  dice: { titulo: 'Necesito resolver una situación ahora', html: hacer },
+  recursos: { titulo: 'Recursos y materiales', html: recursos },
+  ayuda: { titulo: 'Dónde pedir ayuda', html: apoyoContactos },
   apoyo: { titulo: 'Cuidarse para poder cuidar', html: cuidarse },
 }
 

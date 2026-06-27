@@ -8,6 +8,9 @@ import { lenteDe } from '../../app/lentes'
 import { cdrLabel, dxLabel, ultimoDiagnostico, useDiagnostico } from './diagnosticoStore'
 import type { TriageLevel } from '../../data/types'
 
+// Panel principal por perfil (para "seguir completando" directo).
+const DEST_PANEL: Record<string, string> = { enfermeria: 'vitales', neuropsico: 'neuropsico', social: 'social', unidad: 'diagnostico' }
+
 const LEVEL_STYLE: Record<TriageLevel, string> = {
   verde: 'border-verde bg-verde/10 text-verde-text',
   amarillo: 'border-amarillo bg-amarillo/10 text-ink',
@@ -126,17 +129,39 @@ export function FichaPaciente() {
         </div>
       )}
 
+      {/* SEGUIR COMPLETANDO: invitación principal cuando un perfil del equipo está sobre un
+          paciente → va directo a su panel (vitales/batería/eval/dx). */}
+      {DEST_PANEL[profileId ?? ''] && (
+        <Link
+          to={`/p/${profileId}/${DEST_PANEL[profileId ?? '']}/${r.personId ?? r.id}`}
+          className="mt-4 flex items-center justify-between gap-3 rounded-2xl bg-primary px-5 py-4 text-white no-print"
+        >
+          <span className="font-medium">Seguir completando</span> <ArrowLeft size={20} className="rotate-180" />
+        </Link>
+      )}
+
       {/* Acciones */}
       <div className="mt-4 flex flex-wrap gap-2 no-print">
         {r.phone && (
-          <a
-            href={waMeLink(r.phone, t('seguimiento.msg', { alias: r.alias }))}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-1 rounded-xl bg-secondary px-3 py-2 text-sm font-medium text-white"
-          >
-            <MessageCircle size={16} /> {t('seguimiento.recontact')}
-          </a>
+          profileId === 'agente' ? (
+            <a
+              href={waMeLink(r.phone, t('seguimiento.msg', { alias: r.alias }))}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1 rounded-xl bg-secondary px-3 py-2 text-sm font-medium text-white"
+            >
+              <MessageCircle size={16} /> {t('seguimiento.recontact')}
+            </a>
+          ) : (
+            <a
+              href={waMeLink(r.phone, t('seguimiento.msg', { alias: r.alias }))}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1 rounded-xl border border-line bg-surface px-3 py-2 text-sm text-muted hover:text-ink"
+            >
+              <MessageCircle size={15} /> {t('seguimiento.recontact')}
+            </a>
+          )
         )}
         {!r.demo && (
           <button
