@@ -23,6 +23,19 @@ const CUD_LABEL: Record<string, string> = {
   vigente: 'vigente', tramite: 'en trámite', vencido: 'vencido', no: 'no posee', nose: 'no sabe', na: 'no aplica',
 }
 
+const NEURO_LABEL: Record<string, string> = { si: 'realizada', no: 'no realizada', pendiente: 'pendiente', nose: 'no sabe' }
+const IMAGEN_LABEL: Record<string, string> = { rmn: 'Resonancia (RMN)', tc: 'Tomografía (TC)', no: 'no realizada', pendiente: 'pendiente', nose: 'no sabe' }
+const HALLAZGO_LABEL: Record<string, string> = { normal: 'normal', atrofia: 'atrofia', vascular: 'lesiones vasculares', otro: 'otro hallazgo', pendiente: 'sin informe' }
+const LAB_DEF: { id: string; label: string; unidad: string }[] = [
+  { id: 'colesterol', label: 'Colesterol total', unidad: 'mg/dl' },
+  { id: 'ldl', label: 'LDL', unidad: 'mg/dl' },
+  { id: 'hdl', label: 'HDL', unidad: 'mg/dl' },
+  { id: 'trigliceridos', label: 'Triglicéridos', unidad: 'mg/dl' },
+  { id: 'hba1c', label: 'HbA1c', unidad: '%' },
+  { id: 'tsh', label: 'TSH', unidad: 'µUI/ml' },
+  { id: 'b12', label: 'Vitamina B12', unidad: 'pg/ml' },
+]
+
 function Seccion({ titulo, children }: { titulo: string; children: React.ReactNode }) {
   return (
     <section className="mt-4 break-inside-avoid">
@@ -41,6 +54,7 @@ export function InformeDocumento() {
   const meds = usePreconsulta((s) => s.meds)
   const redFlags = usePreconsulta((s) => s.redFlags)
   const cud = usePreconsulta((s) => s.cud)
+  const estudios = usePreconsulta((s) => s.estudios)
   const [proposito, setProposito] = useState<Proposito>('cud')
   const [nota, setNota] = useState('')
 
@@ -181,6 +195,21 @@ export function InformeDocumento() {
           )}
           {cud.persona && <p className="mt-1">Certificado de Discapacidad (CUD): {CUD_LABEL[cud.persona] ?? cud.persona}.</p>}
         </Seccion>
+
+        {(estudios.neuro || estudios.imagen || LAB_DEF.some((l) => estudios[l.id])) && (
+          <Seccion titulo="Estudios complementarios">
+            {estudios.neuro && <p>Evaluación neuropsicológica: {NEURO_LABEL[estudios.neuro] ?? estudios.neuro}.</p>}
+            {estudios.imagen && (
+              <p className="mt-1">
+                Neuroimagen: {IMAGEN_LABEL[estudios.imagen] ?? estudios.imagen}
+                {estudios.imagen_hallazgo && (estudios.imagen === 'rmn' || estudios.imagen === 'tc') ? ` — ${HALLAZGO_LABEL[estudios.imagen_hallazgo] ?? estudios.imagen_hallazgo}` : ''}.
+              </p>
+            )}
+            {LAB_DEF.some((l) => estudios[l.id]) && (
+              <p className="mt-1">Laboratorio: {LAB_DEF.filter((l) => estudios[l.id]).map((l) => `${l.label} ${estudios[l.id]} ${l.unidad}`).join(' · ')}.</p>
+            )}
+          </Seccion>
+        )}
 
         <Seccion titulo="Observaciones del profesional">
           <textarea

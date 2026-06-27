@@ -10,6 +10,7 @@ import { DemografiaStep } from './steps/DemografiaStep'
 import { PrevencionStep } from './steps/PrevencionStep'
 import { FactoresStep } from './steps/FactoresStep'
 import { DeterminantesStep } from './steps/DeterminantesStep'
+import { EstudiosStep } from './steps/EstudiosStep'
 import { InstrumentStep } from './steps/InstrumentStep'
 import { MedicacionStep } from './steps/MedicacionStep'
 import { BanderasRojasStep } from './steps/BanderasRojasStep'
@@ -29,6 +30,7 @@ const BLOQUE: Record<string, string> = {
   prevencion: 'salud',
   factores: 'salud',
   determinantes: 'entorno',
+  estudios: 'salud',
   cqc: 'chequeo',
   gds: 'chequeo',
   tadlq: 'chequeo',
@@ -61,6 +63,7 @@ function deseables(modo: string | undefined): Step[] {
       { id: 'iqcode', inst: 'iqcode' },
       { id: 'faq', inst: 'faq' },
       { id: 'determinantes', Component: DeterminantesStep },
+      { id: 'estudios', Component: EstudiosStep },
       { id: 'medicacion', Component: MedicacionStep },
     ]
   return [
@@ -68,6 +71,7 @@ function deseables(modo: string | undefined): Step[] {
     { id: 'gds', inst: 'gds' },
     { id: 'tadlq', inst: 'tadlq' },
     { id: 'determinantes', Component: DeterminantesStep },
+    { id: 'estudios', Component: EstudiosStep },
     { id: 'medicacion', Component: MedicacionStep },
     { id: 'factores', Component: FactoresStep },
     { id: 'isi', inst: 'isi' },
