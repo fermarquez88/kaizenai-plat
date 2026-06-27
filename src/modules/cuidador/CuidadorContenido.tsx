@@ -1,28 +1,30 @@
 import { Link, useParams } from 'react-router-dom'
 import { ArrowLeft } from 'lucide-react'
-import { Markdown } from '../../components/Markdown'
-import entender from '../../content/cuidador/entender.md?raw'
-import dice from '../../content/cuidador/dice.md?raw'
-import recursos from '../../content/cuidador/recursos.md?raw'
-import apoyo from '../../content/cuidador/apoyo.md?raw'
+import { ShadowGuia } from '../../components/ShadowGuia'
+import entender from '../../content/cuidador/guia/entender.html?raw'
+import hacer from '../../content/cuidador/guia/hacer.html?raw'
+import recursos from '../../content/cuidador/guia/recursos.html?raw'
+import apoyoContactos from '../../content/cuidador/guia/apoyo.html?raw'
+import cuidarse from '../../content/cuidador/guia/cuidarse.html?raw'
 
-// Contenido educativo del cuidador PORTADO NATIVO (antes derivaba a la app externa).
-// Cada sección es markdown empaquetado, renderizado en la app.
-const CONTENIDO: Record<string, { titulo: string; md: string }> = {
-  entender: { titulo: 'Entender la enfermedad', md: entender },
-  dice: { titulo: 'Qué hacer en cada situación', md: dice },
-  recursos: { titulo: 'Recursos y dónde pedir ayuda', md: recursos },
-  apoyo: { titulo: 'Cuidarse para poder cuidar', md: apoyo },
+// Guía del cuidador con la MISMA experiencia de kaizen-cuidadores (tarjetas + niveles de
+// detalle + Experto + leer en voz), portada nativa vía ShadowGuia. Ya no es texto plano.
+const SECCIONES: Record<string, { titulo: string; html: string }> = {
+  entender: { titulo: 'Entender la enfermedad', html: entender },
+  dice: { titulo: 'Qué hacer en cada situación', html: hacer },
+  recursos: { titulo: 'Recursos y dónde pedir ayuda', html: apoyoContactos + recursos },
+  apoyo: { titulo: 'Cuidarse para poder cuidar', html: cuidarse },
 }
 
 export function CuidadorContenido() {
   const { profileId, seccion } = useParams()
-  const data = seccion ? CONTENIDO[seccion] : undefined
+  const data = seccion ? SECCIONES[seccion] : undefined
+  const back = `/p/${profileId ?? 'cuidador'}`
 
   if (!data) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-8">
-        <Link to={`/p/${profileId ?? 'cuidador'}`} className="inline-flex items-center gap-1 text-sm text-muted hover:text-ink"><ArrowLeft size={16} /> Volver</Link>
+        <Link to={back} className="inline-flex items-center gap-1 text-sm text-muted hover:text-ink"><ArrowLeft size={16} /> Volver</Link>
         <p className="mt-4 text-muted">Contenido no encontrado.</p>
       </div>
     )
@@ -30,10 +32,9 @@ export function CuidadorContenido() {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-6 pb-16">
-      <Link to={`/p/${profileId ?? 'cuidador'}`} className="mb-2 inline-flex items-center gap-1 text-sm text-muted hover:text-ink"><ArrowLeft size={16} /> Volver</Link>
-      <article className="prose-kaizen">
-        <Markdown source={data.md} />
-      </article>
+      <Link to={back} className="mb-2 inline-flex items-center gap-1 text-sm text-muted hover:text-ink"><ArrowLeft size={16} /> Volver</Link>
+      <h1 className="mb-3 font-serif text-2xl text-ink">{data.titulo}</h1>
+      <ShadowGuia html={data.html} />
     </div>
   )
 }
