@@ -1,4 +1,4 @@
-import { createHashRouter, Navigate } from 'react-router-dom'
+import { createHashRouter } from 'react-router-dom'
 import { App } from '../App'
 import { ProfileSelect } from '../profiles/ProfileSelect'
 import { Inicio } from '../profiles/Inicio'
@@ -34,7 +34,6 @@ export const router = createHashRouter([
       { path: 'inicio', element: <Inicio /> },
       { path: 'demo', element: <ProfileSelect /> },
       { path: 'ejemplo', element: <CasoEjemplo /> },
-      { path: 'p/agente', element: <Navigate to="/p/agente/promotor" replace /> },
       { path: 'p/:profileId', element: <RoleHome /> },
       { path: 'p/:profileId/promotor', element: <PromotorHome /> },
       { path: 'p/:profileId/preconsulta', element: <PreconsultaFlow /> },

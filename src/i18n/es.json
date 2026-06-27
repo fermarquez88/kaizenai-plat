@@ -1234,5 +1234,9 @@
     },
     "seleccionados": "{{n}} seleccionados",
     "crear": "Crear pedidos"
+  },
+  "demo": {
+    "subtitle": "Una misma persona, muchas miradas. Entrá como cada actor para ver la red integrada.",
+    "verComo": "Entrar como {{actor}}"
   }
 }

@@ -4,20 +4,11 @@ import { useTranslation } from 'react-i18next'
 import { Activity, ArrowLeft, Check, ClipboardList, HeartHandshake, MessageCircle, Stethoscope, TriangleAlert } from 'lucide-react'
 import { SEED_PERSONAS, type SeedPersona } from '../../seed/personas'
 import { alarmasDeSeed, inputFromSeed } from '../../scoring/alarmasFromSeed'
-import { colaPorRol, derivarAlarmas, type Alarma, type Rol } from '../../scoring/alarmas'
+import { colaPorRol, derivarAlarmas, type Alarma } from '../../scoring/alarmas'
+import { lenteDe } from '../../app/lentes'
 import type { MedibleTipo, PuntoMedible } from '../../scoring/medibles'
 import { waMeLink } from '../../channel/ChannelAdapter'
 import { usePedidos } from './pedidosStore'
-
-// Perfil de la app → rol del modelo de alarmas. Persona y cuidador = díada (vista cuidado).
-const ROL_POR_PERFIL: Record<string, Rol> = {
-  paciente: 'diada',
-  cuidador: 'diada',
-  agente: 'agente',
-  unidad: 'medico',
-  gestor: 'gestor',
-  comunidad: 'gestor',
-}
 
 // Valor representativo para la demo al "registrar una medición" (cierra el pedido → huella).
 const VALOR_DEMO: Record<MedibleTipo, number> = {
@@ -51,7 +42,7 @@ function conHuella(personas: SeedPersona[], extra: Record<string, PuntoMedible[]
 export function RedAlarmas() {
   const { t } = useTranslation()
   const { profileId } = useParams()
-  const rol = ROL_POR_PERFIL[profileId ?? ''] ?? 'agente'
+  const rol = lenteDe(profileId).rol
   const [now] = useState(() => Date.now())
   const [extra, setExtra] = useState<Record<string, PuntoMedible[]>>({})
   const [cerradas, setCerradas] = useState<Set<string>>(new Set())

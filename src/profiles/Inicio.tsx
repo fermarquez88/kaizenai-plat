@@ -17,7 +17,7 @@ interface Task {
 const TASKS: Task[] = [
   { key: 'persona', icon: Brain, to: '/p/paciente', accent: 'text-secondary' },
   { key: 'cuidador', icon: HeartHandshake, to: '/p/cuidador', accent: 'text-primary' },
-  { key: 'promotor', icon: MapPin, to: '/p/agente/promotor', accent: 'text-secondary' },
+  { key: 'promotor', icon: MapPin, to: '/p/agente', accent: 'text-secondary' },
 ]
 
 export function Inicio() {
@@ -58,7 +58,7 @@ export function Inicio() {
       </div>
 
       <div className="mt-6 flex flex-col items-center gap-3 text-sm">
-        <Link to="/p/unidad/red/bandeja" className="inline-flex items-center gap-2 text-secondary-text hover:underline">
+        <Link to="/p/unidad" className="inline-flex items-center gap-2 text-secondary-text hover:underline">
           <Stethoscope size={16} aria-hidden /> {t('inicio.pro')}
         </Link>
         <Link to="/demo" className="inline-flex items-center gap-2 text-muted hover:underline">
