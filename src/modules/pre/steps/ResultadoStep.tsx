@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import {
   AlertOctagon,
@@ -61,6 +62,7 @@ function ScoreBar({ min, max, value }: { min: number; max: number; value: number
 
 export function ResultadoStep() {
   const { t } = useTranslation()
+  const { profileId } = useParams()
   const { demo, lancet, instruments, factores, meds, redFlags } = usePreconsulta()
   const reset = usePreconsulta((s) => s.reset)
   const setStep = usePreconsulta((s) => s.setStep)
@@ -86,11 +88,14 @@ export function ResultadoStep() {
     if (saved.current) return
     saved.current = true
     const now = Date.now()
-    // DNI = clave estable que VINCULA registros entre actores y re-evaluaciones (resuelve el
-    // aislamiento por persona: el agente que criba a varios no conflaga el self del dispositivo).
-    // Sin DNI: persona = self del dispositivo; agente/cuidador = nuevo registro.
+    // Identidad de la persona, aislada por defecto:
+    //  - DNI presente → clave estable que VINCULA registros entre actores y re-evaluaciones.
+    //  - Sin DNI y es el PROPIO dispositivo (perfil paciente) → self (longitudinal en su teléfono).
+    //  - Sin DNI y lo carga otro (agente/cuidador cribando a varios) → id NUEVO por captura,
+    //    para NO conflar a todas las personas en el self del dispositivo del agente.
     const dni = demo.dni?.trim()
-    const personId = dni ? `dni-${dni}` : summary.modo === 'persona' ? ensureSelfPersonId() : crypto.randomUUID()
+    const esPropioDispositivo = profileId === 'paciente' && summary.modo === 'persona'
+    const personId = dni ? `dni-${dni}` : esPropioDispositivo ? ensureSelfPersonId() : crypto.randomUUID()
     // Lazo de derivación: si es rojo / hay banderas / el modelo deriva, se EMITE.
     const derivar =
       summary.triageLevel === 'rojo' || summary.mrcaDecision === 'derivar' || summary.redFlags.length > 0
@@ -136,7 +141,7 @@ export function ResultadoStep() {
         if (summary.modo === 'persona') return dexieRepo.listPersonAssessments(personId).then(setTomas)
       })
       .catch(() => {})
-  }, [summary, demo, ensureSelfPersonId])
+  }, [summary, demo, ensureSelfPersonId, profileId])
 
   const level = summary.triageLevel
   // Audiencia del informe: "persona" (Tu chequeo, lego) | "clinico" (Hoja clínica).
