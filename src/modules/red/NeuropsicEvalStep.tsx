@@ -191,7 +191,21 @@ export function NeuropsicEvalStep() {
         </div>
       </section>
 
-      <div className="mt-4">{AgregarBtn}</div>
+      {/* Administración INTERACTIVA: puntás con botones/cronómetro → bruto + z automáticos */}
+      <section className="mt-5">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">Administrar un test (interactivo)</h2>
+        <p className="text-xs text-muted">Puntás ítem por ítem; el bruto y la banda z (normas El Castaño) se calculan solos.</p>
+        <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
+          {Object.values(PROTOCOLOS).map((p) => (
+            <button key={p.id} onClick={() => setAdmin(p.id)} className="flex items-center gap-2 rounded-xl border border-secondary bg-secondary/10 p-3 text-left hover:bg-secondary/20">
+              <Plus size={16} className="shrink-0 text-secondary" />
+              <span><span className="block text-sm font-medium text-secondary-text">{p.nombre}</span><span className="block text-xs text-muted">{p.dominio}</span></span>
+            </button>
+          ))}
+        </div>
+      </section>
+
+      <div className="mt-5">{AgregarBtn}</div>
 
       {verBateria && (
         <section className="mt-4 space-y-5">
@@ -211,11 +225,6 @@ export function NeuropsicEvalStep() {
                         <label className="text-sm font-medium text-ink">{t.label}{t.ayuda ? <span className="text-xs text-muted"> · {t.ayuda}</span> : null}</label>
                         <div className="mt-1 flex flex-wrap items-center gap-3">
                           <input type="number" inputMode="numeric" value={raws[t.id] ?? ''} onChange={(e) => setRaw(t.id, e.target.value)} className="w-24 rounded-lg border border-line bg-bg px-2 py-1.5 text-ink" />
-                          {PROTOCOLOS[t.id] && (
-                            <button onClick={() => setAdmin(t.id)} className="inline-flex items-center gap-1 rounded-lg border border-secondary bg-secondary/10 px-3 py-1.5 text-sm font-medium text-secondary">
-                              <Plus size={15} /> Administrar
-                            </button>
-                          )}
                           {txt && <span className={'text-sm ' + (txt.alterada ? 'text-rojo-text' : 'text-muted')}>z {txt.z} · {txt.band}</span>}
                         </div>
                       </div>
@@ -233,7 +242,14 @@ export function NeuropsicEvalStep() {
         <AdminInteractiva
           protocolo={PROTOCOLOS[admin]}
           onCerrar={() => setAdmin(null)}
-          onListo={(bruto) => { setRaw(admin, String(bruto)); setAdmin(null) }}
+          onListo={(brutos) => {
+            for (const [k, n] of Object.entries(brutos)) {
+              if (k === 'ace') setAce(String(n))
+              else if (k === 'mmse') setMmse(String(n))
+              else setRaw(k, String(n))
+            }
+            setAdmin(null)
+          }}
         />
       )}
 
