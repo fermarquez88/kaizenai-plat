@@ -24,6 +24,7 @@ import { waMeLink } from '../../../channel/ChannelAdapter'
 import type { TriageLevel } from '../../../scoring/triage'
 import { computeDomainCompleteness } from '../../../scoring/domainCompleteness'
 import { CompletitudPorDominio } from '../../profile/CompletitudPorDominio'
+import { LeerVoz } from '../../../components/LeerVoz'
 
 // Amarillo usa text-ink (no text-accent-text) por contraste WCAG sobre bg-amarillo/10.
 const LEVEL_STYLE: Record<TriageLevel, string> = {
@@ -206,7 +207,10 @@ export function ResultadoStep() {
 
       {/* 2 · Qué significa (lenguaje claro) */}
       <section className="mt-3 rounded-2xl border border-line bg-surface p-5 shadow-card">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">{t('triage.meaningTitle')}</h2>
+        <div className="flex items-start justify-between gap-3">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">{t('triage.meaningTitle')}</h2>
+          <LeerVoz texto={`${t(`triage.meaning.${level}`)}. ${t(`triage.action.${level}`)}`} className="no-print shrink-0" />
+        </div>
         <p className="mt-2 text-lg text-ink">{t(`triage.meaning.${level}`)}</p>
         <p className="mt-3 text-sm text-muted">{t('triage.disclaimerShort')}</p>
       </section>
