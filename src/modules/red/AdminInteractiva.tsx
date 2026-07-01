@@ -77,7 +77,7 @@ function NumInput({ value, max, onChange }: { value?: number; max?: number; onCh
         type="number"
         inputMode="numeric"
         value={value ?? ''}
-        onChange={(e) => onChange(e.target.value === '' ? 0 : Number(e.target.value))}
+        onChange={(e) => { const n = Number(e.target.value); onChange(e.target.value === '' || Number.isNaN(n) ? 0 : n) }}
         className="w-20 rounded-xl border border-line bg-bg px-3 py-2 text-center text-lg text-ink outline-none focus:border-secondary"
       />
       <button onClick={() => onChange((value ?? 0) + 1)} className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-line bg-bg text-ink"><Plus size={18} /></button>
@@ -90,11 +90,14 @@ function Timer({ onTick }: { onTick: (s: number) => void }) {
   const [s, setS] = useState(0)
   const [run, setRun] = useState(false)
   const ref = useRef<number | null>(null)
+  // onTick por ref: evita el loop de render (onTick se recrea en cada render del padre).
+  const onTickRef = useRef(onTick)
+  onTickRef.current = onTick
   useEffect(() => {
     if (run) ref.current = window.setInterval(() => setS((x) => x + 1), 1000)
-    return () => { if (ref.current) window.clearInterval(ref.current) }
+    return () => { if (ref.current) { window.clearInterval(ref.current); ref.current = null } }
   }, [run])
-  useEffect(() => { onTick(s) }, [s, onTick])
+  useEffect(() => { onTickRef.current(s) }, [s])
   const mm = String(Math.floor(s / 60)).padStart(2, '0')
   const ss = String(s % 60).padStart(2, '0')
   return (
