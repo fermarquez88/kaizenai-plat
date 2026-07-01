@@ -243,11 +243,13 @@ export function NeuropsicEvalStep() {
           protocolo={PROTOCOLOS[admin]}
           onCerrar={() => setAdmin(null)}
           onListo={(brutos) => {
+            let tocaBateria = false
             for (const [k, n] of Object.entries(brutos)) {
               if (k === 'ace') setAce(String(n))
               else if (k === 'mmse') setMmse(String(n))
-              else setRaw(k, String(n))
+              else { setRaw(k, String(n)); tocaBateria = true }
             }
+            if (tocaBateria) setVerBateria(true) // muestra de una la z puntuada
             setAdmin(null)
           }}
         />

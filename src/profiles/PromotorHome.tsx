@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { Link, useParams } from 'react-router-dom'
 import { Check, ClipboardCheck, ListChecks, MessageCircle, Sparkles, Users } from 'lucide-react'
 import { useRedRecords } from '../modules/red/redRecords'
+import { Tarjeta } from '../components/Tarjeta'
 import { dexieRepo } from '../data/dexieRepo'
 import { waMeLink } from '../channel/ChannelAdapter'
 import type { SeguimientoEstado } from '../scoring/retention'
@@ -120,16 +121,10 @@ export function PromotorHome() {
         </ul>
       )}
 
-      <div className="mt-6 flex flex-wrap gap-3 text-sm">
-        <Link to={`/p/${pid}/seguimiento`} className="inline-flex items-center gap-2 text-secondary-text hover:underline">
-          <Users size={16} aria-hidden /> {t('promotor.todaMiGente')}
-        </Link>
-        <Link to={`/p/${pid}/red/cola`} className="inline-flex items-center gap-2 text-secondary-text hover:underline">
-          <ListChecks size={16} aria-hidden /> {t('promotor.cola')}
-        </Link>
-        <Link to={`/p/${pid}/tejer`} className="inline-flex items-center gap-2 text-secondary-text hover:underline">
-          <Sparkles size={16} aria-hidden /> Tejer comunidad
-        </Link>
+      <div className="mt-6 grid grid-cols-1 gap-2 sm:grid-cols-3">
+        <Tarjeta icon={Users} titulo={t('promotor.todaMiGente')} to={`/p/${pid}/seguimiento`} />
+        <Tarjeta icon={ListChecks} titulo={t('promotor.cola')} to={`/p/${pid}/red/cola`} />
+        <Tarjeta icon={Sparkles} titulo="Tejer comunidad" sub="Conexiones entre tu gente" to={`/p/${pid}/tejer`} />
       </div>
     </div>
   )
