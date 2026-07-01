@@ -5,6 +5,7 @@ import { AlertOctagon, AlertTriangle, CalendarCheck, CheckCircle2 } from 'lucide
 import { dexieRepo } from '../../data/dexieRepo'
 import { useSettings } from '../../lib/store'
 import { cidiTurnoLink } from '../../data/sanjuan'
+import { LeerVoz } from '../../components/LeerVoz'
 import type { PreAssessmentSummary, TriageLevel } from '../../data/types'
 
 const STYLE: Record<TriageLevel, string> = {
@@ -98,7 +99,10 @@ export function MiResultado() {
             </div>
           </div>
           <section className="mt-3 rounded-2xl border border-line bg-surface p-5 shadow-card">
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">{t('triage.meaningTitle')}</h2>
+            <div className="flex items-start justify-between gap-3">
+              <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">{t('triage.meaningTitle')}</h2>
+              <LeerVoz texto={`${t(`triage.meaning.${a.triage}`)}. ${t(`triage.action.${a.triage}`)}`} className="shrink-0" />
+            </div>
             <p className="mt-2 text-lg text-ink">{t(`triage.meaning.${a.triage}`)}</p>
             <p className="mt-3 text-sm text-muted">{t('triage.disclaimerShort')}</p>
           </section>
