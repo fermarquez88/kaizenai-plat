@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom'
-import { Link } from 'react-router-dom'
 import { Brain, CalendarClock, ClipboardList, HeartHandshake, ListChecks, Stethoscope, UserPlus, Users } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
+import { Tarjeta } from '../components/Tarjeta'
 
 // Bienvenida "forma de comenzar" para el EQUIPO: cada perfil aterriza en SU tarea, no en la
 // cola cruda. (decisión 2026-06-27: díada=Hilo, equipo=Cuaderno needs-first). Cada tarjeta
@@ -45,25 +45,15 @@ export function EquipoHome() {
       <h1 className="mt-1 font-serif text-2xl text-ink sm:text-3xl">¿Qué necesita hacer hoy?</h1>
 
       {/* Acción PRINCIPAL: completar a mano el bus del paciente */}
-      <Link to={`/p/${pid}/paciente`} className="mt-5 flex items-center gap-3 rounded-2xl bg-primary p-5 text-white shadow-card transition hover:-translate-y-0.5">
-        <span className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/20"><UserPlus size={26} /></span>
-        <span>
-          <span className="block text-lg font-medium">{cfg.accion}</span>
-          <span className="block text-sm text-white/90">Buscá por nombre o DNI (o cargá nueva) → {cfg.carga}.</span>
-        </span>
-      </Link>
+      <div className="mt-5">
+        <Tarjeta icon={UserPlus} titulo={cfg.accion} sub={`Buscá por nombre o DNI (o cargá nueva) → ${cfg.carga}.`} to={`/p/${pid}/paciente`} variant="primary" flecha />
+      </div>
 
       <p className="mt-6 mb-2 text-xs font-semibold uppercase tracking-wide text-muted">Otras vistas</p>
-      <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
-        {cfg.secundarios.map((c) => {
-          const Icon = c.icon
-          return (
-            <Link key={c.seg} to={`/p/${pid}/${c.seg}`} className="flex items-center gap-2 rounded-xl border border-line bg-surface p-3 hover:border-secondary">
-              <Icon size={18} className="shrink-0 text-secondary" />
-              <span><span className="block text-sm text-ink">{c.titulo}</span><span className="block text-xs text-muted">{c.sub}</span></span>
-            </Link>
-          )
-        })}
+      <div className="space-y-2">
+        {cfg.secundarios.map((c) => (
+          <Tarjeta key={c.seg} icon={c.icon} titulo={c.titulo} sub={c.sub} to={`/p/${pid}/${c.seg}`} />
+        ))}
       </div>
     </div>
   )

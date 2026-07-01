@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { ArrowLeft, BookOpen, Brain, ClipboardCheck, FileText, HandHeart, HeartPulse, Lightbulb, LifeBuoy, Users } from 'lucide-react'
 import { useSettings } from '../../lib/store'
 import { INSTRUMENTS } from '../../scoring/instruments'
+import { Tarjeta as Rama } from '../../components/Tarjeta'
 import { Onboarding } from '../profile/Onboarding'
 import { useEscalas, ultimoResultado } from './escalasStore'
 import { EscalaRunner } from './EscalaRunner'
@@ -15,19 +15,6 @@ const GUIA = 'https://fermarquez88.github.io/kaizenai-cuidadores/'
 const ESCALAS = ['zaritR', 'phq9', 'gad', 'autoeficacia', 'apoyoSocial', 'pac'].filter((id) => INSTRUMENTS[id])
 
 const fechaCorta = (ms: number) => new Date(ms).toLocaleDateString('es-AR')
-
-function Rama({ icon: Icon, titulo, sub, onClick, to, externo }: { icon: typeof Brain; titulo: string; sub: string; onClick?: () => void; to?: string; externo?: boolean }) {
-  const cls = 'flex w-full items-center gap-3 rounded-2xl border border-line bg-surface p-4 text-left hover:border-secondary hover:-translate-y-0.5 transition'
-  const inner = (
-    <>
-      <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-line bg-bg text-secondary"><Icon size={22} /></span>
-      <span><span className="block font-medium text-ink">{titulo}</span><span className="block text-sm text-muted">{sub}</span></span>
-    </>
-  )
-  if (to && externo) return <a href={to} target="_blank" rel="noreferrer" className={cls}>{inner}</a>
-  if (to) return <Link to={to} className={cls}>{inner}</Link>
-  return <button onClick={onClick} className={cls}>{inner}</button>
-}
 
 export function CuidadorEspacio() {
   const usuarioRol = useSettings((s) => s.usuarioRol)
