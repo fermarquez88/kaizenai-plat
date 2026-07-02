@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { AlertTriangle, ArrowLeft, Pencil, Printer, Save } from 'lucide-react'
-import { personaSeed } from '../../seed/personas'
+import { usePersona } from '../../data/usePersona'
 import { useSocial } from './socialStore'
 import { usePedidos } from './pedidosStore'
 
@@ -72,8 +72,7 @@ export function SocialStep() {
   const data = useSocial((s) => (personId ? s.porPersona[personId] : undefined)) ?? {}
   const setCampo = useSocial((s) => s.setCampo)
   const cerrarPedido = usePedidos((s) => s.cerrarPedido)
-  const persona = personaSeed(personId)
-  const alias = persona?.alias ?? personId ?? '—'
+  const { alias, edad } = usePersona(personId)
   const [gestiones, setGestiones] = useState(data.gestiones ?? '')
   const [modo, setModo] = useState<'cargar' | 'informe'>('cargar')
 
@@ -103,7 +102,7 @@ export function SocialStep() {
           <header className="border-b-2 border-ink pb-2">
             <p className="text-xs text-muted">Programa de Salud Cerebral · San Juan · KaizenAI</p>
             <h1 className="font-serif text-2xl text-ink">Informe social</h1>
-            <p className="text-sm text-ink">{alias}{persona ? ` · ${persona.age} años` : ''}</p>
+            <p className="text-sm text-ink">{alias}{edad != null ? ` · ${edad} años` : ''}</p>
           </header>
 
           {riesgos.length > 0 && (

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { Activity, AlertTriangle, ArrowLeft, Pencil, Printer, Save } from 'lucide-react'
-import { personaSeed } from '../../seed/personas'
+import { usePersona } from '../../data/usePersona'
 import { usePedidos } from './pedidosStore'
 import { alertasVitales, imc, ultimoVital, useVitales, Vitales } from './vitalesStore'
 
@@ -43,8 +43,7 @@ export function VitalesStep() {
   const registrar = useVitales((s) => s.registrar)
   const porPersona = useVitales((s) => s.porPersona)
   const cerrarPedido = usePedidos((s) => s.cerrarPedido)
-  const persona = personaSeed(personId)
-  const alias = persona?.alias ?? personId ?? '—'
+  const { alias, edad } = usePersona(personId)
   const previo = personId ? ultimoVital(porPersona, personId) : undefined
 
   const [raw, setRaw] = useState<Record<string, string>>({})
@@ -78,7 +77,7 @@ export function VitalesStep() {
           <header className="border-b-2 border-ink pb-2">
             <p className="text-xs text-muted">Programa de Salud Cerebral · San Juan · KaizenAI</p>
             <h1 className="font-serif text-2xl text-ink">Control de signos vitales</h1>
-            <p className="text-sm text-ink">{alias}{persona ? ` · ${persona.age} años` : ''} · {fmtFecha(guardado.fecha)}</p>
+            <p className="text-sm text-ink">{alias}{edad != null ? ` · ${edad} años` : ''} · {fmtFecha(guardado.fecha)}</p>
           </header>
 
           {alertasG.length > 0 && (

@@ -10,6 +10,7 @@ export interface ProtocoloItem {
   label: string
   tipo: ItemTipo
   max?: number // stepper: cantidad de botones 0..max; num: tope sugerido
+  limite?: number // timer: segundos tras los que avisa/autopausa (p. ej. 60 en fluencias)
   ayuda?: string
 }
 
@@ -108,7 +109,7 @@ export const PROTOCOLOS: Record<string, Protocolo> = {
     intro: 'Cronómetro 60 s; sumá una por cada palabra válida.',
     salidas: ['flu_sem'],
     items: [
-      { key: 'tiempo', label: 'Cronómetro', tipo: 'timer', ayuda: '60 s' },
+      { key: 'tiempo', label: 'Cronómetro', tipo: 'timer', limite: 60, ayuda: '60 s' },
       { key: 'palabras', label: 'Palabras válidas', tipo: 'tally' },
     ],
     bruto: (v) => ({ flu_sem: v.palabras ?? 0 }),
@@ -122,7 +123,7 @@ export const PROTOCOLOS: Record<string, Protocolo> = {
     intro: 'Cronómetro 60 s; sumá una por palabra válida (sin nombres propios ni repeticiones).',
     salidas: ['flu_fon'],
     items: [
-      { key: 'tiempo', label: 'Cronómetro', tipo: 'timer', ayuda: '60 s' },
+      { key: 'tiempo', label: 'Cronómetro', tipo: 'timer', limite: 60, ayuda: '60 s' },
       { key: 'palabras', label: 'Palabras válidas', tipo: 'tally' },
     ],
     bruto: (v) => ({ flu_fon: v.palabras ?? 0 }),

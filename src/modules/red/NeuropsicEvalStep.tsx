@@ -1,10 +1,11 @@
-import { useMemo, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { useEffect, useMemo, useState } from 'react'
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { ArrowLeft, FileText, Pencil, Plus, Printer, Save } from 'lucide-react'
 import { BATERIA_NPS, DOMINIOS_NPS, puntuarBateria, type ResultadoBateria } from '../../scoring/bateriaNps'
 import type { Sexo } from '../../scoring/cognitiveNorms'
 import { PROTOCOLOS } from '../../scoring/protocolos'
-import { personaSeed } from '../../seed/personas'
+import { usePersona } from '../../data/usePersona'
+import { backTo } from '../../app/nav'
 import { AdminInteractiva } from './AdminInteractiva'
 import { ZProfile } from './ZProfile'
 import { useNeuro, type NeuroResultado } from './neuroStore'
@@ -28,18 +29,27 @@ export function NeuropsicEvalStep() {
   const { profileId, personId } = useParams()
   const setResultados = useNeuro((s) => s.setResultados)
   const cerrarPedido = usePedidos((s) => s.cerrarPedido)
-  const persona = personaSeed(personId)
-  const alias = persona?.alias ?? personId ?? '—'
+  const navigate = useNavigate()
+  const { pathname } = useLocation()
+  const { alias, edad: edadP, edu: eduP } = usePersona(personId)
 
   const [sexo, setSexo] = useState<Sexo | ''>('')
+  const [edad, setEdad] = useState('')
+  const [edu, setEdu] = useState('')
   const [ace, setAce] = useState('')
   const [mmse, setMmse] = useState('')
   const [raws, setRaws] = useState<Record<string, string>>({})
   const [verBateria, setVerBateria] = useState(false)
-  const [admin, setAdmin] = useState<string | null>(null) // bateriaId en administración interactiva
+  const [admin, setAdmin] = useState<string | null>(null) // protocolo en administración interactiva
   const [modo, setModo] = useState<'cargar' | 'informe'>('cargar')
 
-  const demo = useMemo(() => ({ edad: persona?.age, eduAnios: persona?.edu, sexo: (sexo || undefined) as Sexo | undefined }), [persona, sexo])
+  // Edad/educación: editables; se prellenan con lo resuelto de la persona (seed/registro).
+  useEffect(() => { if (edad === '' && edadP != null) setEdad(String(edadP)) }, [edadP]) // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (edu === '' && eduP != null) setEdu(String(eduP)) }, [eduP]) // eslint-disable-line react-hooks/exhaustive-deps
+  const edadNum = edad !== '' ? Number(edad) : edadP
+  const eduNum = edu !== '' ? Number(edu) : eduP
+
+  const demo = useMemo(() => ({ edad: edadNum, eduAnios: eduNum, sexo: (sexo || undefined) as Sexo | undefined }), [edadNum, eduNum, sexo])
   const numericRaws = useMemo(() => {
     const o: Record<string, number> = {}
     for (const [k, v] of Object.entries(raws)) if (v !== '' && !Number.isNaN(Number(v))) o[k] = Number(v)
@@ -79,6 +89,9 @@ export function NeuropsicEvalStep() {
           <button onClick={() => setModo('cargar')} className="inline-flex items-center gap-1 text-sm text-muted hover:text-ink">
             <Pencil size={16} /> Volver a editar
           </button>
+          <Link to={`/p/${profileId}/ficha/${personId}`} className="inline-flex items-center gap-1 text-sm text-muted hover:text-ink">
+            <ArrowLeft size={16} /> A la ficha
+          </Link>
           <button onClick={() => window.print()} className="ml-auto inline-flex items-center gap-1 rounded-xl bg-primary px-4 py-2 text-sm font-medium text-white">
             <Printer size={16} /> Imprimir
           </button>
@@ -87,7 +100,7 @@ export function NeuropsicEvalStep() {
           <header className="border-b-2 border-ink pb-2">
             <p className="text-xs text-muted">Programa de Salud Cerebral · San Juan · KaizenAI</p>
             <h1 className="font-serif text-2xl text-ink">Informe neuropsicológico</h1>
-            <p className="text-sm text-ink">{alias}{persona ? ` · ${persona.age} años · ${persona.edu} años de escuela` : ''}{sexo ? ` · ${sexo}` : ''}</p>
+            <p className="text-sm text-ink">{alias}{edadNum != null ? ` · ${edadNum} años` : ''}{eduNum != null ? ` · ${eduNum} años de escuela` : ''}{sexo ? ` · ${sexo}` : ''}</p>
             <p className="mt-1 text-xs text-muted">Normas por edad/sexo/educación (estimación, no diagnóstico).</p>
           </header>
 
@@ -160,18 +173,27 @@ export function NeuropsicEvalStep() {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-8 pb-28">
-      <Link to={`/p/${profileId}/alarmas`} className="mb-3 inline-flex items-center gap-1 text-sm text-muted hover:text-ink no-print">
+      <button onClick={() => navigate(backTo(pathname))} className="mb-3 inline-flex items-center gap-1 text-sm text-muted hover:text-ink no-print">
         <ArrowLeft size={16} /> Volver
-      </Link>
+      </button>
       <h1 className="font-serif text-2xl text-ink sm:text-3xl">Batería neuropsicológica</h1>
-      <p className="mt-1 text-sm text-muted">{alias}{persona ? ` · ${persona.age} años · ${persona.edu} años de escuela` : ''}. Cargá los puntajes brutos; calculamos la banda normada.</p>
+      <p className="mt-1 text-sm text-muted">{alias}. Cargá los puntajes brutos; calculamos la banda normada por edad/sexo/educación.</p>
 
-      <div className="mt-3 flex items-center gap-2">
-        <label className="text-sm text-muted">Sexo (para normas):</label>
-        <select value={sexo} onChange={(e) => setSexo(e.target.value as Sexo | '')} className="rounded-lg border border-line bg-bg px-2 py-1 text-sm text-ink">
-          <option value="">—</option><option value="Mujer">Mujer</option><option value="Hombre">Hombre</option>
-        </select>
+      {/* Normas por perfil: edad, educación y sexo (editables; prellenados si se conocen) */}
+      <div className="mt-3 grid grid-cols-3 gap-2">
+        <label className="block text-sm text-muted">Edad
+          <input type="number" inputMode="numeric" value={edad} onChange={(e) => setEdad(e.target.value)} className="mt-0.5 w-full rounded-lg border border-line bg-bg px-2 py-1.5 text-ink" />
+        </label>
+        <label className="block text-sm text-muted">Años de escuela
+          <input type="number" inputMode="numeric" value={edu} onChange={(e) => setEdu(e.target.value)} className="mt-0.5 w-full rounded-lg border border-line bg-bg px-2 py-1.5 text-ink" />
+        </label>
+        <label className="block text-sm text-muted">Sexo
+          <select value={sexo} onChange={(e) => setSexo(e.target.value as Sexo | '')} className="mt-0.5 w-full rounded-lg border border-line bg-bg px-2 py-1.5 text-sm text-ink">
+            <option value="">—</option><option value="Mujer">Mujer</option><option value="Hombre">Hombre</option>
+          </select>
+        </label>
       </div>
+      {(edadNum == null || eduNum == null) && <p className="mt-1 text-xs text-rojo-text">Cargá edad y años de escuela para calcular las bandas z.</p>}
 
       {/* Por defecto: ACE-III + Mini-Mental */}
       <section className="mt-5 space-y-3">

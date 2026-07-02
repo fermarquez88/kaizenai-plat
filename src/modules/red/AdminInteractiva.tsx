@@ -25,7 +25,7 @@ export function AdminInteractiva({ protocolo, onListo, onCerrar }: { protocolo: 
               {it.tipo === 'stepper' && <Stepper value={v[it.key] ?? 0} max={it.max ?? 10} onChange={(n) => set(it.key, n)} />}
               {it.tipo === 'tally' && <Tally value={v[it.key] ?? 0} onChange={(n) => set(it.key, n)} />}
               {it.tipo === 'num' && <NumInput value={v[it.key]} max={it.max} onChange={(n) => set(it.key, n)} />}
-              {it.tipo === 'timer' && <Timer onTick={(s) => set(it.key, s)} />}
+              {it.tipo === 'timer' && <Timer onTick={(s) => set(it.key, s)} limite={it.limite} />}
             </div>
           ))}
         </div>
@@ -49,8 +49,8 @@ function Stepper({ value, max, onChange }: { value: number; max: number; onChang
   return (
     <div className="mt-2 flex flex-wrap items-center gap-1.5">
       {Array.from({ length: max + 1 }, (_, i) => (
-        <button key={i} onClick={() => onChange(i)} aria-pressed={value === i}
-          className={'h-9 w-9 rounded-lg border text-sm font-medium ' + (value === i ? 'border-secondary bg-secondary text-white' : 'border-line bg-bg text-ink hover:border-secondary')}>
+        <button key={i} onClick={() => onChange(i)} aria-pressed={value === i} aria-label={`Puntaje ${i}`}
+          className={'h-9 w-9 rounded-lg border text-sm font-medium ' + (value === i ? 'border-secondary bg-secondary text-white ring-2 ring-secondary/40' : 'border-line bg-bg text-ink hover:border-secondary')}>
           {i}
         </button>
       ))}
@@ -62,9 +62,9 @@ function Stepper({ value, max, onChange }: { value: number; max: number; onChang
 function Tally({ value, onChange }: { value: number; onChange: (n: number) => void }) {
   return (
     <div className="mt-2 flex items-center gap-3">
-      <button onClick={() => onChange(value - 1)} className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-line bg-bg text-ink"><Minus size={20} /></button>
-      <span className="min-w-[3ch] text-center font-serif text-3xl text-ink">{value}</span>
-      <button onClick={() => onChange(value + 1)} className="inline-flex h-14 w-14 items-center justify-center rounded-xl bg-secondary text-white"><Plus size={26} /></button>
+      <button aria-label="Restar uno" onClick={() => onChange(value - 1)} className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-line bg-bg text-ink"><Minus size={20} /></button>
+      <span className="min-w-[3ch] text-center font-serif text-3xl text-ink" aria-live="polite">{value}</span>
+      <button aria-label="Sumar uno" onClick={() => onChange(value + 1)} className="inline-flex h-14 w-14 items-center justify-center rounded-xl bg-secondary text-white"><Plus size={26} /></button>
     </div>
   )
 }
@@ -72,7 +72,7 @@ function Tally({ value, onChange }: { value: number; onChange: (n: number) => vo
 function NumInput({ value, max, onChange }: { value?: number; max?: number; onChange: (n: number) => void }) {
   return (
     <div className="mt-2 flex items-center gap-2">
-      <button onClick={() => onChange(Math.max(0, (value ?? 0) - 1))} className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-line bg-bg text-ink"><Minus size={18} /></button>
+      <button aria-label="Restar uno" onClick={() => onChange(Math.max(0, (value ?? 0) - 1))} className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-line bg-bg text-ink"><Minus size={18} /></button>
       <input
         type="number"
         inputMode="numeric"
@@ -80,13 +80,13 @@ function NumInput({ value, max, onChange }: { value?: number; max?: number; onCh
         onChange={(e) => { const n = Number(e.target.value); onChange(e.target.value === '' || Number.isNaN(n) ? 0 : n) }}
         className="w-20 rounded-xl border border-line bg-bg px-3 py-2 text-center text-lg text-ink outline-none focus:border-secondary"
       />
-      <button onClick={() => onChange((value ?? 0) + 1)} className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-line bg-bg text-ink"><Plus size={18} /></button>
+      <button aria-label="Sumar uno" onClick={() => onChange((value ?? 0) + 1)} className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-line bg-bg text-ink"><Plus size={18} /></button>
       {max != null && <span className="text-xs text-muted">/ {max}</span>}
     </div>
   )
 }
 
-function Timer({ onTick }: { onTick: (s: number) => void }) {
+function Timer({ onTick, limite }: { onTick: (s: number) => void; limite?: number }) {
   const [s, setS] = useState(0)
   const [run, setRun] = useState(false)
   const ref = useRef<number | null>(null)
@@ -98,15 +98,19 @@ function Timer({ onTick }: { onTick: (s: number) => void }) {
     return () => { if (ref.current) { window.clearInterval(ref.current); ref.current = null } }
   }, [run])
   useEffect(() => { onTickRef.current(s) }, [s])
+  // Autopausa al llegar al límite (p. ej. 60 s en fluencias): mantiene la administración estándar.
+  const cumplido = limite != null && s >= limite
+  useEffect(() => { if (cumplido && run) setRun(false) }, [cumplido, run])
   const mm = String(Math.floor(s / 60)).padStart(2, '0')
   const ss = String(s % 60).padStart(2, '0')
   return (
-    <div className="mt-2 flex items-center gap-3">
-      <span className="font-mono text-2xl text-ink">{mm}:{ss}</span>
-      <button onClick={() => setRun((r) => !r)} className="inline-flex items-center gap-1 rounded-xl bg-secondary px-3 py-2 text-sm font-medium text-white">
+    <div className="mt-2 flex flex-wrap items-center gap-3">
+      <span className={'font-mono text-2xl ' + (cumplido ? 'text-rojo-text' : 'text-ink')}>{mm}:{ss}</span>
+      <button onClick={() => setRun((r) => !r)} disabled={cumplido} className="inline-flex items-center gap-1 rounded-xl bg-secondary px-3 py-2 text-sm font-medium text-white disabled:opacity-40">
         {run ? <><Pause size={16} /> Pausar</> : <><Play size={16} /> Iniciar</>}
       </button>
       <button onClick={() => { setRun(false); setS(0) }} className="inline-flex items-center gap-1 rounded-xl border border-line px-3 py-2 text-sm text-muted"><RotateCcw size={15} /> Reiniciar</button>
+      {cumplido && <span className="text-sm font-medium text-rojo-text">Tiempo cumplido ({limite}s)</span>}
     </div>
   )
 }

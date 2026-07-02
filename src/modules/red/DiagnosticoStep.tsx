@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { ArrowLeft, Pencil, Printer, Save, Stethoscope } from 'lucide-react'
-import { personaSeed } from '../../seed/personas'
+import { usePersona } from '../../data/usePersona'
 import { usePedidos } from './pedidosStore'
 import { CDR, cdrLabel, DIAGNOSTICOS, Diagnostico, dxLabel, ultimoDiagnostico, useDiagnostico } from './diagnosticoStore'
 
@@ -14,8 +14,7 @@ export function DiagnosticoStep() {
   const registrar = useDiagnostico((s) => s.registrar)
   const porPersona = useDiagnostico((s) => s.porPersona)
   const cerrarPedido = usePedidos((s) => s.cerrarPedido)
-  const persona = personaSeed(personId)
-  const alias = persona?.alias ?? personId ?? '—'
+  const { alias, edad } = usePersona(personId)
   const previo = personId ? ultimoDiagnostico(porPersona, personId) : undefined
 
   const [dx, setDx] = useState(previo?.dx ?? '')
@@ -45,7 +44,7 @@ export function DiagnosticoStep() {
           <header className="border-b-2 border-ink pb-2">
             <p className="text-xs text-muted">Programa de Salud Cerebral · San Juan · KaizenAI</p>
             <h1 className="font-serif text-2xl text-ink">Constancia diagnóstica</h1>
-            <p className="text-sm text-ink">{alias}{persona ? ` · ${persona.age} años` : ''} · {fmtFecha(guardado.fecha)}</p>
+            <p className="text-sm text-ink">{alias}{edad != null ? ` · ${edad} años` : ''} · {fmtFecha(guardado.fecha)}</p>
           </header>
           <section className="mt-4">
             <h2 className="text-sm font-semibold uppercase tracking-wide text-ink">Impresión diagnóstica</h2>
