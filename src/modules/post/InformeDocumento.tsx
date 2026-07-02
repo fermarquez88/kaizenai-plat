@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import { ArrowLeft, Printer } from 'lucide-react'
 import { usePreconsulta } from '../pre/preconsultaStore'
 import { buildSummary } from '../../data/preconsultaSummary'
+import { usePersona } from '../../data/usePersona'
 
 // Informe de salud cerebral GENÉRICO e imprimible: sintetiza todas las capas del perfil
 // (autorreporte + informante + objetivo + riesgo + medicación + determinantes) en un
@@ -46,7 +47,11 @@ function Seccion({ titulo, children }: { titulo: string; children: React.ReactNo
 }
 
 export function InformeDocumento() {
-  const { profileId } = useParams()
+  const { profileId, personId } = useParams()
+  const intended = usePersona(personId)
+  // El documento se arma con el chequeo cargado (usePreconsulta). Si vino con :personId y no
+  // coincide, avisamos para no firmar datos de otra persona (riesgo detectado en auditoría).
+  const coincide = !personId || (!!intended.dni && `dni-${intended.dni}` === personId)
   const demo = usePreconsulta((s) => s.demo)
   const lancet = usePreconsulta((s) => s.lancet)
   const instruments = usePreconsulta((s) => s.instruments)
@@ -98,6 +103,11 @@ export function InformeDocumento() {
             <Printer size={16} /> Imprimir
           </button>
         </div>
+        {!coincide && (
+          <p className="mt-2 rounded-xl border border-rojo bg-rojo/10 p-3 text-sm text-rojo-text">
+            ⚠️ Este documento se arma con el chequeo cargado ({demo.alias || 'sin datos'}), que <strong>no coincide</strong> con {intended.alias}. Abrí el chequeo de esa persona antes de imprimir/firmar.
+          </p>
+        )}
       </div>
 
       {/* Documento */}
@@ -112,6 +122,7 @@ export function InformeDocumento() {
         <Seccion titulo="Datos de la persona">
           <p>
             <strong>{demo.alias || '—'}</strong>
+            {demo.dni && ` · DNI ${demo.dni}`}
             {demo.edad != null && ` · ${demo.edad} años`}
             {demo.sexo && ` · ${demo.sexo}`}
             {demo.edu_anios != null && ` · ${demo.edu_anios} años de escolaridad`}

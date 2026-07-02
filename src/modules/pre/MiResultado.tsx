@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { usePersona } from '../../data/usePersona'
 import { AlertOctagon, AlertTriangle, CalendarCheck, CheckCircle2 } from 'lucide-react'
 import { dexieRepo } from '../../data/dexieRepo'
 import { useSettings } from '../../lib/store'
@@ -22,20 +23,25 @@ function LevelIcon({ level }: { level: TriageLevel }) {
 
 export function MiResultado() {
   const { t } = useTranslation()
+  const { profileId } = useParams()
   const [a, setA] = useState<PreAssessmentSummary | null | undefined>(undefined)
   const [history, setHistory] = useState<PreAssessmentSummary[]>([])
   const selfPersonId = useSettings((s) => s.selfPersonId)
+  const activePersonId = useSettings((s) => s.activePersonId)
   const ensureSelfPersonId = useSettings((s) => s.ensureSelfPersonId)
+  // El cuidador ve el informe de la PERSONA CUIDADA (activePersonId); la persona, el suyo.
+  const targetId = profileId === 'cuidador' ? activePersonId : selfPersonId
+  const persona = usePersona(targetId ?? undefined)
 
   const load = useCallback(
     () =>
       dexieRepo.listPreAssessments().then((list) => {
-        const mine = selfPersonId ? list.filter((x) => x.personId === selfPersonId) : list
+        const mine = targetId ? list.filter((x) => x.personId === targetId) : []
         const sorted = [...mine].sort((x, y) => x.createdAt - y.createdAt)
         setHistory(sorted)
         setA(sorted.length ? sorted[sorted.length - 1] : null)
       }),
-    [selfPersonId],
+    [targetId],
   )
 
   useEffect(() => {
@@ -65,14 +71,14 @@ export function MiResultado() {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-8">
-      <h1 className="font-serif text-2xl text-ink sm:text-3xl">{t('mi.title')}</h1>
+      <h1 className="font-serif text-2xl text-ink sm:text-3xl">{profileId === 'cuidador' && persona.encontrada ? `Informe de ${persona.alias}` : t('mi.title')}</h1>
 
       {!a || !a.triage ? (
         <div className="mt-5 rounded-2xl border border-line bg-surface p-5">
           <p className="text-ink">{t('mi.empty')}</p>
           <div className="mt-3 flex flex-wrap gap-2">
             <Link
-              to="/p/paciente/preconsulta"
+              to={`/p/${profileId ?? 'paciente'}/preconsulta`}
               className="inline-block rounded-xl bg-primary px-4 py-2.5 font-medium text-white"
             >
               {t('mi.start')}
@@ -121,7 +127,7 @@ export function MiResultado() {
             {t('mi.savedAt', { date: new Date(a.createdAt).toLocaleDateString('es-AR') })}
           </p>
           <Link
-            to="/p/paciente/preconsulta"
+            to={`/p/${profileId ?? 'paciente'}/preconsulta`}
             className="mt-4 inline-block rounded-xl border border-line bg-surface px-4 py-2 text-ink hover:bg-bg"
           >
             {t('mi.again')}

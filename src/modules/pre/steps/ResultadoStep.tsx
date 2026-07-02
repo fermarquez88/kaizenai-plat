@@ -68,6 +68,7 @@ export function ResultadoStep() {
   const setStep = usePreconsulta((s) => s.setStep)
 
   const ensureSelfPersonId = useSettings((s) => s.ensureSelfPersonId)
+  const activePersonId = useSettings((s) => s.activePersonId)
   const simpleMode = useSettings((s) => s.simpleMode)
   const [copied, setCopied] = useState(false)
   // Tomas longitudinales de ESTA persona (re-chequeos en el tiempo).
@@ -95,7 +96,13 @@ export function ResultadoStep() {
     //    para NO conflar a todas las personas en el self del dispositivo del agente.
     const dni = demo.dni?.trim()
     const esPropioDispositivo = profileId === 'paciente' && summary.modo === 'persona'
-    const personId = dni ? `dni-${dni}` : esPropioDispositivo ? ensureSelfPersonId() : crypto.randomUUID()
+    const personId = dni
+      ? `dni-${dni}`
+      : esPropioDispositivo
+        ? ensureSelfPersonId()
+        : profileId === 'cuidador' && activePersonId
+          ? activePersonId // el cuidador guarda bajo la persona cuidada (no un id random)
+          : crypto.randomUUID()
     // Lazo de derivación: si es rojo / hay banderas / el modelo deriva, se EMITE.
     const derivar =
       summary.triageLevel === 'rojo' || summary.mrcaDecision === 'derivar' || summary.redFlags.length > 0

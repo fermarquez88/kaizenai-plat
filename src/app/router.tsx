@@ -51,6 +51,7 @@ export const router = createHashRouter([
       { path: 'p/:profileId/post/cuidador', element: <CuidadorGuia /> },
       { path: 'p/:profileId/post/paciente', element: <PacienteGuia /> },
       { path: 'p/:profileId/informe-doc', element: <InformeDocumento /> },
+      { path: 'p/:profileId/informe-doc/:personId', element: <InformeDocumento /> },
       { path: 'p/:profileId/red/:mode', element: <RedView /> },
       { path: 'p/:profileId/alarmas', element: <RedAlarmas /> },
       { path: 'p/:profileId/pedir/:personId', element: <PanelPedidos /> },
