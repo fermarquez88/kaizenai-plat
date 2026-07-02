@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import { Activity, AlertTriangle, ArrowLeft, Pencil, Printer, Save } from 'lucide-react'
 import { usePersona } from '../../data/usePersona'
 import { usePedidos } from './pedidosStore'
+import { useMediciones } from './medicionesStore'
 import { alertasVitales, imc, ultimoVital, useVitales, Vitales } from './vitalesStore'
 
 // SIGNOS VITALES (enfermería): toma rápida en sala de espera / terreno. Carga numérica →
@@ -43,6 +44,7 @@ export function VitalesStep() {
   const registrar = useVitales((s) => s.registrar)
   const porPersona = useVitales((s) => s.porPersona)
   const cerrarPedido = usePedidos((s) => s.cerrarPedido)
+  const registrarMedicion = useMediciones((s) => s.registrar)
   const { alias, edad } = usePersona(personId)
   const previo = personId ? ultimoVital(porPersona, personId) : undefined
 
@@ -58,6 +60,9 @@ export function VitalesStep() {
     if (!personId) return
     const v: Vitales = { ...vitalActual, fecha: Date.now() }
     registrar(personId, v)
+    // Cierra la(s) alarma(s) de medición pendiente que esta toma resuelve (huella → cola).
+    if (v.taSist != null || v.taDiast != null) registrarMedicion(personId, 'presionArterial')
+    if (imc(v) != null) registrarMedicion(personId, 'imc')
     for (const alc of ['modulo:vitales', 'test:vitales', 'modulo:signos']) cerrarPedido(`${personId}:pedidoCompletar:${alc}`)
     setGuardado(v)
     setModo('informe')

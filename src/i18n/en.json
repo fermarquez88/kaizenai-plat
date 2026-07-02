@@ -1,1 +1,1248 @@
-{}
+{
+  "app": {
+    "name": "KaizenAI",
+    "tagline": "A person-centered network"
+  },
+  "common": {
+    "disclaimer": "Not a diagnosis · Does not replace a professional.",
+    "back": "Back",
+    "prev": "Previous",
+    "next": "Next",
+    "remove": "Remove",
+    "fontSmaller": "Smaller text",
+    "fontLarger": "Larger text",
+    "voice": "Read aloud",
+    "voiceStop": "Stop reading",
+    "soon": "Coming soon",
+    "start": "Start",
+    "loading": "Loading…",
+    "required": "*",
+    "optional": "(optional)",
+    "skip": "Skip to content"
+  },
+  "instrumento": {
+    "progress": "Answered: {{current}} of {{total}}",
+    "help": "If you don't know an answer, leave it blank or move on to the next one. You can change an answer by tapping another option."
+  },
+  "promotor": {
+    "title": "Your health worker space",
+    "subtitle": "Your people and what's best to do today.",
+    "cribar": "Screen in the field",
+    "cribarSub": "New pre-visit, works without signal.",
+    "paraHoy": "For today · who to visit or call",
+    "empty": "All up to date. When you screen someone, their follow-up will show up here.",
+    "todaMiGente": "All my people",
+    "cola": "Referral queue"
+  },
+  "inicio": {
+    "title": "What brings you here today?",
+    "subtitle": "Brain health close to you, before and after a diagnosis. Start with what you need.",
+    "invitedBanner": "You were invited to support someone. Enter through «I care for someone».",
+    "tasks": {
+      "persona": {
+        "t": "I want to look after my memory",
+        "d": "A brief, clear assessment, and what to do next."
+      },
+      "cuidador": {
+        "t": "I care for someone",
+        "d": "Look after yourself, handle difficult situations, and assess the person you care for."
+      },
+      "promotor": {
+        "t": "I'm a health promoter",
+        "d": "Your people, who to visit, and field screening."
+      }
+    },
+    "pro": "I'm a professional at the Memory Unit",
+    "demo": "See the network journey (demonstration)",
+    "mapaPerfil": "Brain health profile map",
+    "privacy": "Your data stays on this device. You decide what to share."
+  },
+  "home": {
+    "demoBanner": "Network tour · demonstration view: enter each space to see how it connects.",
+    "title": "Choose your space",
+    "subtitle": "This network supports brain health before and after diagnosis. Enter through the space that represents you.",
+    "example": "See an example case",
+    "privacy": "Your data stays on this device. You decide what to share."
+  },
+  "ejemplo": {
+    "banner": "Example case · demonstration data (not a real person).",
+    "real": "Do a real screening"
+  },
+  "profiles": {
+    "paciente": {
+      "title": "Person",
+      "desc": "Self-assessment and education in plain language."
+    },
+    "cuidador": {
+      "title": "Caregiver",
+      "desc": "Support, symptom management, and looking after yourself."
+    },
+    "agente": {
+      "title": "Community health worker",
+      "desc": "Field screening, alerts, and referrals."
+    },
+    "gestor": {
+      "title": "Health manager",
+      "desc": "Population dashboard, referrals, and metrics."
+    },
+    "unidad": {
+      "title": "Professional / Unit",
+      "desc": "Pre-consultation inbox with summary and priority."
+    },
+    "comunidad": {
+      "title": "Community",
+      "desc": "Network governance: what we ask for and what we change."
+    }
+  },
+  "dashboard": {
+    "modules": "Modules",
+    "phaseNote": "Space under construction — co-designed with the community."
+  },
+  "modules": {
+    "paciente": {
+      "0": {
+        "t": "My self-assessment",
+        "d": "A brief screening in plain language."
+      },
+      "1": {
+        "t": "My result",
+        "d": "What it means and what to do now."
+      },
+      "2": {
+        "t": "After the diagnosis",
+        "d": "A step-by-step guide to living better."
+      }
+    },
+    "cuidador": {
+      "0": {
+        "t": "How are you doing?",
+        "d": "Caregiver strain index (Zarit, mood)."
+      },
+      "1": {
+        "t": "What to do in each situation",
+        "d": "Non-pharmacological management — DICE method."
+      },
+      "2": {
+        "t": "Caregiver guide",
+        "d": "Practical material, also available offline."
+      },
+      "3": {
+        "t": "I need help now",
+        "d": "Immediate resources and contact."
+      },
+      "4": {
+        "t": "Screen the person I care for",
+        "d": "Assess your family member based on what you notice."
+      }
+    },
+    "agente": {
+      "0": {
+        "t": "My people",
+        "d": "People being followed up in the community."
+      },
+      "1": {
+        "t": "Assisted screening",
+        "d": "Field pre-visit, works offline."
+      },
+      "2": {
+        "t": "Alerts and referrals",
+        "d": "Priorities and red flags."
+      },
+      "3": {
+        "t": "Visit schedule",
+        "d": "Home follow-up."
+      }
+    },
+    "gestor": {
+      "0": {
+        "t": "Population dashboard",
+        "d": "Aggregated and anonymous indicators."
+      },
+      "1": {
+        "t": "Referral queue",
+        "d": "Sorted by clinical priority."
+      },
+      "2": {
+        "t": "Coverage and times",
+        "d": "Network metrics."
+      }
+    },
+    "unidad": {
+      "0": {
+        "t": "Pre-visit inbox",
+        "d": "Summary + priority level per person."
+      },
+      "1": {
+        "t": "Clinical summary",
+        "d": "Modifiable risk, MRCA and flagged medication."
+      },
+      "2": {
+        "t": "Team",
+        "d": "Medicine · Nursing · Neuropsychology."
+      }
+    },
+    "comunidad": {
+      "0": {
+        "t": "What the community asks for",
+        "d": "Suggestions prioritized by the network."
+      },
+      "1": {
+        "t": "What we changed",
+        "d": "Record of improvements: requested → done."
+      },
+      "2": {
+        "t": "Representatives",
+        "d": "People, caregivers and agents who co-decide."
+      },
+      "3": {
+        "t": "Data sovereignty",
+        "d": "How the data is cared for and whose it is."
+      }
+    }
+  },
+  "preconsulta": {
+    "stepLabel": "Step {{current}} of {{total}} · {{name}}",
+    "finish": "Done, back to my space",
+    "steps": {
+      "modo": "Who is answering",
+      "demografia": "About you",
+      "prevencion": "Prevention",
+      "factores": "Factors",
+      "cqc": "Memory",
+      "gds": "Mood",
+      "tadlq": "Functioning",
+      "isi": "Sleep",
+      "mind": "Diet",
+      "ipaq": "Physical activity",
+      "ad8": "Have you noticed changes in your memory?",
+      "iqcode": "Memory (according to a relative)",
+      "faq": "Functioning (informant)",
+      "medicacion": "Medication",
+      "banderas": "Warning signs",
+      "resultado": "Result",
+      "determinantes": "Your home and surroundings"
+    },
+    "faltaPoco": "Almost there — {{n}} left",
+    "ultimoPaso": "Last step",
+    "empezarDeNuevo": "Start over",
+    "microVictoriaGen": "Great, let's keep going!",
+    "microVictoria": {
+      "vos": "Done! We now know the basics about you.",
+      "salud": "Great! You finished the part about your health.",
+      "chequeo": "Awesome! You finished the check-up.",
+      "medicacion": "Your medications are done!",
+      "senales": "Almost finished!",
+      "entorno": "Your home and surroundings are done!"
+    },
+    "opcionalSumar": "The essentials are done — you can add more (optional)",
+    "sumarMas": "Add more"
+  },
+  "pre": {
+    "modo": {
+      "title": "Who is filling this out?",
+      "intro": "This adapts the questions: the person self-assesses; the relative/caregiver answers as an informant.",
+      "persona": "I am the person",
+      "cuidador": "I am a relative / caregiver (informant)",
+      "agente": "I am a health agent or promoter",
+      "short": {
+        "persona": "the person",
+        "cuidador": "a relative/caregiver",
+        "agente": "a health agent"
+      }
+    },
+    "prevencion": {
+      "title": "Prevention — factors you can take care of",
+      "intro": "Answer honestly. This is an estimate, not a diagnosis: it shows you which factors you can work on to care for your brain health.",
+      "whatToDo": "What can I do?",
+      "answer": {
+        "si": "Yes",
+        "no": "No",
+        "nose": "I don't know"
+      }
+    },
+    "factores": {
+      "title": "A few more questions about your habits",
+      "intro": "These help us better understand your brain health. Whatever you don't know, leave blank."
+    },
+    "demografia": {
+      "title": "About you",
+      "intro": "This information helps us better interpret your result.",
+      "fieldHint": "Fields with * are required. If you don't know something, leave it blank.",
+      "aliasLabel": "Initials or nickname",
+      "aliasPlaceholder": "E.g.: M. R.",
+      "aliasHint": "No full name. It helps us recognize your follow-up without exposing your identity.",
+      "phoneLabel": "Phone (WhatsApp)",
+      "phoneHint": "For follow-up re-contact. Format 549264…",
+      "cuidadorLabel": "Caregiver or relative (dyad)",
+      "cuidadorPlaceholder": "E.g.: their daughter",
+      "edad": "Age",
+      "sexoLabel": "Sex",
+      "sexo_mujer": "Female",
+      "sexo_hombre": "Male",
+      "eduLabel": "Years of education",
+      "eduHint": "How many years you attended school (primary, secondary, etc.).",
+      "deptoLabel": "Department",
+      "deptoPlaceholder": "Choose…",
+      "viveLabel": "Where do you live?",
+      "vive_campo": "In the countryside / a rural area",
+      "vive_pueblo": "In a town",
+      "vive_ciudad": "In the city",
+      "cercaLabel": "How far away is the nearest health center?",
+      "cerca_lt15": "Less than 15 min",
+      "cerca_m15": "15 to 30 min",
+      "cerca_m30": "30 min to 1 h",
+      "cerca_gt60": "More than 1 h",
+      "cerca_nose": "I don't know / there isn't one"
+    },
+    "mrca": {
+      "title": "Memory and cognitive changes",
+      "intro": "Think about the last few months and answer Yes or No. These answers feed the model.",
+      "note": "These answers feed the Kaizen-MRCA model (first-level estimate, not a diagnosis).",
+      "modelNoteLay": "First-level estimate for guidance, not a diagnosis.",
+      "modelNote": "Estimate from the Kaizen-MRCA model (AUC ~0.80 in development / ~0.63 in validation). First-level screening, not a diagnosis.",
+      "preliminary": "preliminary estimate",
+      "band": {
+        "bajo": "low",
+        "moderado": "moderate",
+        "alto": "high"
+      },
+      "items": {
+        "recent": "Do you forget recent conversations or things more than before?",
+        "repeat": "Do you repeat questions or comments without realizing it?",
+        "words": "Do you struggle to find words you know?",
+        "orientation": "Do you get disoriented or lost in familiar places?",
+        "help": "Do you need more help than before with tasks like accounts or medication?",
+        "slow": "Do you feel that you think or react more slowly?",
+        "informant": "Has someone close to you mentioned that your memory has changed?"
+      }
+    },
+    "medicacion": {
+      "title": "Medication",
+      "intro": "Add the medications you take. I'll flag what's worth reviewing (nothing is prescribed).",
+      "search": "Search for a medication…",
+      "empty": "You haven't added any medications yet.",
+      "flags": {
+        "poly": "You take {{n}} medications (5 or more). It's worth reviewing with your team whether they're all necessary.",
+        "acb": "Some of your medications may affect memory. It's worth reviewing them with your doctor.",
+        "bzd": "{{n}} medication(s) for sleep or to calm the nerves: they can cause falls or confusion. Worth reviewing.",
+        "beers": "{{n}} medication(s) that in older adults are worth reviewing with the health team.",
+        "antidementia": "There is already ongoing memory treatment (donepezil/memantine) — informational.",
+        "none": "No medication alerts for now."
+      },
+      "disclaimer": "Flags for professional review. Does not prescribe or discontinue treatments. Indicative values."
+    },
+    "banderas": {
+      "title": "Warning signs",
+      "intro": "Check if any of these situations appear.",
+      "help": "Only check the ones you noticed. If you're not sure, leave it unchecked.",
+      "warning": "There are warning signs: a priority consultation is advisable.",
+      "items": {
+        "rapid": "Rapid worsening (within weeks).",
+        "focal": "Weakness, difficulty speaking or seeing on one side.",
+        "delirium": "Confusion that appeared suddenly recently.",
+        "falls": "New falls or instability.",
+        "earlyOnset": "Symptoms in a young person or of unusual onset.",
+        "behavior": "Strong behavioral changes or risky situations."
+      }
+    }
+  },
+  "factors": {
+    "education": {
+      "label": "Education",
+      "question": "Did you have few educational opportunities in childhood (you didn't finish primary school)?",
+      "advice": "Keep your mind active: read, learn new things, play memory games. It's never too late."
+    },
+    "hearing": {
+      "label": "Hearing",
+      "question": "Do you have trouble hearing, or should you be using a hearing aid?",
+      "advice": "Get your hearing checked. Using a hearing aid when needed protects your memory."
+    },
+    "ldl": {
+      "label": "Cholesterol (LDL)",
+      "question": "Do you have high “bad” cholesterol (LDL)?",
+      "advice": "Manage your cholesterol with your health team: diet, activity and, if needed, medication."
+    },
+    "depression": {
+      "label": "Mood",
+      "question": "Do you feel sad, low, or uninterested most of the time?",
+      "advice": "Asking for help works: depression is treatable. Talk to your health team."
+    },
+    "tbi": {
+      "label": "Head injuries",
+      "question": "Have you had serious head injuries with loss of consciousness?",
+      "advice": "Protect your head: wear a helmet on a motorcycle or bike, and watch out for falls at home."
+    },
+    "inactivity": {
+      "label": "Physical activity",
+      "question": "Do you get little physical activity (you hardly walk or move around)?",
+      "advice": "Moving helps your brain. Aim for about 30 minutes of walking most days."
+    },
+    "diabetes": {
+      "label": "Diabetes",
+      "question": "Do you have diabetes or high blood sugar?",
+      "advice": "Manage your blood sugar with your health team: you protect your brain and your heart."
+    },
+    "smoking": {
+      "label": "Tobacco",
+      "question": "Do you smoke?",
+      "advice": "Quitting smoking lowers your risk at any age. Ask for help to do it."
+    },
+    "hypertension": {
+      "label": "Blood pressure",
+      "question": "Do you have high blood pressure (hypertension)?",
+      "advice": "Keep your blood pressure in check. Keeping it in a healthy range protects your memory."
+    },
+    "obesity": {
+      "label": "Weight",
+      "question": "Are you overweight or living with obesity?",
+      "advice": "Small changes in food and movement help. Look for support, without guilt."
+    },
+    "alcohol": {
+      "label": "Alcohol",
+      "question": "Do you drink alcohol in excess (more than a few drinks a week)?",
+      "advice": "Less alcohol is better for your brain. If it's hard, ask for help."
+    },
+    "isolation": {
+      "label": "Social connections",
+      "question": "Do you spend most of your time alone or with little contact with others?",
+      "advice": "Nurture your connections: staying in touch with other people cares for your mind."
+    },
+    "airPollution": {
+      "label": "Air and smoke",
+      "question": "Are you heavily exposed to smoke or polluted air (wood-fire cooking, tobacco smoke)?",
+      "advice": "Ventilate your rooms, avoid smoke, and improve your stove if you cook with wood."
+    },
+    "vision": {
+      "label": "Vision",
+      "question": "Do you have uncorrected vision problems (you don't wear the glasses you need)?",
+      "advice": "Get your eyes checked. Correcting your vision protects your memory and your independence."
+    }
+  },
+  "triage": {
+    "levelLabel": "Suggested priority",
+    "meaningTitle": "What does this mean?",
+    "nextStepTitle": "What do I do now?",
+    "invite": {
+      "title": "Invite a family member",
+      "desc": "Sharing care works: a family member can support you and learn how to help. It's what most sustains follow-up.",
+      "btn": "Invite via WhatsApp",
+      "msg": "Hi, I'm taking care of my brain health with KaizenAI. Will you join me? Come in here:"
+    },
+    "meaning": {
+      "verde": "Green — take it easy. We didn't see any signs that call for an urgent consultation. Keep up with your usual check-ups and take care of your habits.",
+      "amarillo": "Yellow — worth checking, no need to worry. It's not urgent, but it would be good to have a professional evaluate you in the coming weeks.",
+      "rojo": "Red — better not to wait. A specialist should see you soon. This does NOT mean you have a disease: it's so you get seen quickly."
+    },
+    "instruments": "Your answers in detail",
+    "instrumentsPlain": {
+      "cqc": "Memory (how you feel about it)",
+      "gds": "Mood",
+      "tadlq": "Day-to-day tasks",
+      "isi": "Sleep (how you sleep)",
+      "mind": "Diet (MIND)",
+      "ipaq": "Physical activity (IPAQ)",
+      "ad8": "Noticed changes",
+      "iqcode": "Memory (according to a family member)",
+      "faq": "Functioning (according to a family member)",
+      "gad": "Anxiety",
+      "ucla": "Feeling of loneliness"
+    },
+    "instrumentsSkipped": "If you left any section unanswered, it doesn't appear here. Completing them gives your team more detail.",
+    "comparadoresIntro": "These are scientific risk rules. They look at similar things from different angles. What matters is the trend, not the exact number.",
+    "urgent": {
+      "title": "Signs it's best not to wait on",
+      "donde": "Where to go: {{guardia}}.",
+      "call": "Call 107 (emergencies)"
+    },
+    "turno": "Book an appointment (CIDI · WhatsApp)",
+    "completedBy": "Completed by: {{modo}}.",
+    "level": {
+      "verde": "Green — community follow-up",
+      "amarillo": "Yellow — scheduled evaluation",
+      "rojo": "Red — priority referral"
+    },
+    "action": {
+      "verde": "Low risk: prevention and follow-up in the community. Keep taking care of the modifiable factors.",
+      "amarillo": "A scheduled evaluation at the Memory Unit is advisable. In the meantime, work on the modifiable factors.",
+      "rojo": "A priority referral to the Memory Unit is suggested. See someone soon."
+    },
+    "why": "Why this result",
+    "reasons": {
+      "redflags": "There are warning signs present.",
+      "mrcaAlto": "The MRCA model estimated high risk.",
+      "mrcaModerado": "The MRCA model estimated moderate risk.",
+      "mrcaDerivar": "The MRCA model suggests referral (uncertain to rule out).",
+      "riskHigh": "Several modifiable risk factors present.",
+      "meds": "There is medication to review.",
+      "equidad": "Context of greater vulnerability (equity): we prioritize not losing follow-up.",
+      "low": "No warning signs or high scores."
+    },
+    "stats": {
+      "risk": "Things you can improve",
+      "riskValue": "{{n}} of 14",
+      "riskHelp": "Health habits and care that are in your hands. Several showing up isn't bad news: they're exactly the things you can act on.",
+      "mrca": "Estimated memory risk",
+      "mrcaHelp": "An estimate based on your answers, not a diagnosis. Low = keep going as you are · Moderate = worth checking without rushing · High = seek an appointment soon.",
+      "meds": "Medications to review",
+      "redflags": "Warning signs"
+    },
+    "factorsExplain": "We found {{n}} of 14 things that are in your hands, like {{ejemplos}}. Several showing up is good news: they're exactly the ones you can work on to take care of your memory.",
+    "factorsExplainNone": "You didn't mark any factors to improve among the 14 we looked at. Keep taking care of your habits.",
+    "mrcaBandExplain": {
+      "bajo": "Based on your answers, not many signs appear. Keep going as you are.",
+      "moderado": "It's not an emergency, but it's worth having a professional review it for your peace of mind.",
+      "alto": "It's worth seeking an evaluation soon. This is an estimate, not a diagnosis."
+    },
+    "mrcaActionTitle": "Your memory today",
+    "mrcaAction": {
+      "bajo": "No signs right now",
+      "moderado": "Preventive follow-up",
+      "alto": "A consultation is advisable"
+    },
+    "export": {
+      "title": "Share with the health team",
+      "whatsapp": "Share via WhatsApp",
+      "copy": "Copy summary",
+      "copied": "Copied!",
+      "json": "Download file",
+      "fhir": "Export FHIR",
+      "print": "Print / PDF",
+      "more": "More options (for your team)",
+      "privacyNote": "The alias travels in the WhatsApp link unencrypted. If you prefer more privacy, use “Copy summary”."
+    },
+    "derivLabel": "Referral",
+    "deriv": {
+      "emitida": "Referral issued",
+      "agendada": "Appointment scheduled",
+      "atendida": "Seen",
+      "noVino": "Did not attend",
+      "cerrada": "Closed"
+    },
+    "disclaimerShort": "Guidance estimate. Not a diagnosis — check with your health team.",
+    "disclaimer": "Guidance result (estimate with values to be validated). It does not diagnose or replace the professional. Your data stays on this device."
+  },
+  "informe": {
+    "verComo": "View as",
+    "persona": "Person",
+    "profesional": "Professional",
+    "factoresMejorables": "Things you can improve"
+  },
+  "ficha": {
+    "verInforme": "View report",
+    "volver": "Back",
+    "noEncontrado": "We couldn't find this person's report.",
+    "subtitulo": "Clinical sheet · summary",
+    "estadoLabel": "Follow-up",
+    "accionesEquipo": "Team actions",
+    "evalSocial": "Social assessment"
+  },
+  "aviso": {
+    "title": "Legal notice and privacy",
+    "intro": "How your data is handled in KaizenAI. This app does not diagnose and does not replace a professional.",
+    "responsable": {
+      "t": "Data controller",
+      "d": "[To be defined: data controller]."
+    },
+    "baseLegal": {
+      "t": "Legal basis",
+      "d": "Law 25.326 on the Protection of Personal Data (Argentina). Health data is a sensitive category and requires consent."
+    },
+    "datos": {
+      "t": "What data",
+      "d": "Brain health data (risk factors, mood, self-reported memory, medication) and contact details. Only the minimum necessary is requested."
+    },
+    "derechos": {
+      "t": "Your rights",
+      "d": "You can access, correct and delete your data (habeas data) from 'My data': view, export or delete."
+    },
+    "onDevice": {
+      "t": "Where your data lives",
+      "d": "On this device (local-first). There is no central server in this version; you control what you share."
+    },
+    "noDx": {
+      "t": "It is not a diagnosis",
+      "d": "The results are indicative estimates to support the consultation, not a diagnosis or a medical device."
+    },
+    "nota": "Demonstration version. The data controller and the final policy will be completed for the pilot."
+  },
+  "completitud": {
+    "title": "Profile completeness",
+    "sinIniciar": "not started",
+    "lancet": "Lancet factors: {{a}}/{{total}}",
+    "mrca": "Data for risk (MRCA): {{a}}/{{total}}",
+    "dominio": {
+      "identidad": "Identity and demarcation",
+      "cognitivo": "Cognition",
+      "animo": "Mood and emotions",
+      "funcional": "Daily functioning",
+      "sueno": "Sleep",
+      "habitos": "Habits and lifestyle",
+      "fisica": "Physical health (factors)"
+    }
+  },
+  "perfil": {
+    "title": "Brain health profile map",
+    "intro": "What a person's profile can cover, organized by domain. You don't need to complete it all: it fills in gradually and among several people.",
+    "completa": "Completed by: {{rol}}",
+    "nota": "Structure based on the WHO brain health domains. The completeness meter appears during the check-up.",
+    "tier": {
+      "obligatorio": "required",
+      "deseable": "desirable",
+      "posterior": "later",
+      "aparte": "separate"
+    },
+    "rol": {
+      "persona": "the person",
+      "cuidador": "the caregiver/informant",
+      "agente": "the health agent",
+      "medico": "the doctor",
+      "neuropsico": "the neuropsychologist"
+    },
+    "dominio": {
+      "identidad": "Identity and life course",
+      "gate": "Warning signs",
+      "cognitivo": "Cognition",
+      "socioemocional": "Mood and emotions",
+      "conductual": "Daily functioning",
+      "sensorial": "Senses (vision / hearing)",
+      "motor": "Mobility",
+      "saludFisica": "Physical health and risk factors",
+      "habitos": "Habits and reserve",
+      "sueno": "Sleep",
+      "determinantesSociales": "Social determinants",
+      "medico": "History and medication",
+      "cuidador": "Caregiver",
+      "sintesis": "Diagnosis and plan"
+    },
+    "resumen": "The essentials: {{h}} of {{total}} ready",
+    "estado": {
+      "hecho": "Done",
+      "empezado": "Started",
+      "pendiente": "Missing",
+      "otraCapa": "Clinical layer"
+    },
+    "completar": "Complete",
+    "completaVos": "You complete it",
+    "loCarga": "Entered by: {{rol}}"
+  },
+  "ipaq": {
+    "title": "Physical activity (past week)",
+    "intro": "Tell us how many days per week and minutes per day you did each type of activity.",
+    "vigorosa": "Intense activity (running, carrying weight, hard sport)",
+    "moderada": "Moderate activity (easy cycling, tasks that tire you a little)",
+    "caminar": "Walking (at least 10 minutes at a time)",
+    "sentado": "Time spent sitting on a typical day",
+    "dias": "days/week",
+    "min": "min/day",
+    "resultado": "Estimate: {{met}} MET-min/week —",
+    "categoria": {
+      "baja": "low activity",
+      "moderada": "moderate activity",
+      "alta": "high activity"
+    }
+  },
+  "pro": {
+    "title": "For the professional · model and comparators",
+    "secResumen": "Executive summary",
+    "secMrca": "MRCA model (technical detail)",
+    "secComparadores": "Validated comparators",
+    "mrcaValidation": "AUC ~0.80 in development / ~0.63 in validation. First-level screening, not a diagnosis.",
+    "lancetNote": "The Lancet Commission's \"modifiable risk\" is a POPULATION metric (attributable fraction, PAF), not an individual risk. That is why the factors present are shown here, not an individual percentage. Individual risk is given by the MRCA model and the comparators below.",
+    "mrcaTitle": "MRCA model (Kaizen-MRCA v1)",
+    "cut": "Cutoff (education)",
+    "margin": "Margin to cutoff",
+    "prob": "Prob / threshold",
+    "decision": "Decision",
+    "contribs": "What weighed in (contributions to ACE)",
+    "contribsNote": "Contribution of each factor to the estimated ACE-III (exact SHAP of the linear model). Negative values lower the estimated ACE (worse performance).",
+    "scoresTitle": "Individual risk comparators (validated)",
+    "openTool": "Open official calculator",
+    "disclaimer": "Research comparators, weighted by relative risk; they require LOCAL RECALIBRATION. Not for clinical decisions in isolation."
+  },
+  "equity": {
+    "title": "Support context",
+    "intro": "This isn't a judgment about you. It helps us support you better based on where and how you live, so no one gets lost in follow-up.",
+    "note": "We take this into account to make access to health more fair, not to label.",
+    "factors": {
+      "rural": "Lives in the countryside",
+      "lejos": "Far from the health center",
+      "bajaEdu": "Fewer years of schooling",
+      "edu": "Mid-level schooling",
+      "aislamiento": "Little social contact",
+      "edad80": "80 years or older"
+    }
+  },
+  "zarit": {
+    "title": "How are you doing? (caregiver burden)",
+    "intro": "This test is PRIVATE, just for you: it is not reported to anyone and stays on this device. It's 12 short questions about how you feel while caring.",
+    "options": {
+      "0": "Never",
+      "1": "Rarely",
+      "2": "Sometimes",
+      "3": "Quite often",
+      "4": "Almost always"
+    },
+    "bands": {
+      "poca": "low burden",
+      "moderada": "moderate burden",
+      "alta": "high burden"
+    },
+    "result": "Your score: {{score}} / {{max}} — {{band}}",
+    "hint": {
+      "poca": "You're doing well. Keep taking care of yourself and ask for support when you need it.",
+      "moderada": "It's a good idea to seek more support and moments of rest for yourself.",
+      "alta": "It's important to ask for help now. Talk to the health team or a trusted person."
+    },
+    "items": {
+      "time": "Do you feel you have no time for yourself because of caregiving?",
+      "stress": "Do you feel stressed between caregiving and your other responsibilities?",
+      "health": "Do you feel your health has been affected by caregiving?",
+      "control": "Do you feel you have lost control of your life?",
+      "distress": "Are you distressed about the future of the person you care for?",
+      "social": "Do you feel your social life has shrunk?",
+      "uncomfortable": "Are you uncomfortable with some of the person's behaviors?",
+      "dependent": "Do you feel the person depends heavily on you?",
+      "tense": "Do you feel tense when you are with the person?",
+      "more": "Do you feel you won't be able to keep caring much longer?",
+      "privacy": "Do you feel you have lost privacy or intimacy?",
+      "overall": "Overall, do you feel very overburdened?"
+    }
+  },
+  "post": {
+    "paciente": {
+      "title": "After the diagnosis",
+      "intro": "A diagnosis doesn't define who you are. You can live well, with support and planning.",
+      "note": "Guidance only. Your health team supports you every step of the way.",
+      "cards": {
+        "0": {
+          "t": "What to expect",
+          "b": "Dementia progresses differently in each person. There are stages, and each one has its own supports."
+        },
+        "1": {
+          "t": "Habits that protect",
+          "b": "Physical activity, connections, good sleep, keeping blood pressure and blood sugar in check, and keeping the mind active."
+        },
+        "2": {
+          "t": "Plan ahead in time",
+          "b": "Decisions about health, finances and wishes while you can still express them. It brings peace of mind."
+        },
+        "3": {
+          "t": "Your rights",
+          "b": "You have the right to clear information, to take part in decisions, and to be treated with dignity (Law 26.529)."
+        },
+        "4": {
+          "t": "You're not alone",
+          "b": "Look for groups, associations and your health team. Asking for help is part of care."
+        }
+      }
+    },
+    "cuidador": {
+      "title": "Caregiver's guide",
+      "tabs": {
+        "zarit": "How are you doing?",
+        "dice": "Challenging behaviors",
+        "ayuda": "I need help"
+      },
+      "dice": {
+        "title": "DICE method — for challenging behaviors",
+        "intro": "Behaviors are communication. DICE helps you understand and respond without conflict.",
+        "d": {
+          "t": "Describe",
+          "b": "What exactly happened? When, where, and who was there.",
+          "ej": "E.g.: “At 6 p.m., in the kitchen, they started looking for the key and got angry.”"
+        },
+        "i": {
+          "t": "Investigate",
+          "b": "What might have caused it? Pain, hunger, fear, noise, medication, boredom.",
+          "ej": "E.g.: were they hungry or in pain? were they tired? was there a lot of noise?"
+        },
+        "c": {
+          "t": "Create",
+          "b": "Try a plan: adjust the environment, the routine, or the way you communicate.",
+          "ej": "E.g.: turn down the radio, offer a mate, and always keep the key in the same place."
+        },
+        "e": {
+          "t": "Evaluate",
+          "b": "Did it work? If not, go back to investigating and try something else.",
+          "ej": "E.g.: try it for a week; if it happens again, change just one thing at a time."
+        }
+      },
+      "conductas": {
+        "title": "Common behaviors (DICE applied)",
+        "intro": "Tap each situation to see why it happens and what to do.",
+        "more": "Don't see your situation? Open the full guide"
+      },
+      "help": {
+        "title": "I need help now",
+        "body": "If there's a risk to the person or to you, seek help right away. For day-to-day support, the full caregiver's guide is always available (offline too).",
+        "link": "Open the Caregiver's Guide"
+      }
+    }
+  },
+  "gov": {
+    "consent": {
+      "tag": "Consent",
+      "title": "Before we begin",
+      "intro": "This tool guides you and helps make better referrals. It does not diagnose or replace a professional. To continue, please read and accept:",
+      "points": {
+        "0": "We ask only what's needed. No real name — use initials or a nickname.",
+        "1": "Everything is stored on this device. You decide whether to share it.",
+        "2": "The result is an estimate, not a diagnosis.",
+        "3": "You can view, export or delete your data whenever you want."
+      },
+      "accept": "I understand and accept",
+      "note": "By accepting, you start the screening. You can review your data in 'My data'."
+    },
+    "datos": {
+      "tag": "Data sovereignty",
+      "title": "My data",
+      "intro": "Your data lives on this device. Here you're in control.",
+      "count": "You have {{n}} screening(s) saved on this device.",
+      "export": "Export my data",
+      "exportFhir": "Export FHIR",
+      "delete": "Delete my data",
+      "confirm": "Are you sure? This can't be undone.",
+      "confirmYes": "Yes, delete",
+      "confirmNo": "Cancel",
+      "deleted": "Done: your data has been deleted from this device.",
+      "points": {
+        "0": "Nothing is sent to a server without your consent.",
+        "1": "The export is a file of yours, to share with whoever you want.",
+        "2": "Deleting here removes the information from this device."
+      },
+      "footer": "My data and privacy",
+      "importTitle": "Import a shared record",
+      "importDesc": "If someone shared their file with you (the KaizenAI “envelope”), load it here to add it to this device.",
+      "simpleTitle": "Easy reading",
+      "simpleDesc": "Larger text and screens without jargon."
+    },
+    "community": {
+      "tag": "Community governance",
+      "title": "Community",
+      "intro": "This network is co-designed with the people who use it. Your voice changes what we build.",
+      "suggestTitle": "What the community is asking for",
+      "suggestPlaceholder": "Suggest an improvement…",
+      "suggestBtn": "Send suggestion",
+      "status": {
+        "abierta": "Open",
+        "aceptada": "Accepted",
+        "hecha": "Done"
+      },
+      "markAccepted": "Mark as accepted",
+      "markDone": "Mark as done",
+      "pidieron": "Requested: {{x}}",
+      "doneGeneric": "Done",
+      "seed": {
+        "0": "That the screening have audio for people who read little.",
+        "1": "More materials for rural caregivers, offline.",
+        "2": "A friendly reminder for blood pressure checks."
+      },
+      "changelogTitle": "What we changed",
+      "changelog": {
+        "0": {
+          "req": "Requested: larger text.",
+          "done": "Done: A− / A+ control across the whole app."
+        },
+        "1": {
+          "req": "Requested: that it work without internet.",
+          "done": "Done: the app opens offline."
+        },
+        "2": {
+          "req": "Requested: that it not diagnose, only guide.",
+          "done": "Done: visible notice on every result."
+        }
+      },
+      "repsTitle": "Representatives",
+      "reps": {
+        "0": {
+          "role": "Person with a diagnosis",
+          "desc": "Brings the perspective of someone living it."
+        },
+        "1": {
+          "role": "Family caregiver",
+          "desc": "Carries the voice of everyday care."
+        },
+        "2": {
+          "role": "Community health worker",
+          "desc": "Represents the local community."
+        }
+      }
+    }
+  },
+  "seguimiento": {
+    "title": "Follow-up (my people)",
+    "intro": "Who's up to date and who hasn't come back. Early re-contact prevents dropout.",
+    "ventana": "Consider \"didn't come back\" after:",
+    "dias": "{{n}} days",
+    "kpi": {
+      "total": "People",
+      "seguimiento": "In follow-up",
+      "novolvio": "Didn't come back",
+      "diada": "With caregiver"
+    },
+    "hace": "Last contact: {{n}} days ago",
+    "cuidador": "informant: {{c}}",
+    "discrepancia": "Person↔informant discrepancy (review)",
+    "estado": {
+      "aldia": "Up to date",
+      "porvencer": "Due soon",
+      "novolvio": "Didn't come back"
+    },
+    "recontact": "Re-contact",
+    "registrar": "Log contact",
+    "contactCuidador": "Caregiver",
+    "msg": "Hi {{alias}}, I'm from the brain health team. How are you doing? We want to support you.",
+    "msgCuidador": "Hi, I'm from the brain health team. We wanted to know how the support is going."
+  },
+  "red": {
+    "realNote": "{{real}} real · {{demo}} sample (demo).",
+    "demoBanner": "Demonstration view — includes sample data.",
+    "demoTag": "sample",
+    "import": {
+      "btn": "Import person (file)",
+      "ok": "Imported: {{n}} screening(s).",
+      "err": "Couldn't read the file (is it a KaizenAI envelope?)."
+    },
+    "titles": {
+      "gente": "My people",
+      "cola": "Referral queue",
+      "bandeja": "Pre-consultation inbox",
+      "tablero": "Population dashboard"
+    },
+    "seedNote": "Sample data (demo).",
+    "labels": {
+      "years": "years",
+      "eduYears": "{{n}} years of schooling",
+      "risk": "Modif. risk",
+      "mrca": "MRCA",
+      "meds": "Medications",
+      "redflags": "Signs"
+    },
+    "tablero": {
+      "total": "People",
+      "verde": "Green",
+      "amarillo": "Yellow",
+      "rojo": "Red",
+      "avgRisk": "Average modifiable risk",
+      "anon": "Aggregated, anonymous data — no personal information."
+    }
+  },
+  "mi": {
+    "title": "My result",
+    "empty": "You haven't done your self-assessment yet.",
+    "start": "Do my self-assessment",
+    "example": "See an example case",
+    "again": "Assess myself again",
+    "savedAt": "Saved on {{date}}.",
+    "historyTitle": "Your progress",
+    "historyNote": "Assessing yourself again from time to time lets you see how your results change over time."
+  },
+  "agenda": {
+    "title": "Visit schedule",
+    "intro": "Who to go see: follow-ups coming due or people who didn't come back.",
+    "empty": "No pending visits for now. All up to date!",
+    "kind": {
+      "control": "Post-referral check-up",
+      "primera": "First home visit",
+      "seguimiento": "Follow-up"
+    },
+    "day": {
+      "hoy": "Today",
+      "manana": "Tomorrow",
+      "semana": "This week"
+    }
+  },
+  "metricas": {
+    "title": "Coverage and times",
+    "cobertura": "Territorial coverage",
+    "cribadas": "People screened",
+    "derivaciones": "Referrals",
+    "tiempoTurno": "Average time to appointment",
+    "seguimiento": "With follow-up",
+    "agentes": "Active health workers",
+    "note": "Example indicators, aggregated and anonymous."
+  },
+  "equipo": {
+    "title": "Memory Unit team",
+    "intro": "Internal views for the pre-consultation. In the MVP it is a unified profile; they are separated later on.",
+    "tabs": {
+      "medicina": "Medicine",
+      "enfermeria": "Nursing",
+      "neuropsico": "Neuropsychology"
+    },
+    "medicina": {
+      "0": "Review the flagged medication (anticholinergics, BZD, Beers).",
+      "1": "Confirm red flags and rule out reversible causes (B12, TSH, depression).",
+      "2": "Assess cardiometabolic burden and sensory deficits.",
+      "3": "Define tests and plan according to triage priority."
+    },
+    "enfermeria": {
+      "0": "Take vital signs and complete missing data.",
+      "1": "Review adherence and polypharmacy with the person.",
+      "2": "Educate on protective habits and support network.",
+      "3": "Coordinate appointments and follow-up with the health agent."
+    },
+    "neuropsico": {
+      "0": "Apply the battery according to priority (ACE-III or another).",
+      "1": "Choose the norm according to education level (Bruno criterion).",
+      "2": "Explore subjective complaint and informant.",
+      "3": "Integrate results into the Unit's report."
+    }
+  },
+  "alarmas": {
+    "title": "Alert network",
+    "intro": "The shared queue that falls to you as {{rol}}. Each signal has an owner and an action that closes it; when it closes, it leaves behind a piece of data.",
+    "vacia": "No open alerts. The network is up to date.",
+    "dueno": "Owner",
+    "prioridad": "priority",
+    "microVictoria": "One more data point, one less gap. That's how the network is built.",
+    "kpi": {
+      "abiertas": "Open",
+      "agudas": "Urgent",
+      "brechas": "Service gaps"
+    },
+    "rol": {
+      "diada": "you and your family",
+      "agente": "community health worker",
+      "enfermero": "nursing",
+      "medico": "physician",
+      "neuropsico": "neuropsychology",
+      "gestor": "management",
+      "trabajadorSocial": "social work"
+    },
+    "tipo": {
+      "aguda": "Urgent / reversible",
+      "noVolvio": "Didn't come back",
+      "pedidoMedicion": "A measurement is missing",
+      "discordancia": "Two perspectives",
+      "pedidoCompletar": "Request"
+    },
+    "severidad": {
+      "aguda": "Urgent",
+      "alta": "High",
+      "media": "Medium",
+      "baja": "Low"
+    },
+    "detalleTexto": {
+      "aguda": "A signal that can't wait — review within hours, not weeks.",
+      "noVolvio": "{{dias}} days without contact.",
+      "pedidoMedicion": "Never measured: {{medible}}.",
+      "discordancia": "The person and their caregiver see things differently.",
+      "pedidoCompletar": "Complete: {{que}}"
+    },
+    "medible": {
+      "presionArterial": "blood pressure",
+      "hba1c": "blood sugar (HbA1c)",
+      "ldl": "cholesterol (LDL)",
+      "imc": "weight",
+      "audicion": "hearing",
+      "vision": "vision",
+      "anosognosia": "the family's perspective",
+      "depresion": "mood",
+      "revisar": "the two perspectives"
+    },
+    "brecha": {
+      "badge": "Service gap",
+      "note": "The area has no way to measure this today. It's not the person's or the health worker's task: it goes up to the provincial registry as a request for resources.",
+      "accion": "Goes up to the registry as a gap — it isn't asked of the person."
+    },
+    "btn": {
+      "medir": "Record measurement",
+      "contacto": "Re-contact",
+      "cerrar": "Mark as done",
+      "protocoloInmediato": "Activate protocol",
+      "mirarJuntos": "Look together",
+      "evaluarAnimo": "Assess mood",
+      "completar": "Mark as done"
+    },
+    "diada": {
+      "title": "This is what we'll do together",
+      "intro": "Your next steps, {{alias}}. One at a time, no rush.",
+      "alDia": "You're up to date. Nothing pending for now.",
+      "acompana": "We're with you on this.",
+      "hecho": "Already done",
+      "listo": "Done",
+      "derechos": "You decide: you can view, download or delete your data, and pause the support whenever you want."
+    },
+    "pasoPersona": {
+      "medir": "Measure {{medible}}",
+      "reContactar": "Reconnect with your companion",
+      "mirarJuntos": "A talk to look at everything together",
+      "evaluarAnimo": "A talk about how you're feeling",
+      "protocoloInmediato": "Talk to a professional soon",
+      "completar": "Complete: {{que}}"
+    },
+    "pasoPersonaSub": {
+      "medir": "Your local health team coordinates it. It's quick.",
+      "reContactar": "Your companion wants to know how you are.",
+      "mirarJuntos": "With your family and the team, without judging anyone.",
+      "evaluarAnimo": "Sometimes mood weighs on memory. It's worth a look.",
+      "protocoloInmediato": "Best not to let it slide.",
+      "completar": "The health team asked you for this."
+    },
+    "pedirCompletar": "Request to complete a profile",
+    "cargarBateria": "Load neuropsychological battery",
+    "verFicha": "View record"
+  },
+  "voz": {
+    "on": "Voice on",
+    "off": "Voice off",
+    "hint": "Tap here to turn off the voice"
+  },
+  "gate0": {
+    "pregunta": "Did their face suddenly droop, did they lose strength in an arm, or did their speech get slurred?",
+    "aclaracion": "Even if it has already passed. Mark Yes if it happened today or recently.",
+    "si": "Yes",
+    "no": "No",
+    "urgenciaTitle": "This could be an emergency",
+    "urgenciaBody": "Time matters. Call 107 now or take the person to the nearest emergency room.",
+    "llamar": "Call 107",
+    "volver": "Back"
+  },
+  "nav": {
+    "miPanel": "My panel",
+    "modulos": "Modules",
+    "mod": {
+      "espacio": "My space",
+      "chequeo": "Check-up",
+      "pedidos": "Pending",
+      "gente": "My people",
+      "seguimiento": "Follow-up",
+      "alarmas": "Alerts",
+      "agenda": "Schedule",
+      "panel": "Panel",
+      "metricas": "Metrics",
+      "cola": "Queue",
+      "bandeja": "Inbox",
+      "gobernanza": "Governance"
+    },
+    "lente": {
+      "paciente": "My space",
+      "cuidador": "Caregiver",
+      "agente": "Agent",
+      "enfermeria": "Nursing",
+      "unidad": "Physician / Unit",
+      "neuropsico": "Neuropsychology",
+      "social": "Social work",
+      "gestor": "Management",
+      "comunidad": "Community"
+    },
+    "crumb": {
+      "inicio": "Home",
+      "chequeo": "Check-up",
+      "resultado": "Result",
+      "alarmas": "Pending",
+      "seguimiento": "Follow-up",
+      "gente": "My people",
+      "ficha": "Record",
+      "pedir": "Request",
+      "neuropsico": "Battery",
+      "informe": "Report",
+      "agenda": "Schedule",
+      "metricas": "Metrics",
+      "equipo": "Team",
+      "red": "Network",
+      "guia": "Guide",
+      "perfil": "My record",
+      "datos": "My data",
+      "gobernanza": "Governance",
+      "aviso": "Legal notice",
+      "demo": "Tour (demo)",
+      "ejemplo": "Example",
+      "area": "Area",
+      "personas": "My people"
+    }
+  },
+  "puerta": {
+    "saludo": "Hello. Let's take care of your memory.",
+    "bienvenida": "This is your space. We'll go slowly, one thing at a time.",
+    "empezarNota": "It's just a few questions. You can stop and continue whenever you want.",
+    "avanceLabel": "Profile progress",
+    "proximoPaso": "Your next step",
+    "proxima": {
+      "demografia": "Tell us who you are (age and schooling)",
+      "lancet": "A few questions about your health",
+      "cqc": "Tell us how your memory is doing",
+      "gds": "Tell us how you're feeling",
+      "tadlq": "Tell us how your day-to-day is going",
+      "seguir": "Continue your check-up"
+    },
+    "cta": {
+      "empezar": "Start your check-up"
+    },
+    "listo": "Ready for your appointment — save or share your profile",
+    "nivel": {
+      "empezamos": {
+        "t": "We've started",
+        "sub": "Your brain health is already underway."
+      },
+      "vamosBien": {
+        "t": "We're doing well",
+        "sub": "Every step helps your doctor take better care of you."
+      },
+      "completo": {
+        "t": "Complete profile",
+        "sub": "Your profile is alive: it updates at every visit."
+      }
+    },
+    "pedidos": "What the health team asked you for ({{n}})",
+    "pedidosSub": "Small things to take better care of you.",
+    "seccionesTitulo": "Who completes your profile",
+    "sec": {
+      "persona": {
+        "t": "Your details",
+        "falta": "You're a little short — continue when you can.",
+        "ok": "All done, thank you!"
+      },
+      "vitales": {
+        "t": "Your vital signs",
+        "falta": "Waiting for the nurse to enter them."
+      },
+      "tests": {
+        "t": "Memory and thinking",
+        "falta": "Entered by the neuropsychologist if needed."
+      }
+    },
+    "otrosTemas": "Other topics to add",
+    "beneficioGen": "Helps take care of your brain health.",
+    "beneficio": {
+      "sueno": "Sleeping well takes care of your memory.",
+      "animo": "Mood influences how you think.",
+      "habitos": "What you eat and how you move takes care of your brain.",
+      "fisica": "Controlling blood pressure and blood sugar protects your memory."
+    },
+    "verPerfil": "See my whole profile",
+    "elegir": "Choose what to complete",
+    "informe": "Report for paperwork (CUD, referral…)"
+  },
+  "alcance": {
+    "minima-completa": "Minimum assessment complete",
+    "minima-obligatoria": "Minimum required assessment",
+    "modulo_sueno": "How they sleep",
+    "modulo_habitos": "Habits (diet and activity)",
+    "modulo_social": "Social situation",
+    "medir_presionArterial": "Take blood pressure",
+    "medir_hba1c": "Measure HbA1c (blood sugar)",
+    "medir_ldl": "Measure cholesterol (LDL)",
+    "test_bateria": "Full neuropsychological battery",
+    "test_ACE-III": "ACE-III",
+    "test_MMSE": "Mini-Mental (MMSE)",
+    "test_RAVLT": "RAVLT (memory)",
+    "test_TMT": "TMT (attention)"
+  },
+  "panel": {
+    "title": "Request profile completion",
+    "intro": "Mark what you want completed for {{alias}}. You can choose several things.",
+    "grupo": {
+      "diada": "The person and their family",
+      "enfermeria": "Health worker / Nursing",
+      "neuropsico": "Neuropsychology"
+    },
+    "seleccionados": "{{n}} selected",
+    "crear": "Create requests"
+  },
+  "demo": {
+    "subtitle": "One person, many perspectives. Enter as each actor to see the integrated network.",
+    "verComo": "Enter as {{actor}}"
+  }
+}

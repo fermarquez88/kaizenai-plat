@@ -3,7 +3,7 @@
 // catálogo de capacidades del territorio piloto. ⚠️ Mapeo riesgo↔banda orientativo.
 import type { SeedPersona } from '../seed/personas'
 import { computeEquity } from './equity'
-import { derivarAlarmas, type Alarma, type CapacidadLocal, type DeriveAlarmasInput } from './alarmas'
+import { crearPedido, derivarAlarmas, type Alarma, type CapacidadLocal, type DeriveAlarmasInput } from './alarmas'
 import type { MrcaModelBand } from './mrcaModel'
 
 const RIESGO_POR_BANDA: Record<MrcaModelBand, number> = { bajo: 0.2, moderado: 0.5, alto: 0.8 }
@@ -38,7 +38,17 @@ export function inputFromSeed(p: SeedPersona, now: number): DeriveAlarmasInput {
   }
 }
 
-/** Cola de alarmas de toda la cohorte seed (la "red" en un dispositivo, para la demo). */
+/** Vulnerabilidad social (equity) de una persona seed. */
+const vulnerabilidadDe = (p: SeedPersona) =>
+  computeEquity({ edad: p.age, edu_anios: p.edu, vive: p.vive, cerca: p.cerca, isolation: p.isolation }).score
+
+/** Cola de alarmas de toda la cohorte seed (la "red" en un dispositivo, para la demo).
+ *  Incluye pedidos de TRABAJO SOCIAL para las personas con más vulnerabilidad, para que la
+ *  cola de ese rol no quede vacía (antes no se sembraba ningún pedidoCompletar social). */
 export function alarmasDeSeed(personas: SeedPersona[], now: number): Alarma[] {
-  return personas.flatMap((p) => derivarAlarmas(inputFromSeed(p, now))).sort((a, b) => b.prioridad - a.prioridad)
+  const base = personas.flatMap((p) => derivarAlarmas(inputFromSeed(p, now)))
+  const sociales = personas
+    .filter((p) => vulnerabilidadDe(p) >= 0.5)
+    .map((p) => crearPedido({ personId: p.id, alias: p.alias, destinoRol: 'trabajadorSocial', alcance: 'modulo:social', now, prioridadBase: 45 }))
+  return [...base, ...sociales].sort((a, b) => b.prioridad - a.prioridad)
 }

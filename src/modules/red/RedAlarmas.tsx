@@ -9,6 +9,7 @@ import { lenteDe } from '../../app/lentes'
 import type { MedibleTipo, PuntoMedible } from '../../scoring/medibles'
 import { waMeLink } from '../../channel/ChannelAdapter'
 import { usePedidos } from './pedidosStore'
+import { estaRegistrada, useMediciones } from './medicionesStore'
 
 // Valor representativo para la demo al "registrar una medición" (cierra el pedido → huella).
 const VALOR_DEMO: Record<MedibleTipo, number> = {
@@ -49,6 +50,10 @@ export function RedAlarmas() {
   const [victoria, setVictoria] = useState(false)
   const pedidosCreados = usePedidos((s) => s.pedidos)
   const cerrarPedidoStore = usePedidos((s) => s.cerrarPedido)
+  const registradas = useMediciones((s) => s.registradas)
+  // Cada rol abre SU panel desde la cola (no todos a la ficha).
+  const panelDeRol = (personId: string) =>
+    rol === 'neuropsico' ? `/p/${profileId}/neuropsico/${personId}` : rol === 'trabajadorSocial' ? `/p/${profileId}/social/${personId}` : `/p/${profileId}/ficha/${personId}`
 
   const personas = useMemo(() => conHuella(SEED_PERSONAS, extra), [extra])
 
@@ -119,7 +124,10 @@ export function RedAlarmas() {
 
   // ── Vista PROFESIONAL/AGENTE/GESTOR: la cola única filtrada por rol ────────────────────
   const todas = [...alarmasDeSeed(personas, now), ...pedidosCreados.filter((p) => p.estado !== 'cerrada')]
-  const cola = colaPorRol(todas, rol).filter((a) => !cerradas.has(a.id))
+  const cola = colaPorRol(todas, rol)
+    .filter((a) => !cerradas.has(a.id))
+    // Oculta mediciones ya registradas por enfermería (huella persistida) → cola real.
+    .filter((a) => !(a.tipo === 'pedidoMedicion' && estaRegistrada(registradas, a.personId, a.detalle)))
   const agudas = cola.filter((a) => a.tipo === 'aguda').length
   const brechas = cola.filter((a) => a.brechaDeServicio).length
 
@@ -197,7 +205,7 @@ export function RedAlarmas() {
                       </button>
                     </>
                   ) : (
-                    <Link to={`/p/${profileId}/ficha/${a.personId}`} className="inline-flex items-center gap-1 rounded-xl bg-primary px-3 py-2 text-sm font-medium text-white">
+                    <Link to={panelDeRol(a.personId)} className="inline-flex items-center gap-1 rounded-xl bg-primary px-3 py-2 text-sm font-medium text-white">
                       {a.tipo === 'aguda' ? <Stethoscope size={16} /> : <HeartHandshake size={16} />}
                       {t(`alarmas.btn.${a.accion}`, { defaultValue: t('alarmas.btn.cerrar') })}
                     </Link>
