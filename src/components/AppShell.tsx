@@ -1,8 +1,9 @@
-import { useState, type ReactNode } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { ArrowLeft, Minus, Plus, Volume2, VolumeX } from 'lucide-react'
 import { useSettings } from '../lib/store'
+import i18n from '../i18n'
 import { breadcrumbs, backTo } from '../app/nav'
 import { Logo } from './Logo'
 import { ModuleNav } from './ModuleNav'
@@ -13,6 +14,10 @@ export function AppShell({ children }: { children: ReactNode }) {
   const incFont = useSettings((s) => s.incFont)
   const decFont = useSettings((s) => s.decFont)
   const fontScale = useSettings((s) => s.fontScale)
+  const lang = useSettings((s) => s.lang)
+  const setLang = useSettings((s) => s.setLang)
+  const toggleLang = () => { const next = lang === 'es' ? 'en' : 'es'; setLang(next); void i18n.changeLanguage(next) }
+  useEffect(() => { if (i18n.language !== lang) void i18n.changeLanguage(lang) }, [lang])
   const [speaking, setSpeaking] = useState(false)
   const location = useLocation()
   // Migas de pan + back de REGLA DE ORO (sube un nivel, nunca al limbo).
@@ -107,12 +112,13 @@ export function AppShell({ children }: { children: ReactNode }) {
             >
               {speaking ? <VolumeX size={18} /> : <Volume2 size={18} />}
             </button>
-            <span
-              className="ml-1 rounded-full border border-line bg-surface px-2 py-1 text-xs font-semibold text-secondary-text"
-              title="Español"
+            <button
+              onClick={toggleLang}
+              aria-label={lang === 'es' ? 'Translate to English' : 'Traducir al español'}
+              className="ml-1 rounded-full border border-line bg-surface px-2 py-1 text-xs font-semibold text-secondary-text hover:bg-bg"
             >
-              ES
-            </span>
+              {lang === 'es' ? 'EN' : 'ES'}
+            </button>
           </div>
         </div>
       </header>
